@@ -3,7 +3,7 @@ package com.dazzle.bigappleui.gifview;
 import android.graphics.Bitmap;
 
 /**
- * GIF图片的每一帧
+ * GIF图片的每一帧，nextFrame使所有帧构成了一串链表
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2013-9-27 下午6:50:27 $

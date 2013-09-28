@@ -20,10 +20,10 @@ public final class R {
         public static final int gif_pic2=0x7f020001;
         public static final int ic_action_search=0x7f020002;
         public static final int ic_launcher=0x7f020003;
-        public static final int pull2refresh_arrow=0x7f020004;
+        public static final int pic1=0x7f020004;
+        public static final int pull2refresh_arrow=0x7f020005;
     }
     public static final class id {
-        public static final int listview=0x7f080000;
         public static final int menu_settings=0x7f080008;
         public static final int pull2refresh_footer_progressbar=0x7f080001;
         public static final int pull2refresh_footer_textview=0x7f080002;
@@ -32,6 +32,7 @@ public final class R {
         public static final int pull2refresh_head_lastupdatedtextview=0x7f080007;
         public static final int pull2refresh_head_progressbar=0x7f080005;
         public static final int pull2refresh_head_tipstextview=0x7f080006;
+        public static final int roundedImageView=0x7f080000;
     }
     public static final class layout {
         public static final int main=0x7f030000;
