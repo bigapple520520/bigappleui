@@ -1,4 +1,4 @@
-package com.dazzle.bigappleui;
+package com.example.bigappleui_demo.view.lettersearchbar;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.util.Log;
 import com.dazzle.bigappleui.view.LetterSearchBar;
 import com.dazzle.bigappleui.view.LetterSearchBar.OnLetterChange;
 import com.dazzle.bigappleui.view.LetterSearchBar.OutLetterSeacherBar;
+import com.example.bigappleui_demo.R;
 
 public class Main extends Activity {
 
@@ -15,7 +16,7 @@ public class Main extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.demo_lettersearchbar);
 
         LetterSearchBar letterSearchBar = (LetterSearchBar) findViewById(R.id.letterSearchBar);
 
