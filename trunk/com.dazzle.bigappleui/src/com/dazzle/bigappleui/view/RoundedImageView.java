@@ -29,8 +29,6 @@ import android.widget.ImageView;
 public class RoundedImageView extends ImageView {
     private final Context context;
 
-    private float roundPx = 20f;// 圆角的幅度
-
     public RoundedImageView(Context context) {
         super(context);
         this.context = context;
@@ -46,57 +44,77 @@ public class RoundedImageView extends ImageView {
         this.context = context;
     }
 
-    @Override
-    public void setImageDrawable(Drawable drawable) {
+    // ////////////////////////////////////////设置圆角图片///////////////////////////////////////////////////////////
+    public void setImageDrawable(Drawable drawable, float roundPx) {
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-        Bitmap roundedBitmap = getRoundedCornerBitmap(bitmapDrawable.getBitmap(), roundPx);
+
+        RoundedCornerBitmapProcessor roundedCornerBitmapProcessor = new RoundedCornerBitmapProcessor();
+        Bitmap roundedBitmap = roundedCornerBitmapProcessor.getRoundedCornerBitmap(bitmapDrawable.getBitmap(), roundPx);
+
         super.setImageDrawable(new BitmapDrawable(context.getResources(), roundedBitmap));
     }
 
-    @Override
-    public void setImageBitmap(Bitmap bitmap) {
-        setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
+    public void setImageBitmap(Bitmap bitmap, float roundPx) {
+        setImageDrawable(new BitmapDrawable(context.getResources(), bitmap), roundPx);
     }
 
-    @Override
-    public void setImageResource(int resId) {
+    public void setImageResource(int resId, float roundPx) {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
-        setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
+        setImageDrawable(new BitmapDrawable(context.getResources(), bitmap), roundPx);
     }
 
-    public void setRoundPx(float roundPx) {
-        this.roundPx = roundPx;
+    // ////////////////////////////////////////设置圆角背景///////////////////////////////////////////////////////////
+    public void setBackgroundDrawable(Drawable drawable, float roundPx) {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+
+        RoundedCornerBitmapProcessor roundedCornerBitmapProcessor = new RoundedCornerBitmapProcessor();
+        Bitmap roundedBitmap = roundedCornerBitmapProcessor.getRoundedCornerBitmap(bitmapDrawable.getBitmap(), roundPx);
+
+        super.setBackgroundDrawable(new BitmapDrawable(context.getResources(), roundedBitmap));
     }
 
-    public float getRoundPx() {
-        return roundPx;
+    public void setBackgroundDrawable(Bitmap bitmap, float roundPx) {
+        setBackgroundDrawable(new BitmapDrawable(context.getResources(), bitmap), roundPx);
+    }
+
+    public void setBackgroundDrawable(int resId, float roundPx) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
+        setBackgroundDrawable(new BitmapDrawable(context.getResources(), bitmap), roundPx);
     }
 
     /**
-     * 把图片装成圆角
+     * 图片处理成圆角工具
      * 
-     * @param bitmap
-     * @param roundPx
-     * @return
+     * @author xuan
+     * @version $Revision: 1.0 $, $Date: 2013-10-15 下午6:57:42 $
      */
-    private Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPx) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
+    public class RoundedCornerBitmapProcessor {
+        /**
+         * 把图片装成圆角
+         * 
+         * @param bitmap
+         * @param roundPx
+         * @return
+         */
+        public Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPx) {
+            Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
+            Canvas canvas = new Canvas(output);
 
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
+            final int color = 0xff424242;
+            final Paint paint = new Paint();
+            final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+            final RectF rectF = new RectF(rect);
 
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+            paint.setAntiAlias(true);
+            canvas.drawARGB(0, 0, 0, 0);
+            paint.setColor(color);
+            canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
 
-        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
+            paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+            canvas.drawBitmap(bitmap, rect, rect, paint);
 
-        return output;
+            return output;
+        }
     }
 
 }

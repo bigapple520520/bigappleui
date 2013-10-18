@@ -1,9 +1,9 @@
-package com.example.bigappleui_demo.zoomimageview;
+package com.example.bigappleui_demo.view.zoomimageview;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.dazzle.bigappleui.zoomimageview.ZoomImageView;
+import com.dazzle.bigappleui.view.ZoomImageView;
 import com.example.bigappleui_demo.R;
 
 public class Main extends Activity {

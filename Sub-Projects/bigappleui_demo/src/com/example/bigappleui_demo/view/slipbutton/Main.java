@@ -1,4 +1,4 @@
-package com.dazzle.bigappleui;
+package com.example.bigappleui_demo.view.slipbutton;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,7 +6,18 @@ import android.widget.Toast;
 
 import com.dazzle.bigappleui.view.SlipButton;
 import com.dazzle.bigappleui.view.SlipButton.OnChangedListener;
+import com.example.bigappleui_demo.R;
 
+/**
+ * 滑块控件测试，如要图片如下：<br>
+ * slip_bg_off.png<br>
+ * slip_bg_on.png<br>
+ * slip_btn_off.png<br>
+ * slip_btn_on.png
+ * 
+ * @author xuan
+ * @version $Revision: 1.0 $, $Date: 2013-10-14 下午2:13:17 $
+ */
 public class Main extends Activity {
 
     private SlipButton slipButton;
@@ -14,7 +25,7 @@ public class Main extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.demo_slipbutton);
 
         SlipButton slipButton = (SlipButton) findViewById(R.id.slipButton);
 
@@ -30,4 +41,5 @@ public class Main extends Activity {
             }
         });
     }
+
 }

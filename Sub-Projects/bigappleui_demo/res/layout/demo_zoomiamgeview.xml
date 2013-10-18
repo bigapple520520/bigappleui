@@ -2,7 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-    <com.dazzle.bigappleui.zoomimageview.ZoomImageView
+    <com.dazzle.bigappleui.view.ZoomImageView
         android:id="@+id/zoomImageView" 
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />

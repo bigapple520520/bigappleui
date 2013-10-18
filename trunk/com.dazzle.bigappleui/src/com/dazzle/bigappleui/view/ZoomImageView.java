@@ -3,7 +3,7 @@
  * Copyright (c) 2013 ZDSoft Networks, Inc. All rights reserved.
  * $Id$
  */
-package com.dazzle.bigappleui.zoomimageview;
+package com.dazzle.bigappleui.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -246,14 +246,12 @@ public class ZoomImageView extends ImageView {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
         case MotionEvent.ACTION_DOWN:
-            // 在第一个点被按下时触发
             savedMatrix.set(matrix);
             pA.set(event.getX(), event.getY());
             pB.set(event.getX(), event.getY());
             mode = DRAG;
             break;
-        case MotionEvent.ACTION_POINTER_DOWN:
-            // 当屏幕上已经有一个点被按住，此时再按下其他点时触发
+        case MotionEvent.ACTION_POINTER_DOWN:// 当屏幕上已经有一个点被按住，此时再按下其他点时触发
             dist = spacing(event.getX(0), event.getY(0), event.getX(1), event.getY(1));
             // 如果连续两点距离大于10，则判定为多点模式
             if (dist > 10f) {
@@ -264,10 +262,8 @@ public class ZoomImageView extends ImageView {
                 mode = ZOOM_OR_ROTATE;
             }
             break;
-        case MotionEvent.ACTION_UP:
-            // 当屏幕上唯一的点被放开时触发
-        case MotionEvent.ACTION_POINTER_UP:
-            // 当屏幕上有多个点被按住，松开其中一个点时触发（即非最后一个点被放开时）
+        case MotionEvent.ACTION_UP:// 当屏幕上唯一的点被放开时触发
+        case MotionEvent.ACTION_POINTER_UP:// 当屏幕上有多个点被按住，松开其中一个点时触发（即非最后一个点被放开时）
             if (mode == DRAG) {
                 if (spacing(pA.x, pA.y, pB.x, pB.y) < 50) {
                     long now = System.currentTimeMillis();
@@ -298,8 +294,7 @@ public class ZoomImageView extends ImageView {
             }
             mode = NONE;
             break;
-        case MotionEvent.ACTION_MOVE:
-            // 处理缩放或者旋转，处理完后就能确定是缩放还是旋转了
+        case MotionEvent.ACTION_MOVE:// 处理缩放或者旋转，处理完后就能确定是缩放还是旋转了
             if (mode == ZOOM_OR_ROTATE) {
                 PointF pC = new PointF(event.getX(1) - event.getX(0) + pA.x, event.getY(1) - event.getY(0) + pA.y);
                 double a = spacing(pB.x, pB.y, pC.x, pC.y);
@@ -319,16 +314,14 @@ public class ZoomImageView extends ImageView {
                 }
             }
 
-            if (mode == DRAG) {
-                // 拖动
+            if (mode == DRAG) {// 拖动
                 matrix.set(savedMatrix);
                 pB.set(event.getX(), event.getY());
                 matrix.postTranslate(event.getX() - pA.x, event.getY() - pA.y);
                 fixTranslation();
                 setImageMatrix(matrix);
             }
-            else if (mode == ZOOM) {
-                // 缩放
+            else if (mode == ZOOM) {// 缩放
                 float newDist = spacing(event.getX(0), event.getY(0), event.getX(1), event.getY(1));
                 if (newDist > 10f) {
                     matrix.set(savedMatrix);
@@ -339,8 +332,7 @@ public class ZoomImageView extends ImageView {
                     setImageMatrix(matrix);
                 }
             }
-            else if (mode == ROTATE) {
-                // 旋转
+            else if (mode == ROTATE) {// 旋转
                 PointF pC = new PointF(event.getX(1) - event.getX(0) + pA.x, event.getY(1) - event.getY(0) + pA.y);
                 double a = spacing(pB.x, pB.y, pC.x, pC.y);
                 double b = spacing(pA.x, pA.y, pC.x, pC.y);
