@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <com.dazzle.bigappleui.view.NumRadioButton
+        android:id="@+id/numradiobutton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/pic1"
+        android:gravity="center_vertical"
+        android:text="测试">
+    </com.dazzle.bigappleui.view.NumRadioButton>
+</LinearLayout>
