@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -26,7 +27,6 @@ public class SlipButton extends View {
     private boolean nowChoose = false;// 是否选中状态
     private boolean onSlip = false;// 是否滑动状态
 
-    private float downX;// 按下时的x坐标
     private float nowX;// 当前的x坐标
 
     private OnChangedListener onChangedListener;// 是否选中状态改变事件
@@ -75,12 +75,14 @@ public class SlipButton extends View {
         float x;
 
         // 滑块背景
-        if (nowX < (slipBgOn.getWidth() / 2)) {
+        if (nowChoose) {
             canvas.drawBitmap(slipBgOn, matrix, paint);
         }
         else {
             canvas.drawBitmap(slipBgOff, matrix, paint);
         }
+
+        Log.d("", "------------------------------------" + nowChoose + "-------" + nowX);
 
         if (onSlip) {// 滑动状态
             if (nowX >= slipBgOn.getWidth()) {
@@ -124,15 +126,16 @@ public class SlipButton extends View {
                 return false;
             }
             onSlip = true;
-            downX = event.getX();
-            nowX = downX;
+            nowX = event.getX();
             break;
+        case MotionEvent.ACTION_CANCEL:// 同up一起处理
         case MotionEvent.ACTION_UP:
             onSlip = false;
 
             // 松开时判断是否选中
             boolean lastChoose = nowChoose;
-            nowChoose = (event.getX() < (slipBgOn.getWidth() / 2));
+            nowChoose = (nowX < (slipBgOn.getWidth() / 2));
+            Log.e("", "-----------------------------" + event.getX());
 
             if (null != onChangedListener && (lastChoose != nowChoose)) {
                 onChangedListener.OnChanged(nowChoose);

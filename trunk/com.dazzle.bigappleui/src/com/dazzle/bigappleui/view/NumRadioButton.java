@@ -77,7 +77,9 @@ public class NumRadioButton extends RadioButton {
     }
 
     public void setNum(int n, int resid) {
-        if (n > 0 && n != num) {
+        n = n < 0 ? 0 : n;
+
+        if (n != num) {
             this.num = n;
             initDrawBitmap(resid);
             invalidate();

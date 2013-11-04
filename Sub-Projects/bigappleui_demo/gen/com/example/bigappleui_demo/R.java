@@ -33,20 +33,19 @@ public final class R {
     public static final class id {
         public static final int gif=0x7f080000;
         public static final int letterSearchBar=0x7f080001;
-        public static final int listview=0x7f08000e;
-        public static final int menu_settings=0x7f08000f;
+        public static final int listview=0x7f08000d;
+        public static final int menu_settings=0x7f08000e;
         public static final int numradiobutton=0x7f080002;
-        public static final int pull2refresh_footer_progressbar=0x7f080007;
-        public static final int pull2refresh_footer_textview=0x7f080008;
-        public static final int pull2refresh_head=0x7f080009;
-        public static final int pull2refresh_head_arrowimageview=0x7f08000a;
-        public static final int pull2refresh_head_lastupdatedtextview=0x7f08000d;
-        public static final int pull2refresh_head_progressbar=0x7f08000b;
-        public static final int pull2refresh_head_tipstextview=0x7f08000c;
-        public static final int roundedImageView=0x7f080004;
-        public static final int slipButton=0x7f080003;
-        public static final int viewPagerLayout=0x7f080005;
-        public static final int zoomImageView=0x7f080006;
+        public static final int pull2refresh_footer_progressbar=0x7f080006;
+        public static final int pull2refresh_footer_textview=0x7f080007;
+        public static final int pull2refresh_head=0x7f080008;
+        public static final int pull2refresh_head_arrowimageview=0x7f080009;
+        public static final int pull2refresh_head_lastupdatedtextview=0x7f08000c;
+        public static final int pull2refresh_head_progressbar=0x7f08000a;
+        public static final int pull2refresh_head_tipstextview=0x7f08000b;
+        public static final int roundedImageView=0x7f080003;
+        public static final int viewPagerLayout=0x7f080004;
+        public static final int zoomImageView=0x7f080005;
     }
     public static final class layout {
         public static final int demo_gifview=0x7f030000;
