@@ -251,7 +251,7 @@ public class ZoomImageView extends ImageView {
             pB.set(event.getX(), event.getY());
             mode = DRAG;
             break;
-        case MotionEvent.ACTION_POINTER_DOWN:// 当屏幕上已经有一个点被按住，此时再按下其他点时触发
+        case MotionEvent.ACTION_POINTER_DOWN:
             dist = spacing(event.getX(0), event.getY(0), event.getX(1), event.getY(1));
             // 如果连续两点距离大于10，则判定为多点模式
             if (dist > 10f) {
@@ -262,8 +262,8 @@ public class ZoomImageView extends ImageView {
                 mode = ZOOM_OR_ROTATE;
             }
             break;
-        case MotionEvent.ACTION_UP:// 当屏幕上唯一的点被放开时触发
-        case MotionEvent.ACTION_POINTER_UP:// 当屏幕上有多个点被按住，松开其中一个点时触发（即非最后一个点被放开时）
+        case MotionEvent.ACTION_UP:
+        case MotionEvent.ACTION_POINTER_UP:
             if (mode == DRAG) {
                 if (spacing(pA.x, pA.y, pB.x, pB.y) < 50) {
                     long now = System.currentTimeMillis();
