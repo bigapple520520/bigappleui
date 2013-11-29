@@ -16,6 +16,10 @@ import android.content.Context;
  * @version $Revision: 1.0 $, $Date: 2013-9-26 下午3:59:14 $
  */
 public class ResourceResidUtils {
+    public static int getResidByStyleableName(Context context, String name) {
+        return getResidByName(context, "styleable", name);
+    }
+
     public static int getResidByLayoutName(Context context, String name) {
         return getResidByName(context, "layout", name);
     }
@@ -153,7 +157,7 @@ public class ResourceResidUtils {
 
     // ///////////////////////////////////////////////缓存部分///////////////////////////////////////////////////////////
     /**
-     * 用来缓存去过的resid，这样第二次取相同的resid就不能在用反射去取了
+     * 用来缓存去过的resid，这样第二次取相同的resid就不再用反射去取了
      */
     private static ConcurrentHashMap<String, Integer> cacheResId = new ConcurrentHashMap<String, Integer>();
 

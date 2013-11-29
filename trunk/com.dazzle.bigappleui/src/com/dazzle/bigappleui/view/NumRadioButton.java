@@ -50,6 +50,10 @@ public class NumRadioButton extends RadioButton {
         init(context);
     }
 
+    private void init(Context context) {
+        this.context = context;
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -84,10 +88,6 @@ public class NumRadioButton extends RadioButton {
             initDrawBitmap(resid);
             invalidate();
         }
-    }
-
-    private void init(Context context) {
-        this.context = context;
     }
 
     private void initDrawBitmap(int resid) {

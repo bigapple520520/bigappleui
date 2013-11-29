@@ -10,8 +10,8 @@ import android.os.Handler;
 
 import com.dazzle.bigappleui.pull2refresh.EndRefreshListener;
 import com.dazzle.bigappleui.pull2refresh.HeadRefreshListener;
-import com.dazzle.bigappleui.pull2refresh.Pull2RefreshListView;
-import com.dazzle.bigappleui.pull2refresh.Pull2RefreshUtils;
+import com.dazzle.bigappleui.pull2refresh.PullToRefreshListView;
+import com.dazzle.bigappleui.pull2refresh.PullToRefreshUtils;
 import com.dazzle.bigappleui.utils.DateUtils;
 import com.example.bigappleui_demo.R;
 
@@ -26,7 +26,7 @@ import com.example.bigappleui_demo.R;
 public class Main extends Activity {
 
     // 下拉刷新控件和设配器和数据
-    private Pull2RefreshListView listView;
+    private PullToRefreshListView listView;
 
     // 模拟数据
     private Pull2RefreshDemoAdapter pull2RefreshDemoAdapter;
@@ -51,10 +51,10 @@ public class Main extends Activity {
         dataList.add("1212121");
 
         pull2RefreshDemoAdapter = new Pull2RefreshDemoAdapter(dataList, this);
-        listView = (Pull2RefreshListView) findViewById(R.id.listview);
+        listView = (PullToRefreshListView) findViewById(R.id.listview);
 
         // 最简单的用法
-        Pull2RefreshUtils.simpleInit(this, listView, pull2RefreshDemoAdapter, handler, new HeadRefreshListener() {
+        PullToRefreshUtils.simpleInit(this, listView, pull2RefreshDemoAdapter, handler, new HeadRefreshListener() {
             @Override
             public void headRefresh() {
                 // 下拉刷新时会触发的事件，被线程调用，所以不用担心UI线程耗时问题，不过要在里面更新UI时，请用handler提交。
