@@ -2,6 +2,7 @@ package com.dazzle.bigappleui.pull2refresh;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +28,9 @@ import com.dazzle.bigappleui.utils.ResourceResidUtils;
  * @author xuan
  */
 public class PullToRefreshListView extends ListView implements OnScrollListener {
+    private static final String TAG = "PullToRefreshListView";
+    public static final boolean DEBUG = false;
+
     // 表示着列表正处于哪种状态
     private final static int PULL_TO_REFRESH = 0;// 下拉刷新标志
     private final static int RELEASE_TO_REFRESH = 1;// 松开刷新标志
@@ -52,6 +56,7 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
     private boolean isBack;// 标志着那个刷新箭头是否需要设置翻转回去
     private int firstItemIndex;// 记录着第一个可见列表项目的标志，在滚动条监听事件中被设置
     private int currentScrollState;// 记录着当前滚动条的状态，在滚动条监听事件中被设置
+    private int visibleItemCount;// 可见item数
 
     // 头部的一些测量距离参数
     private int headContentHeight;
@@ -115,12 +120,13 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 
     @Override
     public void onScroll(AbsListView view, int firstVisiableItem, int visibleItemCount, int totalItemCount) {
-        firstItemIndex = firstVisiableItem;
+        this.firstItemIndex = firstVisiableItem;
+        this.visibleItemCount = visibleItemCount;
     }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        currentScrollState = scrollState;
+        this.currentScrollState = scrollState;
     }
 
     @Override
@@ -134,6 +140,10 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
             break;
         case MotionEvent.ACTION_CANCEL:
         case MotionEvent.ACTION_UP:
+            if (DEBUG) {
+                Log.d(TAG, "ACTION_UP:" + state);
+            }
+
             // 当抬起时，如果是正在刷新就不管
             if (state != REFRESHING) {
                 if (state == DONE) {
@@ -156,6 +166,10 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
             isBack = false;
             break;
         case MotionEvent.ACTION_MOVE:
+            if (DEBUG) {
+                Log.d(TAG, "ACTION_MOVE:" + state);
+            }
+
             int tempY = (int) event.getY();
             if (!isRecored && firstItemIndex == 0) {
                 isRecored = true;
@@ -181,7 +195,9 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 
                 // 滑动时PULL_TO_REFRESH状态下，转变有两种情况：1.下拉到RELEASE_TO_REFRESH（松开刷新）状态 2.上推回到done状态
                 else if (state == PULL_TO_REFRESH) {
-                    if (tempY - startY >= headContentHeight + 20 && currentScrollState == SCROLL_STATE_TOUCH_SCROLL) {
+                    // if (tempY - startY >= headContentHeight + 20 && currentScrollState == SCROLL_STATE_TOUCH_SCROLL)
+                    // {
+                    if (tempY - startY >= headContentHeight + 20) {
                         state = RELEASE_TO_REFRESH;
                         isBack = true;
                         changeHeaderViewByState();
@@ -263,6 +279,10 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
         if (refreshListener != null) {
             refreshListener.onRefresh();
         }
+    }
+
+    public int getVisibleItemCount() {
+        return visibleItemCount;
     }
 
     private void measureView(View child) {

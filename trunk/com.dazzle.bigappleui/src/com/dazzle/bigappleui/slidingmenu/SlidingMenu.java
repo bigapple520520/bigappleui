@@ -1,17 +1,11 @@
 package com.dazzle.bigappleui.slidingmenu;
 
-import java.lang.reflect.Method;
-
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -19,22 +13,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.dazzle.bigappleui.slidingmenu.CustomViewAbove.OnPageChangeListener;
 
 /**
- * 会替换DcorView下的子View，由SlidingMenu充当<br>
- * 使用时，需要引入layout中的slidingmenumain.xml，和values中的attrs.xml
+ * 可侧滑界面
  * 
  * @author xuan
- * @version $Revision: 1.0 $, $Date: 2013-11-13 下午5:03:55 $
+ * @version $Revision: 1.0 $, $Date: 2013-12-5 上午9:51:45 $
  */
 public class SlidingMenu extends RelativeLayout {
     private static final String TAG = "SlidingMenu";
@@ -49,13 +39,6 @@ public class SlidingMenu extends RelativeLayout {
     public static final int RIGHT = 1;
     public static final int LEFT_RIGHT = 2;
 
-    // 滑动载体：0整个窗体滑动、1内容滑动
-    public static final int SLIDING_WINDOW = 0;
-    public static final int SLIDING_CONTENT = 1;
-
-    // 是否Actionbar一起滑动
-    private boolean mActionbarOverlay = false;
-
     // 主界面和侧滑界面容器
     private final CustomViewAbove mViewAbove;
     private final CustomViewBehind mViewBehind;
@@ -65,6 +48,8 @@ public class SlidingMenu extends RelativeLayout {
     private OnOpenListener mSecondaryOpenListner;
     private OnCloseListener mCloseListener;
 
+    private final Handler mHandler = new Handler();
+
     // ////////////////////////////////////////////SlidingMenu构造//////////////////////////////////////////////////////
     public SlidingMenu(Context context) {
         this(context, null);
@@ -72,7 +57,6 @@ public class SlidingMenu extends RelativeLayout {
 
     public SlidingMenu(Activity activity, int slideStyle) {
         this(activity, null);
-        this.attachToActivity(activity, slideStyle);
     }
 
     public SlidingMenu(Context context, AttributeSet attrs) {
@@ -115,168 +99,23 @@ public class SlidingMenu extends RelativeLayout {
             }
         });
 
-        // 获取xml中设置的自定义属性，放到TypedArray容器中，下面就是针对xml中设置的属性赋值调整
-        // TypedArray ta = context.obtainStyledAttributes(attrs,
-        // ResourceResidUtils.getIdsByName(context, "styleable", "SlidingMenu"));
-
-        // 设置左右侧滑模式，可在代码中设置
-        // int mode = ta.getInt(ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_mode"), LEFT);
-        // setMode(mode);
         setMode(LEFT);
-
-        // 设置主界面view，可在代码中设置
-        // int viewAbove = ta.getResourceId(ResourceResidUtils.getResidByStyleableName(context,
-        // "SlidingMenu_viewAbove"),
-        // -1);
-        // if (viewAbove != -1) {
-        // setContent(viewAbove);
-        // }
-        // else {
-        // setContent(new FrameLayout(context));
-        // }
         setContent(new FrameLayout(context));
-
-        // int viewBehind = ta.getResourceId(
-        // ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_viewBehind"), -1);
-        // if (viewBehind != -1) {
-        // setMenu(viewBehind);
-        // }
-        // else {
-        // setMenu(new FrameLayout(context));
-        // }
         setMenu(new FrameLayout(context));
 
-        // 设置主界面时，怎样能侧滑出来
-        // int touchModeAbove = ta.getInt(
-        // ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_touchModeAbove"), TOUCHMODE_MARGIN);
-        // setTouchModeAbove(touchModeAbove);
         setTouchModeAbove(TOUCHMODE_MARGIN);
-
-        // 设置菜单界面时，怎样能侧滑回去
-        // int touchModeBehind = ta.getInt(
-        // ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_touchModeBehind"), TOUCHMODE_MARGIN);
-        // setTouchModeBehind(touchModeBehind);
         setTouchModeBehind(TOUCHMODE_MARGIN);
 
-        // 设置侧滑出来的菜单的宽度和显示时的偏移量，两个必须得有一个，两个都设置的话，先设置偏移量
-        // int offsetBehind = (int) ta.getDimension(
-        // ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_behindOffset"), -1);
-        // int widthBehind = (int) ta.getDimension(
-        // ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_behindWidth"), -1);
-        // if (offsetBehind != -1 && widthBehind != -1) {
-        // throw new IllegalStateException("Cannot set both behindOffset and behindWidth for a SlidingMenu");
-        // }
-        // else if (offsetBehind != -1) {
-        // setBehindOffset(offsetBehind);
-        // }
-        // else if (widthBehind != -1) {
-        // setBehindWidth(widthBehind);
-        // }
-        // else {
-        // setBehindOffset(0);
-        // }
-
         setBehindOffset(0);
-
-        // 菜单时滚动条的透明度
-        // float scrollOffsetBehind = ta.getFloat(
-        // ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_behindScrollScale"), 0.33f);
-        // setBehindScrollScale(scrollOffsetBehind);
         setBehindScrollScale(0.33f);
 
-        // 阴影部分设置
-        // int shadowRes = ta.getResourceId(
-        // ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_shadowDrawable"), -1);
-        // if (shadowRes != -1) {
-        // setShadowDrawable(shadowRes);
-        // }
-
-        // int shadowWidth = (int) ta.getDimension(
-        // ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_shadowWidth"), 0);
-        // setShadowWidth(shadowWidth);
         setShadowWidth(0);
 
-        // 设置滑出滑入部分是否淡入淡出
-        // boolean fadeEnabled = ta.getBoolean(
-        // ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_fadeEnabled"), true);
-        // setFadeEnabled(fadeEnabled);
+        // 侧滑时菜单的渐变效果
         setFadeEnabled(true);
-
-        // float fadeDeg = ta.getFloat(ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_fadeDegree"),
-        // 0.33f);
-        // setFadeDegree(fadeDeg);
         setFadeDegree(0.33f);
 
-        // 大概选中时的状态设置吧
-        // boolean selectorEnabled = ta.getBoolean(
-        // ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_selectorEnabled"), false);
-        // setSelectorEnabled(selectorEnabled);
         setSelectorEnabled(false);
-
-        // int selectorRes = ta.getResourceId(
-        // ResourceResidUtils.getResidByStyleableName(context, "SlidingMenu_selectorDrawable"), -1);
-        // if (selectorRes != -1) {
-        // setSelectorDrawable(selectorRes);
-        // }
-
-        // ta.recycle();
-    }
-
-    // //////////////////////////////把SlidingMenu挂到顶级DcorView下///////////////////////////////////////////////////
-    public void attachToActivity(Activity activity, int slideStyle) {
-        attachToActivity(activity, slideStyle, false);
-    }
-
-    /**
-     * 把SlidingMenu挂到顶级DcorView下
-     * 
-     * @param activity
-     * @param slideStyle
-     * @param actionbarOverlay
-     *            Actionbar是否跟着一起动
-     */
-    public void attachToActivity(Activity activity, int slideStyle, boolean actionbarOverlay) {
-        if (slideStyle != SLIDING_WINDOW && slideStyle != SLIDING_CONTENT) {
-            throw new IllegalArgumentException("slideStyle must be either SLIDING_WINDOW or SLIDING_CONTENT");
-        }
-
-        if (getParent() != null) {
-            throw new IllegalStateException("This SlidingMenu appears to already be attached");
-        }
-
-        // get the window background
-        TypedArray a = activity.getTheme().obtainStyledAttributes(new int[] { android.R.attr.windowBackground });
-        int background = a.getResourceId(0, 0);
-        a.recycle();
-
-        switch (slideStyle) {
-        case SLIDING_WINDOW:
-            mActionbarOverlay = false;
-            ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
-            ViewGroup decorChild = (ViewGroup) decor.getChildAt(0);
-
-            // save ActionBar themes that have transparent assets
-            decorChild.setBackgroundResource(background);
-            decor.removeView(decorChild);
-            decor.addView(this);
-            setContent(decorChild);
-            break;
-        case SLIDING_CONTENT:
-            mActionbarOverlay = actionbarOverlay;
-
-            // take the above view out of
-            ViewGroup contentParent = (ViewGroup) activity.findViewById(android.R.id.content);
-            View content = contentParent.getChildAt(0);
-            contentParent.removeView(content);
-            contentParent.addView(this);
-            setContent(content);
-
-            // save people from having transparent backgrounds
-            if (content.getBackground() == null) {
-                content.setBackgroundResource(background);
-            }
-            break;
-        }
     }
 
     // ////////////////////////////////////////主界面View，绑定到mViewAbove/////////////////////////////////////////////
@@ -431,29 +270,6 @@ public class SlidingMenu extends RelativeLayout {
         setAboveOffset(i);
     }
 
-    @SuppressWarnings("deprecation")
-    public void setBehindWidth(int i) {
-        int width;
-        Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        try {
-            Class<?> cls = Display.class;
-            Class<?>[] parameterTypes = { Point.class };
-            Point parameter = new Point();
-            Method method = cls.getMethod("getSize", parameterTypes);
-            method.invoke(display, parameter);
-            width = parameter.x;
-        }
-        catch (Exception e) {
-            width = display.getWidth();
-        }
-        setBehindOffset(width - i);
-    }
-
-    public void setBehindWidthRes(int res) {
-        int i = (int) getContext().getResources().getDimension(res);
-        setBehindWidth(i);
-    }
-
     // //////////////////////////////////////////滚动条设置/////////////////////////////////////////////////////////////
     public float getBehindScrollScale() {
         return mViewBehind.getScrollScale();
@@ -564,51 +380,27 @@ public class SlidingMenu extends RelativeLayout {
     }
 
     // ///////////////////////////////////////////侧滑到各种状态的监听设置////////////////////////////////////////////
-    /**
-     * 左菜单被开始打开
-     * 
-     * @param listener
-     */
     public void setOnOpenListener(OnOpenListener listener) {
         mOpenListener = listener;
     }
 
-    /**
-     * 右菜单被开始打开
-     * 
-     * @param listener
-     */
     public void setSecondaryOnOpenListner(OnOpenListener listener) {
         mSecondaryOpenListner = listener;
     }
 
-    /**
-     * 左右菜单被开始关闭
-     * 
-     * @param listener
-     */
-    public void setOnCloseListener(OnCloseListener listener) {
-        mCloseListener = listener;
-    }
-
-    /**
-     * 菜单被打开后
-     * 
-     * @param listener
-     */
     public void setOnOpenedListener(OnOpenedListener listener) {
         mViewAbove.setOnOpenedListener(listener);
     }
 
-    /**
-     * 菜单被关闭后
-     * 
-     * @param listener
-     */
+    public void setOnCloseListener(OnCloseListener listener) {
+        mCloseListener = listener;
+    }
+
     public void setOnClosedListener(OnClosedListener listener) {
         mViewAbove.setOnClosedListener(listener);
     }
 
+    // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static class SavedState extends BaseSavedState {
         private final int mItem;
 
@@ -656,22 +448,6 @@ public class SlidingMenu extends RelativeLayout {
         super.onRestoreInstanceState(ss.getSuperState());
         mViewAbove.setCurrentItem(ss.getItem());
     }
-
-    @SuppressLint("NewApi")
-    @Override
-    protected boolean fitSystemWindows(Rect insets) {
-        int leftPadding = insets.left;
-        int rightPadding = insets.right;
-        int topPadding = insets.top;
-        int bottomPadding = insets.bottom;
-        if (!mActionbarOverlay) {
-            Log.v(TAG, "setting padding!");
-            setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
-        }
-        return true;
-    }
-
-    private final Handler mHandler = new Handler();
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void manageLayers(float percentOpen) {

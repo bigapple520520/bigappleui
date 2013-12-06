@@ -39,7 +39,6 @@ public class CustomViewAbove extends ViewGroup {
     private static final String TAG = "CustomViewAbove";
 
     private static final boolean DEBUG = false;
-    private static final boolean USE_CACHE = false;
 
     private static final int MAX_SETTLE_DURATION = 600; // ms
     private static final int MIN_DISTANCE_FOR_FLING = 25; // dips
@@ -51,15 +50,13 @@ public class CustomViewAbove extends ViewGroup {
         }
     };
 
-    // 存放的是DcorView下一级的View，因为这个会被SlidingMenu代替
+    // 主界面view
     private View mContent;
 
     // 当前item：0左侧滑界面、1主界面、2右侧滑界面
     private int mCurItem;
 
     private Scroller mScroller;
-
-    private boolean mScrollingCacheEnabled;
 
     private boolean mScrolling;
 
@@ -74,8 +71,8 @@ public class CustomViewAbove extends ViewGroup {
     private float mLastMotionY;
 
     // 记录被激活的点的索引，可能有多点被使用
-    protected int mActivePointerId = INVALID_POINTER;
     private static final int INVALID_POINTER = -1;
+    protected int mActivePointerId = INVALID_POINTER;
 
     protected VelocityTracker mVelocityTracker;
     private int mMinimumVelocity;
@@ -97,6 +94,8 @@ public class CustomViewAbove extends ViewGroup {
 
     // 侧滑操作时忽略侧滑的view
     private final List<View> mIgnoredViews = new ArrayList<View>();
+
+    protected int mTouchMode = SlidingMenu.TOUCHMODE_MARGIN;
 
     // ////////////////////////////////////////CustomViewAbove构造初始化///////////////////////////////////////////////
     public CustomViewAbove(Context context) {
@@ -162,7 +161,6 @@ public class CustomViewAbove extends ViewGroup {
 
     void setCurrentItemInternal(int item, boolean smoothScroll, boolean always, int velocity) {
         if (!always && mCurItem == item) {
-            setScrollingCacheEnabled(false);
             return;
         }
 
@@ -188,6 +186,7 @@ public class CustomViewAbove extends ViewGroup {
         }
     }
 
+    // //////////////////////////////////////////////设置界面切换监听器/////////////////////////////////////////////////
     public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
         mOnPageChangeListener = onPageChangeListener;
     }
@@ -200,19 +199,13 @@ public class CustomViewAbove extends ViewGroup {
         mClosedListener = onClosedListener;
     }
 
-    /**
-     * Set a separate OnPageChangeListener for internal use by the support library.
-     * 
-     * @param listener
-     *            Listener to set
-     * @return The old listener that was set, if any.
-     */
     OnPageChangeListener setInternalPageChangeListener(OnPageChangeListener listener) {
         OnPageChangeListener oldListener = mInternalPageChangeListener;
         mInternalPageChangeListener = listener;
         return oldListener;
     }
 
+    // ////////////////////////////////////设置子界面上的滑动忽略//////////////////////////////////////////////////////
     public void addIgnoredView(View v) {
         if (!mIgnoredViews.contains(v)) {
             mIgnoredViews.add(v);
@@ -303,29 +296,13 @@ public class CustomViewAbove extends ViewGroup {
         mEnabled = b;
     }
 
-    /**
-     * Like {@link View#scrollBy}, but scroll smoothly instead of immediately.
-     * 
-     * @param x
-     *            the number of pixels to scroll by on the X axis
-     * @param y
-     *            the number of pixels to scroll by on the Y axis
-     */
     void smoothScrollTo(int x, int y) {
         smoothScrollTo(x, y, 0);
     }
 
-    /**
-     * 以velocity指定的速度滚动到指定的x,y处
-     * 
-     * @param x
-     * @param y
-     * @param velocity
-     */
     void smoothScrollTo(int x, int y, int velocity) {
         if (getChildCount() == 0) {
             // Nothing to do.
-            setScrollingCacheEnabled(false);
             return;
         }
 
@@ -348,7 +325,6 @@ public class CustomViewAbove extends ViewGroup {
             return;
         }
 
-        setScrollingCacheEnabled(true);
         mScrolling = true;
 
         final int width = getBehindWidth();
@@ -484,7 +460,6 @@ public class CustomViewAbove extends ViewGroup {
         boolean needPopulate = mScrolling;
         if (needPopulate) {
             // Done with scroll, no longer want to cache view drawing.
-            setScrollingCacheEnabled(false);
             mScroller.abortAnimation();
             int oldX = getScrollX();
             int oldY = getScrollY();
@@ -507,8 +482,6 @@ public class CustomViewAbove extends ViewGroup {
         }
         mScrolling = false;
     }
-
-    protected int mTouchMode = SlidingMenu.TOUCHMODE_MARGIN;
 
     public void setTouchMode(int i) {
         mTouchMode = i;
@@ -701,7 +674,6 @@ public class CustomViewAbove extends ViewGroup {
                 endDrag();
             }
             else if (mQuickReturn && mViewBehind.menuTouchInQuickReturn(mContent, mCurItem, ev.getX() + mScrollX)) {
-                // close the menu
                 setCurrentItem(1);
                 endDrag();
             }
@@ -747,7 +719,6 @@ public class CustomViewAbove extends ViewGroup {
             startDrag();
             mLastMotionX = x;
             mLastMotionY = y;
-            setScrollingCacheEnabled(true);
             // TODO add back in touch slop check
         }
         else if (xDiff > mTouchSlop) {
@@ -827,21 +798,6 @@ public class CustomViewAbove extends ViewGroup {
         if (mVelocityTracker != null) {
             mVelocityTracker.recycle();
             mVelocityTracker = null;
-        }
-    }
-
-    private void setScrollingCacheEnabled(boolean enabled) {
-        if (mScrollingCacheEnabled != enabled) {
-            mScrollingCacheEnabled = enabled;
-            if (USE_CACHE) {
-                final int size = getChildCount();
-                for (int i = 0; i < size; ++i) {
-                    final View child = getChildAt(i);
-                    if (child.getVisibility() != GONE) {
-                        child.setDrawingCacheEnabled(enabled);
-                    }
-                }
-            }
         }
     }
 
@@ -1009,9 +965,11 @@ public class CustomViewAbove extends ViewGroup {
      * @version $Revision: 1.0 $, $Date: 2013-11-7 上午10:52:10 $
      */
     public static class SimpleOnPageChangeListener implements OnPageChangeListener {
+        @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         }
 
+        @Override
         public void onPageSelected(int position) {
         }
 

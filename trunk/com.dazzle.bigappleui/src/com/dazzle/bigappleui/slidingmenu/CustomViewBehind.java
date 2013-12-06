@@ -26,7 +26,7 @@ public class CustomViewBehind extends ViewGroup {
 
     public static final int SELECTED_VIEW_TAG = 0x7f040004;
 
-    private int mTouchMode = SlidingMenu.TOUCHMODE_MARGIN;// 侧滑模式
+    private int mTouchMode = SlidingMenu.TOUCHMODE_FULLSCREEN;// 侧滑模式
 
     private CustomViewAbove mViewAbove;// 主界面
 

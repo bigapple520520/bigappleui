@@ -9,7 +9,7 @@
         android:layout_height="fill_parent" 
         android:paddingTop="10dip"
         android:paddingBottom="15dip">  
-        <FrameLayout  
+        <FrameLayout
             android:layout_width="wrap_content"  
             android:layout_height="fill_parent"  
             android:layout_alignParentLeft="true"  

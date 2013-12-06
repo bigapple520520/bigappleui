@@ -8,6 +8,7 @@ package com.dazzle.bigappleui.pull2refresh;
 import java.util.Date;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,28 +69,21 @@ public abstract class PullToRefreshUtils {
         listView.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Thread(new Runnable() {
+                new AsyncTask<Object, Object, Object>() {
                     @Override
-                    public void run() {
-                        try {
-                            if (null != headRefreshListener) {
-                                headRefreshListener.headRefresh();
-                            }
+                    protected Object doInBackground(Object... params) {
+                        if (null != headRefreshListener) {
+                            headRefreshListener.headRefresh();
                         }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        // 刷新数据
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                baseAdapter.notifyDataSetChanged();
-                                listView.onRefreshComplete("最新更新时间：" + DateUtils.date2StringBySecond(new Date()));
-                            }
-                        });
+                        return null;
                     }
-                }).start();
+
+                    @Override
+                    protected void onPostExecute(Object result) {
+                        baseAdapter.notifyDataSetChanged();
+                        listView.onRefreshComplete("最新更新：" + DateUtils.date2StringBySecond(new Date()));
+                    }
+                }.execute();
             }
         });
 
@@ -116,28 +110,25 @@ public abstract class PullToRefreshUtils {
                     }
 
                     if (scrollEnd) {
-                        pull2refresh_footer_textview_final.setText("加载中");
+                        pull2refresh_footer_textview_final.setText("努力加载中...");
                         pull2refresh_footer_progress_final.setVisibility(View.VISIBLE);
 
-                        new Thread(new Runnable() {
+                        new AsyncTask<Object, Object, Object>() {
                             @Override
-                            public void run() {
-                                // 阻塞加载数据
+                            protected Object doInBackground(Object... params) {
                                 if (null != endRefreshListener) {
                                     endRefreshListener.endRefresh();
                                 }
-
-                                // 刷新数据
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        baseAdapter.notifyDataSetChanged();
-                                        pull2refresh_footer_textview_final.setText("更多");
-                                        pull2refresh_footer_progress_final.setVisibility(View.GONE);
-                                    }
-                                });
+                                return null;
                             }
-                        }).start();
+
+                            @Override
+                            protected void onPostExecute(Object result) {
+                                baseAdapter.notifyDataSetChanged();
+                                pull2refresh_footer_textview_final.setText("更多");
+                                pull2refresh_footer_progress_final.setVisibility(View.GONE);
+                            }
+                        }.execute();
                     }
                 }
 
