@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 import android.widget.Scroller;
 
 /**
@@ -15,7 +15,7 @@ import android.widget.Scroller;
  * 
  * @author xuan
  */
-public class SwipeView extends RelativeLayout {
+public class SwipeView extends FrameLayout {
     public static final int CURSCREEN_CONTENT = 0;// 当前界面
     public static final int CURSCREEN_BEHIND = 1;// 侧滑后出来的界面
 
@@ -39,6 +39,8 @@ public class SwipeView extends RelativeLayout {
 
     private int curScreen;// 记录当前屏幕的位置，从0表示content，1表示behind
 
+    private boolean canSwipe = true;
+
     public SwipeView(Context context) {
         this(context, null, 0);
     }
@@ -51,18 +53,16 @@ public class SwipeView extends RelativeLayout {
         super(context, attrs, defStyle);
         touchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(ViewConfiguration.get(context));
         scroller = new Scroller(context);
-    }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (null != mContent) {
-            mContent.measure(widthMeasureSpec, heightMeasureSpec);
-        }
-
-        if (null != mBehind) {
-            mBehind.measure(widthMeasureSpec, heightMeasureSpec);
-        }
+        setFocusableInTouchMode(true);
+        setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus || CURSCREEN_BEHIND == curScreen) {
+                    snapToScreen(CURSCREEN_CONTENT);
+                }
+            }
+        });
     }
 
     @Override
@@ -87,6 +87,14 @@ public class SwipeView extends RelativeLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (!canSwipe) {
+            return false;
+        }
+
+        if (!hasFocus()) {
+            requestFocus();
+        }
+
         final int action = ev.getAction();
         // 如果事件是正在移动，且触发状态不在空闲状态，就拦截事件，不让事件往子控件传递
         if ((action == MotionEvent.ACTION_MOVE) && (touchState != TOUCH_STATE_REST)) {
@@ -116,6 +124,10 @@ public class SwipeView extends RelativeLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!canSwipe) {
+            return false;
+        }
+
         if (null == velocityTracker) {
             velocityTracker = VelocityTracker.obtain();
         }
@@ -217,6 +229,15 @@ public class SwipeView extends RelativeLayout {
         }
     }
 
+    public void toggle() {
+        if (curScreen == CURSCREEN_CONTENT) {
+            snapToScreen(CURSCREEN_BEHIND);
+        }
+        else if (curScreen == CURSCREEN_BEHIND) {
+            snapToScreen(CURSCREEN_CONTENT);
+        }
+    }
+
     /**
      * 设置侧滑完成后监听回调
      * 
@@ -290,6 +311,14 @@ public class SwipeView extends RelativeLayout {
      */
     public interface SwipeCompleteListener {
         public void whichScreen(int which);
+    }
+
+    public boolean isCanSwipe() {
+        return canSwipe;
+    }
+
+    public void setCanSwipe(boolean canSwipe) {
+        this.canSwipe = canSwipe;
     }
 
 }

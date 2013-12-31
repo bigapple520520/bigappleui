@@ -101,6 +101,7 @@ public class RoundedImageView extends ImageView {
             Canvas canvas = new Canvas(output);
 
             final int color = 0xff424242;
+
             final Paint paint = new Paint();
             final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
             final RectF rectF = new RectF(rect);

@@ -18,6 +18,7 @@ import com.dazzle.bigappleui.viewpager.event.ScrollEventAdapter;
  * 
  * @author xuan
  */
+@Deprecated
 public class ViewPagerLayout extends ViewGroup {
     private static final int TOUCH_STATE_REST = 0;// 空闲状态
     private static final int TOUCH_STATE_SCROLLING = 1;// 正在滚动状态

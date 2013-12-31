@@ -32,26 +32,18 @@ public class NumRadioButton extends RadioButton {
 
     private int num;
     private Bitmap drawBitmap;
-    private Context context;
     private int width;
 
     public NumRadioButton(Context context) {
         super(context);
-        init(context);
     }
 
     public NumRadioButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
     public NumRadioButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(context);
-    }
-
-    private void init(Context context) {
-        this.context = context;
     }
 
     @Override
@@ -90,9 +82,17 @@ public class NumRadioButton extends RadioButton {
         }
     }
 
+    public void clearNum() {
+        setNum(0, -1);
+    }
+
     private void initDrawBitmap(int resid) {
+        if (-1 == resid) {
+            return;
+        }
+
         if (null == drawBitmap) {
-            drawBitmap = BitmapFactory.decodeResource(context.getResources(), resid);
+            drawBitmap = BitmapFactory.decodeResource(getResources(), resid);
         }
     }
 
