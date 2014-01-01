@@ -1,0 +1,12 @@
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    <com.dazzle.bigappleui.pull2refresh.PullToRefreshListView
+        android:id="@+id/listview" 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:dividerHeight="1.0dp"
+        android:fadingEdge="none"
+        android:scrollingCache="false" />
+</RelativeLayout>

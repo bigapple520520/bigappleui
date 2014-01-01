@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="20dp"
+    android:textColor="#ffffff"
+    android:background="@drawable/demo_lettersort_item_split_bg"
+    android:gravity="center_vertical"
+    android:paddingLeft="10dp"
+    android:textSize="15sp"
+    android:textStyle="bold"
+    android:shadowColor="#000000"
+    android:shadowDy="3"
+    android:shadowDx="2"
+    android:shadowRadius="1"
+    android:layout_marginTop="4dp" />

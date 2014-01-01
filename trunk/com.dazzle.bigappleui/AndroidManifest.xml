@@ -12,14 +12,20 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".Main"
-            android:label="@string/title_activity_main" >
+            android:name="com.dazzle.bigappleui.BigappleUiMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity android:name="com.dazzle.bigappleui.demo.gifview.GifViewDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.viewpage.ViewPageDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.lettersort.LetterSortDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.slidingmenu.SlidingMenuDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.view.zoomimageview.ZoomImageViewDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.view.roundedimageview.RoundedImageViewDemoActivity" />
     </application>
 
 </manifest>
