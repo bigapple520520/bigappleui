@@ -23,9 +23,10 @@ import android.widget.ImageView;
  * @version $Revision: 1.0 $, $Date: 2013-7-15 上午10:23:49 $
  */
 public class ZoomImageView extends ImageView {
-	private static final float DEFAULT_MAX_SCALE = 2.0f;
 
-	private float mMaxScale = DEFAULT_MAX_SCALE;// 放大的最大倍数
+	// 放大的最大倍数
+	private static final float DEFAULT_MAX_SCALE = 2.0f;
+	private float mMaxScale = DEFAULT_MAX_SCALE;
 
 	// 被旋转的图片的高和宽
 	private float rotatedImageW;
@@ -58,7 +59,7 @@ public class ZoomImageView extends ImageView {
 
 	private long lastClickTime = 0;
 	private double rotation = 0.0;
-	private float dist = 1f;
+	private float dist = 1f;// 两点间的距离超过该值，就判定为多点模式
 
 	public ZoomImageView(Context context) {
 		super(context);
@@ -75,10 +76,8 @@ public class ZoomImageView extends ImageView {
 		init(context);
 	}
 
-	// 初始化
 	private void init(final Context context) {
-		// 图片成矩阵缩放
-		setScaleType(ImageView.ScaleType.MATRIX);
+		setScaleType(ImageView.ScaleType.MATRIX);// 设置ImageView的矩阵缩放模式
 	}
 
 	@Override
@@ -116,7 +115,7 @@ public class ZoomImageView extends ImageView {
 	}
 
 	// 修正缩放比例
-	protected void fixScale() {
+	private void fixScale() {
 		float p[] = new float[9];
 		matrix.getValues(p);
 		float curScale = Math.abs(p[0]) + Math.abs(p[1]);
@@ -137,7 +136,7 @@ public class ZoomImageView extends ImageView {
 	}
 
 	// 修正平移
-	protected void fixTranslation() {
+	private void fixTranslation() {
 		RectF rect = new RectF(0, 0, imageW, imageH);
 		matrix.mapRect(rect);
 
@@ -164,7 +163,7 @@ public class ZoomImageView extends ImageView {
 		matrix.postTranslate(deltaX, deltaY);
 	}
 
-	protected float maxPostScale() {
+	private float maxPostScale() {
 		float p[] = new float[9];
 		matrix.getValues(p);
 		float curScale = Math.abs(p[0]) + Math.abs(p[1]);
@@ -183,7 +182,7 @@ public class ZoomImageView extends ImageView {
 	 * @param y2
 	 * @return
 	 */
-	protected float spacing(float x1, float y1, float x2, float y2) {
+	private float spacing(float x1, float y1, float x2, float y2) {
 		float x = x1 - x2;
 		float y = y1 - y2;
 		return FloatMath.sqrt(x * x + y * y);
@@ -195,7 +194,7 @@ public class ZoomImageView extends ImageView {
 	 * @param x
 	 * @param y
 	 */
-	protected void doubleClick(float x, float y) {
+	private void doubleClick(float x, float y) {
 		float p[] = new float[9];
 		matrix.getValues(p);
 		float curScale = Math.abs(p[0]) + Math.abs(p[1]);
@@ -224,6 +223,7 @@ public class ZoomImageView extends ImageView {
 		initImage();
 	}
 
+	// 第一次加载初始化图片
 	private void initImage() {
 		if (viewW <= 0 || viewH <= 0 || imageW <= 0 || imageH <= 0) {
 			return;
@@ -293,6 +293,7 @@ public class ZoomImageView extends ImageView {
 			mode = NONE;
 			break;
 		case MotionEvent.ACTION_MOVE:// 处理缩放或者旋转，处理完后就能确定是缩放还是旋转了
+			// 先判定是缩放还是旋转
 			if (mode == ZOOM_OR_ROTATE) {
 				PointF pC = new PointF(event.getX(1) - event.getX(0) + pA.x,
 						event.getY(1) - event.getY(0) + pA.y);

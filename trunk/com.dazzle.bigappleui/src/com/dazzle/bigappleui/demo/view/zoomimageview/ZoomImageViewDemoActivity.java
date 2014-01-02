@@ -2,7 +2,6 @@ package com.dazzle.bigappleui.demo.view.zoomimageview;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 
 import com.dazzle.bigappleui.R;
 import com.dazzle.bigappleui.view.ZoomImageView;
@@ -20,13 +19,7 @@ public class ZoomImageViewDemoActivity extends Activity {
 		setContentView(R.layout.demo_zoomimageview_main);
 
 		ZoomImageView zoomImageView = (ZoomImageView) findViewById(R.id.zoomImageView);
-		zoomImageView.setImageResource(R.drawable.demo_zoomimageview_pic);
-
-		zoomImageView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				ZoomImageViewDemoActivity.this.finish();
-			}
-		});
+		zoomImageView.setImageResource(R.drawable.demo_zoomimageview_pic);// 也可以直接在布局文件的src属性中设置
 	}
+
 }
