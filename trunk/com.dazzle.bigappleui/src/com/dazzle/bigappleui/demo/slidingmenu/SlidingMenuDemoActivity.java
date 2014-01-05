@@ -49,6 +49,7 @@ public class SlidingMenuDemoActivity extends Activity {
 
 		// 设置侧滑的偏移量直接数字的话单位是px，可以用dimens文件的id设置
 		slidingMenu.setBehindOffset(50);
+		slidingMenu.setBehindScrollScale(0);// 背景菜单出现比例，0表示不动
 
 		// 忽略不产生侧滑效果的子界面
 		slidingMenu.addIgnoredView(aboveText);
@@ -59,10 +60,9 @@ public class SlidingMenuDemoActivity extends Activity {
 		slidingMenu.setShadowWidth(30);
 
 		// 选中view的效果，暂时还没有知道是什么效果
-		slidingMenu.setSelectorEnabled(true);
-		slidingMenu.setSelectedView(menuLeft);
-		slidingMenu
-				.setSelectorDrawable(R.drawable.demo_slidingmenu_menuleft_shadow);
+		// slidingMenu.setSelectorEnabled(true);
+		// slidingMenu.setSelectedView(menuLeft);
+		// slidingMenu.setSelectorDrawable(R.drawable.demo_slidingmenu_menuleft_shadow);
 
 		// 各种事件
 		slidingMenu.setOnOpenListener(new OnOpenListener() {
