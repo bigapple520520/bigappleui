@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="60dp"
     android:gravity="center"
-    android:background="@drawable/demo_swipe_behind_bg" >
+    android:background="@drawable/demo_swipe_behind_bg"
+    android:layout_marginTop="10dp" >
     <ImageView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

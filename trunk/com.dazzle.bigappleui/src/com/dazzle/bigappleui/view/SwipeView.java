@@ -3,11 +3,12 @@ package com.dazzle.bigappleui.view;
 import android.content.Context;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.FrameLayout;
+import android.view.ViewGroup;
 import android.widget.Scroller;
 
 /**
@@ -15,7 +16,7 @@ import android.widget.Scroller;
  * 
  * @author xuan
  */
-public class SwipeView extends FrameLayout {
+public class SwipeView extends ViewGroup {
     public static final int CURSCREEN_CONTENT = 0;// 当前界面
     public static final int CURSCREEN_BEHIND = 1;// 侧滑后出来的界面
 
@@ -66,6 +67,25 @@ public class SwipeView extends FrameLayout {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthSize = 0;
+        int heightSize = 0;
+
+        if (null != mContent) {
+            measureChildWithMargins(mContent, widthMeasureSpec, 0, heightMeasureSpec, 0);
+            widthSize = mContent.getMeasuredWidth();
+            heightSize = mContent.getMeasuredHeight();
+        }
+
+        if (null != mBehind) {
+            measureChild(mBehind, widthMeasureSpec, heightMeasureSpec);
+            measureChildWithMargins(mBehind, widthMeasureSpec, 0, heightMeasureSpec, 0);
+        }
+
+        setMeasuredDimension(widthSize, heightSize);
+    }
+
+    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         if (null != mContent) {
             mContent.layout(0, 0, mContent.getMeasuredWidth(), mContent.getMeasuredHeight());
@@ -75,6 +95,9 @@ public class SwipeView extends FrameLayout {
             mBehind.layout(mContent.getMeasuredWidth(), 0, mContent.getMeasuredWidth() + behindWidth,
                     mContent.getMeasuredHeight());
         }
+
+        Log.d("8888888888888888888888", mContent.getMeasuredWidth() + "");
+        Log.d("9999999999999999999999", mBehind.getMeasuredWidth() + "");
     }
 
     @Override
@@ -229,6 +252,14 @@ public class SwipeView extends FrameLayout {
         }
     }
 
+    public void snapToContent() {
+        snapToScreen(CURSCREEN_CONTENT);
+    }
+
+    public void snapToBehind() {
+        snapToScreen(CURSCREEN_BEHIND);
+    }
+
     public void toggle() {
         if (curScreen == CURSCREEN_CONTENT) {
             snapToScreen(CURSCREEN_BEHIND);
@@ -319,6 +350,26 @@ public class SwipeView extends FrameLayout {
 
     public void setCanSwipe(boolean canSwipe) {
         this.canSwipe = canSwipe;
+    }
+
+    @Override
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new ViewGroup.MarginLayoutParams(getContext(), attrs);
+    }
+
+    @Override
+    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
+        return new ViewGroup.MarginLayoutParams(p);
+    }
+
+    @Override
+    protected LayoutParams generateDefaultLayoutParams() {
+        return new ViewGroup.MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
+        return p instanceof ViewGroup.MarginLayoutParams;
     }
 
 }
