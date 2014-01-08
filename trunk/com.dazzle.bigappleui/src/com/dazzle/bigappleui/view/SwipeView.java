@@ -3,7 +3,6 @@ package com.dazzle.bigappleui.view;
 import android.content.Context;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -78,7 +77,6 @@ public class SwipeView extends ViewGroup {
         }
 
         if (null != mBehind) {
-            measureChild(mBehind, widthMeasureSpec, heightMeasureSpec);
             measureChildWithMargins(mBehind, widthMeasureSpec, 0, heightMeasureSpec, 0);
         }
 
@@ -95,9 +93,6 @@ public class SwipeView extends ViewGroup {
             mBehind.layout(mContent.getMeasuredWidth(), 0, mContent.getMeasuredWidth() + behindWidth,
                     mContent.getMeasuredHeight());
         }
-
-        Log.d("8888888888888888888888", mContent.getMeasuredWidth() + "");
-        Log.d("9999999999999999999999", mBehind.getMeasuredWidth() + "");
     }
 
     @Override

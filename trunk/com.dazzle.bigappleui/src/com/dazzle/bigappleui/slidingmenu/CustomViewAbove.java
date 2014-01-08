@@ -122,7 +122,8 @@ public class CustomViewAbove extends ViewGroup {
         mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
         mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
-        setInternalPageChangeListener(new SimpleOnPageChangeListener() {
+        setInternalPageChangeListener(new OnPageChangeListener() {
+            @Override
             public void onPageSelected(int position) {
                 if (mViewBehind != null) {
                     switch (position) {
@@ -135,6 +136,10 @@ public class CustomViewAbove extends ViewGroup {
                         break;
                     }
                 }
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
         });
 
@@ -370,9 +375,9 @@ public class CustomViewAbove extends ViewGroup {
         int height = getDefaultSize(0, heightMeasureSpec);
         setMeasuredDimension(width, height);
 
-        final int contentWidth = getChildMeasureSpec(widthMeasureSpec, 0, width);
-        final int contentHeight = getChildMeasureSpec(heightMeasureSpec, 0, height);
-        mContent.measure(contentWidth, contentHeight);
+        final int contentWidthMeasureSpec = getChildMeasureSpec(widthMeasureSpec, 0, width);
+        final int contentHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec, 0, height);
+        mContent.measure(contentWidthMeasureSpec, contentHeightMeasureSpec);
     }
 
     @Override
@@ -916,7 +921,7 @@ public class CustomViewAbove extends ViewGroup {
         return handled;
     }
 
-    boolean pageLeft() {
+    private boolean pageLeft() {
         if (mCurItem > 0) {
             setCurrentItem(mCurItem - 1, true);
             return true;
@@ -924,7 +929,7 @@ public class CustomViewAbove extends ViewGroup {
         return false;
     }
 
-    boolean pageRight() {
+    private boolean pageRight() {
         if (mCurItem < 1) {
             setCurrentItem(mCurItem + 1, true);
             return true;
@@ -956,25 +961,6 @@ public class CustomViewAbove extends ViewGroup {
          * @param position
          */
         public void onPageSelected(int position);
-    }
-
-    /**
-     * OnPageChangeListener监听设配，可不用每个方法都实现
-     * 
-     * @author xuan
-     * @version $Revision: 1.0 $, $Date: 2013-11-7 上午10:52:10 $
-     */
-    public static class SimpleOnPageChangeListener implements OnPageChangeListener {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-        }
-
-        public void onPageScrollStateChanged(int state) {
-        }
     }
 
 }
