@@ -58,11 +58,12 @@ public class SwipeView extends ViewGroup {
         setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus || CURSCREEN_BEHIND == curScreen) {
-                    snapToScreen(CURSCREEN_CONTENT);
+                if (!hasFocus || isShowBehind()) {
+                    showContent();
                 }
             }
         });
+        requestFocus();
     }
 
     @Override
@@ -99,7 +100,7 @@ public class SwipeView extends ViewGroup {
     public void computeScroll() {
         if (scroller.computeScrollOffset()) {
             scrollTo(scroller.getCurrX(), scroller.getCurrY());
-            postInvalidate();
+            invalidate();
         }
     }
 
@@ -176,13 +177,11 @@ public class SwipeView extends ViewGroup {
             vt.computeCurrentVelocity(1000);
             int velocityX = (int) vt.getXVelocity();
 
-            if (velocityX > SNAP_VELOCITY && curScreen == CURSCREEN_BEHIND) {
-                // 快速向右滑动
-                snapToScreen(CURSCREEN_CONTENT);
+            if (velocityX > SNAP_VELOCITY && isShowBehind()) {// 快速向右滑动
+                showContent();
             }
-            else if (velocityX < -SNAP_VELOCITY && curScreen == CURSCREEN_CONTENT) {
-                // 快速向左滑动
-                snapToScreen(CURSCREEN_BEHIND);
+            else if (velocityX < -SNAP_VELOCITY && !isShowContent()) {// 快速向左滑动
+                showBehind();
             }
             else {
                 snapToDestination();
@@ -223,7 +222,7 @@ public class SwipeView extends ViewGroup {
      * 
      * @param whichScreen
      */
-    public void snapToScreen(int whichScreen) {
+    private void snapToScreen(int whichScreen) {
         // 保证是0或者1
         if (whichScreen >= 1) {
             whichScreen = CURSCREEN_BEHIND;
@@ -247,20 +246,47 @@ public class SwipeView extends ViewGroup {
         }
     }
 
-    public void snapToContent() {
+    /**
+     * 显示主界面
+     */
+    public void showContent() {
         snapToScreen(CURSCREEN_CONTENT);
     }
 
-    public void snapToBehind() {
+    /**
+     * 显示背部界面
+     */
+    public void showBehind() {
         snapToScreen(CURSCREEN_BEHIND);
     }
 
+    /**
+     * 判断当前是否显示背部界面
+     * 
+     * @return
+     */
+    public boolean isShowBehind() {
+        return curScreen == CURSCREEN_BEHIND;
+    }
+
+    /**
+     * 判断当前是否显示主界面
+     * 
+     * @return
+     */
+    public boolean isShowContent() {
+        return curScreen == CURSCREEN_CONTENT;
+    }
+
+    /**
+     * 主界面和背部界面切换
+     */
     public void toggle() {
-        if (curScreen == CURSCREEN_CONTENT) {
-            snapToScreen(CURSCREEN_BEHIND);
+        if (!isShowBehind()) {
+            showBehind();
         }
-        else if (curScreen == CURSCREEN_BEHIND) {
-            snapToScreen(CURSCREEN_CONTENT);
+        else {
+            showContent();
         }
     }
 

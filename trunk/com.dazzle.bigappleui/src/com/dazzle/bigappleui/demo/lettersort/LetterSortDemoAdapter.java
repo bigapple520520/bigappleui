@@ -42,7 +42,6 @@ public class LetterSortDemoAdapter extends LetterSortAdapter {
         View content = LayoutInflater.from(context).inflate(R.layout.demo_swipe_above, null);
         TextView leftText = (TextView) content.findViewById(R.id.leftText);
         leftText.setText(itemContent.getName());
-        View contentBg = content.findViewById(R.id.itemBg);
 
         // 侧滑的背后部分
         View behind = LayoutInflater.from(context).inflate(R.layout.demo_swipe_behind, null);
@@ -64,11 +63,11 @@ public class LetterSortDemoAdapter extends LetterSortAdapter {
             }
         });
 
-        contentBg.setOnClickListener(new View.OnClickListener() {
+        content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (SwipeView.CURSCREEN_BEHIND == swipeView.getCurScreen()) {
-                    swipeView.snapToScreen(SwipeView.CURSCREEN_CONTENT);
+                    swipeView.showContent();
                 }
             }
         });
@@ -76,7 +75,7 @@ public class LetterSortDemoAdapter extends LetterSortAdapter {
         behind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                swipeView.snapToContent();
+                swipeView.showContent();
                 Toast.makeText(context, "我点击了删除", Toast.LENGTH_SHORT).show();
             }
         });

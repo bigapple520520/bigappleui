@@ -1,0 +1,32 @@
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"    
+    android:layout_height="fill_parent">
+    <com.dazzle.bigappleui.viewpage.CyclePage
+        android:id="@+id/cyclePage"
+        android:layout_height="400dp"
+        android:layout_width="fill_parent" />
+    <TextView 
+        android:id="@+id/textview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cyclePage"
+        android:gravity="center"
+        android:layout_marginTop="10dp"/>
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <Button 
+            android:id="@+id/button1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"/>
+        <Button 
+            android:id="@+id/button2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"/>
+    </LinearLayout>
+</RelativeLayout>

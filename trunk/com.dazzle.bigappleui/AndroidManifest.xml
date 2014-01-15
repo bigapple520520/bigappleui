@@ -21,6 +21,7 @@
         
         <activity android:name="com.dazzle.bigappleui.demo.gifview.GifViewDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.viewpage.ViewPageDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.viewpage.CyclePageDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.lettersort.LetterSortDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.slidingmenu.SlidingMenuDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity" />
