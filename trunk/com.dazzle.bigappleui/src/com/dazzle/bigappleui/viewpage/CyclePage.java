@@ -45,7 +45,7 @@ public class CyclePage extends ViewGroup {
         super(context, attrs);
         scrollEventAdapter = new ScrollEventAdapter();
         scroller = new Scroller(context);
-        curScreen = 0;
+        curScreen = 1;
 
         ViewConfiguration config = ViewConfiguration.get(getContext());
         touchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(config);
@@ -138,6 +138,15 @@ public class CyclePage extends ViewGroup {
         if (scroller.computeScrollOffset()) {
             scrollTo(scroller.getCurrX(), scroller.getCurrY());
             invalidate();
+        }
+        else {
+            // 滚动结束时，子界面位置，如果是第一个，瞬间到倒数最后一个，如果是最后一个，瞬间到第一个
+            if (0 == curScreen) {
+                setToScreen(getChildCount() - 2);
+            }
+            else if (getChildCount() - 1 == curScreen) {
+                setToScreen(1);
+            }
         }
     }
 
