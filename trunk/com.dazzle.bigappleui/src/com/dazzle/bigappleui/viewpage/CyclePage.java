@@ -1,6 +1,10 @@
 package com.dazzle.bigappleui.viewpage;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -37,6 +41,12 @@ public class CyclePage extends ViewGroup {
     private float lastMotionX;// 记录最后一次x坐标值
     private int offset = 0;// 偏移量
 
+    private Timer timer;
+    private final int DEFAULT_DELAY = 1500;
+    private final Handler handler = new Handler();
+    private boolean isPause = false;// 判断是否暂定播放，外部是使用
+    private boolean isPauseInner = false;// 给内部按下弹起事件使用
+
     public CyclePage(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -49,6 +59,8 @@ public class CyclePage extends ViewGroup {
 
         ViewConfiguration config = ViewConfiguration.get(getContext());
         touchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(config);
+
+        start();
     }
 
     @Override
@@ -61,7 +73,7 @@ public class CyclePage extends ViewGroup {
         }
 
         final int width = MeasureSpec.getSize(widthMeasureSpec);
-        scrollTo(curScreen * width, 0);
+        scrollTo(curScreen * (width - 2 * offset), 0);
     }
 
     @Override
@@ -166,6 +178,8 @@ public class CyclePage extends ViewGroup {
                 scroller.abortAnimation();
             }
             lastMotionX = x;
+
+            isPauseInner = true;
             break;
         case MotionEvent.ACTION_MOVE:
             int deltaX = (int) (lastMotionX - x);
@@ -192,6 +206,8 @@ public class CyclePage extends ViewGroup {
             }
 
             touchState = TOUCH_STATE_REST;
+
+            isPauseInner = false;
             break;
         case MotionEvent.ACTION_CANCEL:
             touchState = TOUCH_STATE_REST;
@@ -251,9 +267,60 @@ public class CyclePage extends ViewGroup {
         this.offset = (int) getResources().getDimension(resid);
     }
 
-    @Override
-    public void addView(View child) {
-        super.addView(child);
+    public boolean isPause() {
+        return isPause;
+    }
+
+    public void setPause(boolean isPause) {
+        this.isPause = isPause;
+    }
+
+    /**
+     * 停止自动播放
+     */
+    public void stop() {
+        if (null != timer) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    /**
+     * 启动自动播放
+     */
+    public void start(int delay) {
+        if (null == timer) {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (!isPause && !isPauseInner) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                snapToScreen(curScreen++);
+                            }
+                        });
+                    }
+                }
+            }, delay, delay);
+        }
+    }
+
+    public void start() {
+        start(DEFAULT_DELAY);
+    }
+
+    /**
+     * 如果timer存在先取消再，启动
+     */
+    public void reStart(int delay) {
+        stop();
+        start(delay);
+    }
+
+    public void reStart() {
+        reStart(DEFAULT_DELAY);
     }
 
 }

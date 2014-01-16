@@ -545,12 +545,7 @@ public class CustomViewAbove extends ViewGroup {
 
         final int action = ev.getAction() & MotionEventCompat.ACTION_MASK;
 
-        if (DEBUG) {
-            if (action == MotionEvent.ACTION_DOWN) {
-                Log.v(TAG, "Received ACTION_DOWN");
-            }
-        }
-
+        // 结束拖动
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP
                 || (action != MotionEvent.ACTION_DOWN && mIsUnableToDrag)) {
             endDrag();
@@ -564,14 +559,19 @@ public class CustomViewAbove extends ViewGroup {
         case MotionEvent.ACTION_DOWN:
             int index = MotionEventCompat.getActionIndex(ev);
             mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+
             if (mActivePointerId == INVALID_POINTER) {
                 break;
             }
+
             mLastMotionX = mInitialMotionX = MotionEventCompat.getX(ev, index);
             mLastMotionY = MotionEventCompat.getY(ev, index);
+
             if (thisTouchAllowed(ev)) {
                 mIsBeingDragged = false;
                 mIsUnableToDrag = false;
+
+                // 快速回去
                 if (isMenuOpen() && mViewBehind.menuTouchInQuickReturn(mContent, mCurItem, ev.getX() + mScrollX)) {
                     mQuickReturn = true;
                 }
@@ -586,11 +586,12 @@ public class CustomViewAbove extends ViewGroup {
         }
 
         if (!mIsBeingDragged) {
-            if (mVelocityTracker == null) {
+            if (null == mVelocityTracker) {
                 mVelocityTracker = VelocityTracker.obtain();
             }
             mVelocityTracker.addMovement(ev);
         }
+
         return mIsBeingDragged || mQuickReturn;
     }
 
@@ -606,7 +607,7 @@ public class CustomViewAbove extends ViewGroup {
 
         final int action = ev.getAction();
 
-        if (mVelocityTracker == null) {
+        if (null == mVelocityTracker) {
             mVelocityTracker = VelocityTracker.obtain();
         }
         mVelocityTracker.addMovement(ev);
@@ -630,6 +631,7 @@ public class CustomViewAbove extends ViewGroup {
                     return false;
                 }
             }
+
             if (mIsBeingDragged) {
                 // Scroll to follow the motion event
                 final int activePointerIndex = getPointerIndex(ev, mActivePointerId);

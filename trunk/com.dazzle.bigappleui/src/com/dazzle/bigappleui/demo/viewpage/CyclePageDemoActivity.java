@@ -81,11 +81,18 @@ public class CyclePageDemoActivity extends Activity {
         cyclePage.addView(pic11);
 
         // 设置按钮，暴力跳转到指定界面
-        button1.setText("跳转到第1个界面");
+        button1.setText("暂停");
         button1.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cyclePage.setToScreen(0);
+                if (cyclePage.isPause()) {
+                    cyclePage.setPause(false);
+                    button1.setText("暂停");
+                }
+                else {
+                    cyclePage.setPause(true);
+                    button1.setText("启动");
+                }
             }
         });
 

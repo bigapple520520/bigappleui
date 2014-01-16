@@ -22,18 +22,21 @@ import android.widget.Scroller;
  * @version $Revision: 1.0 $, $Date: 2014-1-8 下午7:47:59 $
  */
 public class AboveView extends ViewGroup {
+
     private View mAbove;
 
     private final int touchSlop;// 触发后小于改距离的，不移动
     private final Scroller scroller;// 使切view的时候效果比较平滑
     private VelocityTracker velocityTracker;// 计算手势的一些速率等的工具类
-    private float lastMotionX;// 记录最后一次x坐标值
+    private float lastMotionY;// 记录最后一次y坐标值
 
     private int mode = PullUpDownView.MODE_UP;
 
     private int touchState = TOUCH_STATE_REST;
     private static final int TOUCH_STATE_REST = 0;// 空闲状态
     private static final int TOUCH_STATE_SCROLLING = 1;// 正在滚动状态
+
+    private static final int SNAP_VELOCITY = 600;// 单位px，每秒滑过的px距离
 
     public AboveView(Context context) {
         this(context, null);
@@ -51,35 +54,94 @@ public class AboveView extends ViewGroup {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
+    public boolean onTouchEvent(MotionEvent event) {
         if (PullUpDownView.MODE_NONE == mode) {
             return false;
         }
 
-        final int action = ev.getAction();
-        if ((action == MotionEvent.ACTION_MOVE) && (touchState != TOUCH_STATE_REST)) {
-            return true;
+        if (null == velocityTracker) {
+            velocityTracker = VelocityTracker.obtain();
         }
+        velocityTracker.addMovement(event);
 
-        final float x = ev.getX();
+        final int action = event.getAction();
+        final float y = event.getY();
+
         switch (action) {
         case MotionEvent.ACTION_DOWN:
-            lastMotionX = x;
-            touchState = scroller.isFinished() ? TOUCH_STATE_REST : TOUCH_STATE_SCROLLING;
+            if (!scroller.isFinished()) {
+                scroller.abortAnimation();
+            }
+            lastMotionY = y;
             break;
         case MotionEvent.ACTION_MOVE:
-            final int xDiff = (int) Math.abs(lastMotionX - x);
-            if (xDiff > touchSlop) {
-                touchState = TOUCH_STATE_SCROLLING;
+            int deltaX = (int) (lastMotionY - y);
+            lastMotionY = y;
+
+            int wantToOffset = getScrollY() + deltaX;
+            if (wantToOffset >= 0) {
+                scrollBy(deltaX, 0);
             }
             break;
         case MotionEvent.ACTION_CANCEL:
         case MotionEvent.ACTION_UP:
+            final VelocityTracker vt = velocityTracker;
+            vt.computeCurrentVelocity(1000);
+            int velocityY = (int) vt.getYVelocity();
+
+            if (velocityY > SNAP_VELOCITY) {// 快速向上
+            }
+            else if (velocityY < -SNAP_VELOCITY) {// 快速向下
+            }
+            else {
+                snapToDestination();
+            }
+
+            if (null != velocityTracker) {
+                velocityTracker.recycle();
+                velocityTracker = null;
+            }
             touchState = TOUCH_STATE_REST;
             break;
         }
 
-        return touchState != TOUCH_STATE_REST;
+        return false;
+    }
+
+    // @Override
+    // public boolean onInterceptTouchEvent(MotionEvent ev) {
+    // if (PullUpDownView.MODE_NONE == mode) {
+    // return false;
+    // }
+    //
+    // final int action = ev.getAction();
+    // if ((action == MotionEvent.ACTION_MOVE) && (touchState != TOUCH_STATE_REST)) {
+    // return true;
+    // }
+    //
+    // final float y = ev.getY();
+    // switch (action) {
+    // case MotionEvent.ACTION_DOWN:
+    // lastMotionY = y;
+    // touchState = scroller.isFinished() ? TOUCH_STATE_REST : TOUCH_STATE_SCROLLING;
+    // break;
+    // case MotionEvent.ACTION_MOVE:
+    // final int xDiff = (int) Math.abs(lastMotionY - y);
+    // if (xDiff > touchSlop) {
+    // touchState = TOUCH_STATE_SCROLLING;
+    // }
+    // break;
+    // case MotionEvent.ACTION_CANCEL:
+    // case MotionEvent.ACTION_UP:
+    // touchState = TOUCH_STATE_REST;
+    // break;
+    // }
+    //
+    // return touchState != TOUCH_STATE_REST;
+    // }
+
+    public void snapToDestination() {
+        final int destScreen = (getScrollY() + getHeight() / 2) / getHeight();
     }
 
     @Override

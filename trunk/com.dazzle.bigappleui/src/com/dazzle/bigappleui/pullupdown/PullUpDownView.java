@@ -23,6 +23,8 @@ public class PullUpDownView extends FrameLayout {
     public static final int MODE_DOWN = 2;// 下拉
     public static final int MODE_UP_DOWN = 3;// 上下都可拉
 
+    //
+
     private View mAbove;
     private View mBehind;
 

@@ -45,7 +45,7 @@ public class ViewPage extends ViewGroup {
         super(context, attrs);
         scrollEventAdapter = new ScrollEventAdapter();
         scroller = new Scroller(context);
-        curScreen = 0;
+        curScreen = 1;
 
         ViewConfiguration config = ViewConfiguration.get(getContext());
         touchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(config);
@@ -61,7 +61,7 @@ public class ViewPage extends ViewGroup {
         }
 
         final int width = MeasureSpec.getSize(widthMeasureSpec);
-        scrollTo(curScreen * width, 0);
+        scrollTo(curScreen * (width - 2 * offset), 0);
     }
 
     @Override
