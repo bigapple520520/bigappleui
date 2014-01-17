@@ -3,7 +3,7 @@
  * Copyright (c) 2014 ZDSoft Networks, Inc. All rights reserved.
  * $Id$
  */
-package com.dazzle.bigappleui.pullupdown;
+package com.dazzle.bigappleui.slidingupdown;
 
 import android.content.Context;
 import android.support.v4.view.ViewConfigurationCompat;
@@ -23,6 +23,7 @@ import android.widget.Scroller;
  */
 public class AboveView extends ViewGroup {
 
+    private SlidingUpDownView slidingUpDownView;
     private View mAbove;
 
     private final int touchSlop;// 触发后小于改距离的，不移动
@@ -30,7 +31,7 @@ public class AboveView extends ViewGroup {
     private VelocityTracker velocityTracker;// 计算手势的一些速率等的工具类
     private float lastMotionY;// 记录最后一次y坐标值
 
-    private int mode = PullUpDownView.MODE_UP;
+    private int mode = SlidingUpDownView.MODE_UP;
 
     private int touchState = TOUCH_STATE_REST;
     private static final int TOUCH_STATE_REST = 0;// 空闲状态
@@ -55,7 +56,7 @@ public class AboveView extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (PullUpDownView.MODE_NONE == mode) {
+        if (SlidingUpDownView.MODE_NONE == mode) {
             return false;
         }
 
@@ -75,13 +76,10 @@ public class AboveView extends ViewGroup {
             lastMotionY = y;
             break;
         case MotionEvent.ACTION_MOVE:
-            int deltaX = (int) (lastMotionY - y);
+            int deltaY = (int) (lastMotionY - y);
             lastMotionY = y;
 
-            int wantToOffset = getScrollY() + deltaX;
-            if (wantToOffset >= 0) {
-                scrollBy(deltaX, 0);
-            }
+            scrollBy(0, deltaY);
             break;
         case MotionEvent.ACTION_CANCEL:
         case MotionEvent.ACTION_UP:
@@ -90,8 +88,10 @@ public class AboveView extends ViewGroup {
             int velocityY = (int) vt.getYVelocity();
 
             if (velocityY > SNAP_VELOCITY) {// 快速向上
+                snapToUp();
             }
             else if (velocityY < -SNAP_VELOCITY) {// 快速向下
+                snapToDown();
             }
             else {
                 snapToDestination();
@@ -105,43 +105,103 @@ public class AboveView extends ViewGroup {
             break;
         }
 
-        return false;
+        return true;
     }
 
-    // @Override
-    // public boolean onInterceptTouchEvent(MotionEvent ev) {
-    // if (PullUpDownView.MODE_NONE == mode) {
-    // return false;
-    // }
-    //
-    // final int action = ev.getAction();
-    // if ((action == MotionEvent.ACTION_MOVE) && (touchState != TOUCH_STATE_REST)) {
-    // return true;
-    // }
-    //
-    // final float y = ev.getY();
-    // switch (action) {
-    // case MotionEvent.ACTION_DOWN:
-    // lastMotionY = y;
-    // touchState = scroller.isFinished() ? TOUCH_STATE_REST : TOUCH_STATE_SCROLLING;
-    // break;
-    // case MotionEvent.ACTION_MOVE:
-    // final int xDiff = (int) Math.abs(lastMotionY - y);
-    // if (xDiff > touchSlop) {
-    // touchState = TOUCH_STATE_SCROLLING;
-    // }
-    // break;
-    // case MotionEvent.ACTION_CANCEL:
-    // case MotionEvent.ACTION_UP:
-    // touchState = TOUCH_STATE_REST;
-    // break;
-    // }
-    //
-    // return touchState != TOUCH_STATE_REST;
-    // }
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (SlidingUpDownView.MODE_NONE == mode) {
+            return false;
+        }
 
+        final int action = ev.getAction();
+        if ((action == MotionEvent.ACTION_MOVE) && (touchState != TOUCH_STATE_REST)) {
+            return true;
+        }
+
+        final float y = ev.getY();
+        switch (action) {
+        case MotionEvent.ACTION_DOWN:
+            lastMotionY = y;
+
+            // 如果正在滑动，按下事件需要截留
+            touchState = scroller.isFinished() ? TOUCH_STATE_REST : TOUCH_STATE_SCROLLING;
+            break;
+        case MotionEvent.ACTION_MOVE:
+
+            // 如果滑动到需要滑动界面的参数，需要截留
+            final int yDiff = (int) Math.abs(lastMotionY - y);
+            if (yDiff > touchSlop) {
+                touchState = TOUCH_STATE_SCROLLING;
+            }
+            break;
+        case MotionEvent.ACTION_CANCEL:
+        case MotionEvent.ACTION_UP:
+            touchState = TOUCH_STATE_REST;
+            break;
+        }
+
+        return touchState != TOUCH_STATE_REST;
+    }
+
+    /**
+     * 根据当前位置计算定位在何处
+     */
     public void snapToDestination() {
-        final int destScreen = (getScrollY() + getHeight() / 2) / getHeight();
+        int scrollY = getScrollY();
+        int halfHeight = getHeight() / 2;
+
+        if (scrollY > halfHeight) {
+            snapToScreen(SlidingUpDownView.SCREEN_DOWN);
+        }
+        else if (scrollY < -halfHeight) {
+            snapToScreen(SlidingUpDownView.SCREEN_UP);
+        }
+        else {
+            snapToScreen(SlidingUpDownView.SCREEN_MIDDLE);
+        }
+    }
+
+    /**
+     * 平滑的切换到指定屏幕，0使above刚好在上面，1使above刚好在中间，2使above刚好在下面
+     * 
+     * @param whichScreen
+     */
+    private void snapToScreen(int which) {
+        int aboveHeight = getHeight();
+
+        int dest = 0;
+        switch (which) {
+        case SlidingUpDownView.SCREEN_UP:
+            dest = -aboveHeight;
+            break;
+        case SlidingUpDownView.SCREEN_MIDDLE:
+            dest = 0;
+            break;
+        case SlidingUpDownView.SCREEN_DOWN:
+            dest = aboveHeight;
+            break;
+        }
+
+        if (getScrollY() != dest) {
+            int delta = dest - getScrollY();
+            scroller.startScroll(0, getScrollY(), 0, delta, Math.abs(delta) * 2);
+
+            if (null != slidingUpDownView.getSlidingUpDownListener()) {
+                slidingUpDownView.getSlidingUpDownListener().whichScreen(which);
+            }
+
+            slidingUpDownView.setCurScreen(which);
+            invalidate();
+        }
+    }
+
+    public void snapToUp() {
+        snapToScreen(SlidingUpDownView.SCREEN_UP);
+    }
+
+    public void snapToDown() {
+        snapToScreen(SlidingUpDownView.SCREEN_DOWN);
     }
 
     @Override
@@ -176,6 +236,22 @@ public class AboveView extends ViewGroup {
 
     public void setMode(int mode) {
         this.mode = mode;
+    }
+
+    public void setAbove(View view) {
+        if (null != mAbove) {
+            removeView(mAbove);
+        }
+        mAbove = view;
+        addView(mAbove);
+    }
+
+    public SlidingUpDownView getSlidingUpDownView() {
+        return slidingUpDownView;
+    }
+
+    public void setSlidingUpDownView(SlidingUpDownView slidingUpDownView) {
+        this.slidingUpDownView = slidingUpDownView;
     }
 
 }

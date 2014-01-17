@@ -3,7 +3,7 @@
  * Copyright (c) 2014 ZDSoft Networks, Inc. All rights reserved.
  * $Id$
  */
-package com.dazzle.bigappleui.pullupdown;
+package com.dazzle.bigappleui.slidingupdown;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -17,7 +17,10 @@ import android.view.ViewGroup;
  * @version $Revision: 1.0 $, $Date: 2014-1-8 下午7:48:16 $
  */
 public class BehindView extends ViewGroup {
-    private View mBehind;
+    private SlidingUpDownView slidingUpDownView;
+
+    private View mUpBehind;// 从上出现的view
+    private View mDownBehind;// 从下出现的view
 
     public BehindView(Context context) {
         this(context, null);
@@ -39,14 +42,30 @@ public class BehindView extends ViewGroup {
 
         final int contentWidthMeasureSpec = getChildMeasureSpec(widthMeasureSpec, 0, width);
         final int contentHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec, 0, height);
-        mBehind.measure(contentWidthMeasureSpec, contentHeightMeasureSpec);
+        mDownBehind.measure(contentWidthMeasureSpec, contentHeightMeasureSpec);
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         final int width = r - l;
         final int height = b - t;
-        mBehind.layout(0, 0, width, height);
+        mDownBehind.layout(0, 0, width, height);
+    }
+
+    public void setDownBehind(View view) {
+        if (null != mDownBehind) {
+            removeView(mDownBehind);
+        }
+        mDownBehind = view;
+        addView(mDownBehind);
+    }
+
+    public SlidingUpDownView getSlidingUpDownView() {
+        return slidingUpDownView;
+    }
+
+    public void setSlidingUpDownView(SlidingUpDownView slidingUpDownView) {
+        this.slidingUpDownView = slidingUpDownView;
     }
 
 }

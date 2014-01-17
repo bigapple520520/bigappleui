@@ -35,7 +35,7 @@ public class CustomViewBehind extends ViewGroup {
 
     private static final int MARGIN_THRESHOLD = 48; // 单位dp
     private int mMarginThreshold;// MARGIN_THRESHOLD的px
-    private int mWidthOffset;// 菜单界面的便宜量
+    private int mWidthOffset;// 菜单界面的偏移量
 
     private CanvasTransformer mTransformer;
     private boolean mChildrenEnabled;
