@@ -186,7 +186,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int right=0x7f040001;
         public static final int roundedImageView=0x7f04000c;
         public static final int slidingMenu=0x7f04000e;
-        public static final int slidingUpDownView=0x7f04000f;
+        public static final int slidingUpDown=0x7f04000f;
         public static final int slidingmenumain=0x7f04001c;
         public static final int swipeview=0x7f040011;
         public static final int textview=0x7f040005;

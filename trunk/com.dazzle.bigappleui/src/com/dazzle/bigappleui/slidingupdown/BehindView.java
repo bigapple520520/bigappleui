@@ -6,6 +6,9 @@
 package com.dazzle.bigappleui.slidingupdown;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +20,14 @@ import android.view.ViewGroup;
  * @version $Revision: 1.0 $, $Date: 2014-1-8 下午7:48:16 $
  */
 public class BehindView extends ViewGroup {
-    private SlidingUpDownView slidingUpDownView;
+    private SlidingUpDown slidingUpDown;
 
-    private View mUpBehind;// 从上出现的view
-    private View mDownBehind;// 从下出现的view
+    private View mContent;// 从下出现的view
+    private AboveView mAboveView;
+
+    private final Paint mFadePaint = new Paint();
+    private float mFadeDegree;
+    private boolean mFadeEnabled;
 
     public BehindView(Context context) {
         this(context, null);
@@ -42,30 +49,88 @@ public class BehindView extends ViewGroup {
 
         final int contentWidthMeasureSpec = getChildMeasureSpec(widthMeasureSpec, 0, width);
         final int contentHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec, 0, height);
-        mDownBehind.measure(contentWidthMeasureSpec, contentHeightMeasureSpec);
+        mContent.measure(contentWidthMeasureSpec, contentHeightMeasureSpec);
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         final int width = r - l;
         final int height = b - t;
-        mDownBehind.layout(0, 0, width, height);
+        mContent.layout(0, 0, width, height);
     }
 
-    public void setDownBehind(View view) {
-        if (null != mDownBehind) {
-            removeView(mDownBehind);
+    public void setContent(View view) {
+        if (null != mContent) {
+            removeView(mContent);
         }
-        mDownBehind = view;
-        addView(mDownBehind);
+        mContent = view;
+        addView(mContent);
     }
 
-    public SlidingUpDownView getSlidingUpDownView() {
-        return slidingUpDownView;
+    public View getContent() {
+        return mContent;
     }
 
-    public void setSlidingUpDownView(SlidingUpDownView slidingUpDownView) {
-        this.slidingUpDownView = slidingUpDownView;
+    public View getAboveView() {
+        return mAboveView;
+    }
+
+    public void setAboveView(AboveView above) {
+        this.mAboveView = above;
+    }
+
+    public SlidingUpDown getSlidingUpDown() {
+        return slidingUpDown;
+    }
+
+    public void setSlidingUpDown(SlidingUpDown slidingUpDown) {
+        this.slidingUpDown = slidingUpDown;
+    }
+
+    /**
+     * 根据比例在content绘制遮罩层渐变
+     * 
+     * @param content
+     * @param canvas
+     * @param openPercent
+     */
+    public void drawFade(View content, Canvas canvas, float openPercent) {
+        if (!mFadeEnabled) {
+            return;
+        }
+
+        final int alpha = (int) (mFadeDegree * 255 * Math.abs(1 - openPercent));
+        mFadePaint.setColor(Color.argb(alpha, 0, 0, 0));
+
+        int top = 0;
+        if (slidingUpDown.getMode() == SlidingUpDown.MODE_UP) {
+            top = content.getBottom();
+        }
+        else if (slidingUpDown.getMode() == SlidingUpDown.MODE_DOWN) {
+            top = content.getTop() - getHeight();
+        }
+        else if (slidingUpDown.getMode() == SlidingUpDown.MODE_UP_DOWN) {
+            top = content.getBottom();
+            canvas.drawRect(0, top, getWidth(), getHeight(), mFadePaint);
+            top = content.getTop() - getHeight();
+        }
+        canvas.drawRect(0, top, getWidth(), getHeight(), mFadePaint);
+    }
+
+    public float getFadeDegree() {
+        return mFadeDegree;
+    }
+
+    public void setFadeDegree(float fadeDegree) {
+        this.mFadeDegree = fadeDegree;
+    }
+
+    public boolean isFadeEnabled() {
+        return mFadeEnabled;
+    }
+
+    public void setFadeEnabled(boolean fadeEnabled) {
+        this.mFadeEnabled = fadeEnabled;
     }
 
 }
