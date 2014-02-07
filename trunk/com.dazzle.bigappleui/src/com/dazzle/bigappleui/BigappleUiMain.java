@@ -12,7 +12,7 @@ import com.dazzle.bigappleui.demo.gifview.GifViewDemoActivity;
 import com.dazzle.bigappleui.demo.lettersort.LetterSortDemoActivity;
 import com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity;
 import com.dazzle.bigappleui.demo.slidingmenu.SlidingMenuDemoActivity;
-import com.dazzle.bigappleui.demo.slidingupdown.SlidingUpDownViewDemoActivity;
+import com.dazzle.bigappleui.demo.slidingupdown.SlidingUpDownDemoActivity;
 import com.dazzle.bigappleui.demo.view.roundedimageview.RoundedImageViewDemoActivity;
 import com.dazzle.bigappleui.demo.view.zoomimageview.ZoomImageViewDemoActivity;
 import com.dazzle.bigappleui.demo.viewpage.CyclePageDemoActivity;
@@ -32,7 +32,7 @@ public class BigappleUiMain extends Activity {
         addButton("cyclepage图片切页实现", CyclePageDemoActivity.class);
         addButton("列表字母分类排序 + 侧滑删除", LetterSortDemoActivity.class);
         addButton("侧滑模式实现", SlidingMenuDemoActivity.class);
-        addButton("上下滑动有惊喜实现", SlidingUpDownViewDemoActivity.class);
+        addButton("上下滑动有惊喜实现", SlidingUpDownDemoActivity.class);
         addButton("下拉刷新实现", Pull2RefreshDemoActivity.class);
         addButton("图片显示支持缩放旋转实现", ZoomImageViewDemoActivity.class);
         addButton("圆角图片实现", RoundedImageViewDemoActivity.class);
