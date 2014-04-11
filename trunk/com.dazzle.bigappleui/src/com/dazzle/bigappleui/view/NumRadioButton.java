@@ -82,10 +82,14 @@ public class NumRadioButton extends RadioButton {
         }
     }
 
+    /**
+     * 清空数字标记
+     */
     public void clearNum() {
         setNum(0, -1);
     }
 
+    // 加载背景图片
     private void initDrawBitmap(int resid) {
         if (-1 == resid) {
             return;
