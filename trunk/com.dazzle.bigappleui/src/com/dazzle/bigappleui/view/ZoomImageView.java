@@ -70,6 +70,7 @@ public class ZoomImageView extends ImageView {
 
     // 长按事件
     private int mTouchSlop;
+    private int longClickTime = 2000;// 长按触发事件
     private float lastX;
     private float lastY;
     private Runnable longClickRunnalbe;
@@ -264,8 +265,6 @@ public class ZoomImageView extends ImageView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
-
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
         case MotionEvent.ACTION_DOWN:
             savedMatrix.set(matrix);
@@ -431,6 +430,7 @@ public class ZoomImageView extends ImageView {
         }
 
         handler.postDelayed(singleClickRunnalbe, 1000);
+        singleClickRunnalbeIsToHandler = true;
     }
 
     private void removeSingleClickListener() {
@@ -453,7 +453,7 @@ public class ZoomImageView extends ImageView {
                 }
             };
         }
-        handler.postDelayed(longClickRunnalbe, 2000);
+        handler.postDelayed(longClickRunnalbe, longClickTime);
         longClickRunnalbeIsToHandler = true;
     }
 
@@ -483,6 +483,10 @@ public class ZoomImageView extends ImageView {
     // ///////////////////////////////////////////设置放大的最大倍数//////////////////////////////////////////////////////
     public void setMaxScale(float maxScale) {
         this.mMaxScale = maxScale;
+    }
+
+    public void setLongClickTime(int longClickTime) {
+        this.longClickTime = longClickTime;
     }
 
 }

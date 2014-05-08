@@ -22,6 +22,7 @@ public class ZoomImageViewDemoActivity extends Activity {
 
         ZoomImageView zoomImageView = (ZoomImageView) findViewById(R.id.zoomImageView);
 
+        zoomImageView.setLongClickTime(1000);
         zoomImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
