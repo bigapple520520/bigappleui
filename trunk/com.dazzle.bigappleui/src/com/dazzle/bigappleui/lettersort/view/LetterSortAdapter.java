@@ -8,6 +8,7 @@ package com.dazzle.bigappleui.lettersort.view;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -24,12 +25,14 @@ import com.dazzle.bigappleui.lettersort.utils.LetterSortUtils;
  * @version $Revision: 1.0 $, $Date: 2013-7-16 下午3:10:58 $
  */
 public abstract class LetterSortAdapter extends BaseAdapter {
+    private Context context;
     private List<BaseItem> itemList;// 数据列表
     private final HashMap<String, Integer> indexMap = new HashMap<String, Integer>();// 存放字母的索引位置
 
     // 初始化一些自定义常量
-    public LetterSortAdapter(List<ItemContent> fromList) {
-        itemList = LetterSortUtils.sortOrderLetter(fromList);
+    public LetterSortAdapter(List<ItemContent> fromList, Context context) {
+        this.context = context;
+        itemList = LetterSortUtils.sortOrderLetter(fromList, context);
         initIndexMap(itemList);
     }
 
@@ -67,7 +70,7 @@ public abstract class LetterSortAdapter extends BaseAdapter {
      * @param fromItem
      */
     public void notifyDataSetChanged(List<ItemContent> fromList) {
-        itemList = LetterSortUtils.sortOrderLetter(fromList);
+        itemList = LetterSortUtils.sortOrderLetter(fromList, context);
         initIndexMap(itemList);
         super.notifyDataSetChanged();
     }

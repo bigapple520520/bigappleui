@@ -26,7 +26,7 @@ public class SimpleLetterSortAdapter extends LetterSortAdapter {
     private final Context context;
 
     public SimpleLetterSortAdapter(List<ItemContent> fromList, Context context) {
-        super(fromList);
+        super(fromList, context);
         this.context = context;
     }
 

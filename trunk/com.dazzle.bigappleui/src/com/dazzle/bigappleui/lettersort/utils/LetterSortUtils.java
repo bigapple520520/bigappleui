@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import android.content.Context;
+
 import com.dazzle.bigappleui.lettersort.entity.BaseItem;
 import com.dazzle.bigappleui.lettersort.entity.ItemContent;
 import com.dazzle.bigappleui.lettersort.entity.ItemDivide;
@@ -30,14 +32,14 @@ public abstract class LetterSortUtils {
      * @param fromItem
      * @return
      */
-    public static List<BaseItem> sortOrderLetter(List<ItemContent> fromItemList) {
+    public static List<BaseItem> sortOrderLetter(List<ItemContent> fromItemList, Context context) {
         if (null == fromItemList || fromItemList.isEmpty()) {
             return Collections.emptyList();
         }
 
         List<BaseItem> ret = new ArrayList<BaseItem>();
 
-        Map<String, List<BaseItem>> letter2ItemListMap = groupByFirstLetter(fromItemList);
+        Map<String, List<BaseItem>> letter2ItemListMap = groupByFirstLetter(fromItemList, context);
 
         // 拎出无法识别的name，删除之，因为要放在最后
         List<BaseItem> unknowNameList = letter2ItemListMap.get("#");
@@ -90,12 +92,11 @@ public abstract class LetterSortUtils {
      * @param baseMenuDtoList
      * @return
      */
-    private static Map<String, List<BaseItem>> groupByFirstLetter(List<ItemContent> fromItemList) {
+    private static Map<String, List<BaseItem>> groupByFirstLetter(List<ItemContent> fromItemList, Context context) {
         Map<String, List<BaseItem>> ret = new HashMap<String, List<BaseItem>>();
 
         for (ItemContent item : fromItemList) {
-            String firstLetter = SpellUtils.getSurnameFirstSpell(item.getName());
-            firstLetter = firstLetter.toUpperCase();
+            String firstLetter = PinyinUtil.toPinyinUpperF(context, item.getName());
 
             List<BaseItem> itemList = ret.get(firstLetter);
             if (null == itemList) {

@@ -32,7 +32,7 @@ public class LetterSortDemoAdapter extends LetterSortAdapter {
     private final Context context;
 
     public LetterSortDemoAdapter(List<ItemContent> fromList, Context context) {
-        super(fromList);
+        super(fromList, context);
         this.context = context;
     }
 
