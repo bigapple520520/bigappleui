@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.dazzle.bigappleui.utils.ResourceResidUtils;
+import com.dazzle.bigappleui.utils.M;
 
 /**
  * 模仿ios的是否滑块控件
@@ -56,14 +56,10 @@ public class SlipButton extends View {
     }
 
     private void init() {
-        slipBgOn = BitmapFactory.decodeResource(getResources(),
-                ResourceResidUtils.getResidByDrawableName(context, "slip_bg_on"));
-        slipBgOff = BitmapFactory.decodeResource(getResources(),
-                ResourceResidUtils.getResidByDrawableName(context, "slip_bg_off"));
-        slipOn = BitmapFactory.decodeResource(getResources(),
-                ResourceResidUtils.getResidByDrawableName(context, "slip_btn_on"));
-        slipOff = BitmapFactory.decodeResource(getResources(),
-                ResourceResidUtils.getResidByDrawableName(context, "slip_btn_off"));
+        slipBgOn = BitmapFactory.decodeResource(getResources(), M.drawable(context, "slip_bg_on"));
+        slipBgOff = BitmapFactory.decodeResource(getResources(), M.drawable(context, "slip_bg_off"));
+        slipOn = BitmapFactory.decodeResource(getResources(), M.drawable(context, "slip_btn_on"));
+        slipOff = BitmapFactory.decodeResource(getResources(), M.drawable(context, "slip_btn_off"));
 
         heightOffset = (slipBgOn.getHeight() - slipOn.getHeight()) / 2;
         nowX = slipBgOn.getWidth() - slipOn.getWidth();// 默认滑块在右边

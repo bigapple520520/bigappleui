@@ -1,11 +1,11 @@
 package com.dazzle.bigappleui.slidingmenu;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -83,9 +83,11 @@ public class SlidingMenu extends RelativeLayout {
             public static final int POSITION_CLOSE = 1;// 菜单都关闭，显示主界面
             public static final int POSITION_SECONDARY_OPEN = 2;// 右侧菜单打开
 
+            @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
+            @Override
             public void onPageSelected(int position) {
                 if (position == POSITION_OPEN && mOpenListener != null) {
                     mOpenListener.onOpen();
@@ -425,10 +427,12 @@ public class SlidingMenu extends RelativeLayout {
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+            @Override
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }
 
+            @Override
             public SavedState[] newArray(int size) {
                 return new SavedState[size];
             }
@@ -449,7 +453,7 @@ public class SlidingMenu extends RelativeLayout {
         mViewAbove.setCurrentItem(ss.getItem());
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    // @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void manageLayers(float percentOpen) {
         if (Build.VERSION.SDK_INT < 11) {
             return;
@@ -460,10 +464,11 @@ public class SlidingMenu extends RelativeLayout {
 
         if (layerType != getContent().getLayerType()) {
             mHandler.post(new Runnable() {
+                @Override
                 public void run() {
                     Log.v(TAG, "changing layerType. hardware? " + (layerType == View.LAYER_TYPE_HARDWARE));
                     getContent().setLayerType(layerType, null);
-                    getMenu().setLayerType(layerType, null);
+                    getMenu().setLayerType(layerType, (Paint) null);
                     if (getSecondaryMenu() != null) {
                         getSecondaryMenu().setLayerType(layerType, null);
                     }

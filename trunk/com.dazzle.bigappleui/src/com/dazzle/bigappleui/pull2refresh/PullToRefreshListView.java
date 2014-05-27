@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.dazzle.bigappleui.utils.ResourceResidUtils;
+import com.dazzle.bigappleui.utils.M;
 
 /**
  * 下拉刷新控件，使用时，需要引入<br>
@@ -91,18 +91,13 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
         reverseAnimation.setFillAfter(true);
 
         // 获取头部布局
-        headView = (LinearLayout) LayoutInflater.from(context).inflate(
-                ResourceResidUtils.getResidByLayoutName(context, "pull2refresh_head"), null);
-        arrowImageView = (ImageView) headView.findViewById(ResourceResidUtils.getResidByIdName(context,
-                "pull2refresh_head_arrowimageview"));// 箭头图片
+        headView = (LinearLayout) LayoutInflater.from(context).inflate(M.layout(context, "pull2refresh_head"), null);
+        arrowImageView = (ImageView) headView.findViewById(M.id(context, "pull2refresh_head_arrowimageview"));// 箭头图片
         arrowImageView.setMinimumWidth(50);
         arrowImageView.setMinimumHeight(50);
-        progressBar = (ProgressBar) headView.findViewById(ResourceResidUtils.getResidByIdName(context,
-                "pull2refresh_head_progressbar"));// 进度圈
-        tipsTextview = (TextView) headView.findViewById(ResourceResidUtils.getResidByIdName(context,
-                "pull2refresh_head_tipstextview"));// 提示文本
-        lastUpdatedTextView = (TextView) headView.findViewById(ResourceResidUtils.getResidByIdName(context,
-                "pull2refresh_head_lastupdatedtextview"));// 最后一次更新时间提醒
+        progressBar = (ProgressBar) headView.findViewById(M.id(context, "pull2refresh_head_progressbar"));// 进度圈
+        tipsTextview = (TextView) headView.findViewById(M.id(context, "pull2refresh_head_tipstextview"));// 提示文本
+        lastUpdatedTextView = (TextView) headView.findViewById(M.id(context, "pull2refresh_head_lastupdatedtextview"));// 最后一次更新时间提醒
 
         // 头部的原始paddingTop值
         headContentOriginalTopPadding = headView.getPaddingTop();
@@ -356,8 +351,7 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 
             progressBar.setVisibility(View.GONE);
             arrowImageView.clearAnimation();
-            arrowImageView.setImageResource(ResourceResidUtils.getResidByDrawableName(getContext(),
-                    "pull2refresh_arrow"));
+            arrowImageView.setImageResource(M.drawable(getContext(), "pull2refresh_arrow"));
 
             tipsTextview.setText("下拉可以刷新");
             lastUpdatedTextView.setVisibility(View.VISIBLE);
