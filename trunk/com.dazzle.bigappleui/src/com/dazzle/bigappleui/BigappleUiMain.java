@@ -13,6 +13,7 @@ import com.dazzle.bigappleui.demo.lettersort.LetterSortDemoActivity;
 import com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity;
 import com.dazzle.bigappleui.demo.slidingmenu.SlidingMenuDemoActivity;
 import com.dazzle.bigappleui.demo.slidingupdown.SlidingUpDownDemoActivity;
+import com.dazzle.bigappleui.demo.view.SlipButtonDemoActivity;
 import com.dazzle.bigappleui.demo.view.roundedimageview.RoundedImageViewDemoActivity;
 import com.dazzle.bigappleui.demo.view.zoomimageview.ZoomImageViewDemoActivity;
 import com.dazzle.bigappleui.demo.viewpage.CyclePageDemoActivity;
@@ -36,6 +37,7 @@ public class BigappleUiMain extends Activity {
         addButton("下拉刷新实现", Pull2RefreshDemoActivity.class);
         addButton("图片显示支持缩放旋转实现", ZoomImageViewDemoActivity.class);
         addButton("圆角图片实现", RoundedImageViewDemoActivity.class);
+        addButton("SlipButton滑块demo", SlipButtonDemoActivity.class);
     }
 
     private void addButton(String text, final Class<?> clazz) {

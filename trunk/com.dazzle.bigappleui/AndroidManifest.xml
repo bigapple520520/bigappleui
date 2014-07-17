@@ -27,6 +27,7 @@
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.zoomimageview.ZoomImageViewDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.roundedimageview.RoundedImageViewDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.view.SlipButtonDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.slidingupdown.SlidingUpDownDemoActivity" />
     </application>
 

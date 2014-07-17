@@ -157,10 +157,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int pic3=0x7f02001a;
         public static final int pic4=0x7f02001b;
         public static final int pull2refresh_arrow=0x7f02001c;
-        public static final int slip_bg_off=0x7f02001d;
-        public static final int slip_bg_on=0x7f02001e;
-        public static final int slip_btn_off=0x7f02001f;
-        public static final int slip_btn_on=0x7f020020;
     }
     public static final class id {
         public static final int aboveText=0x7f04000d;
@@ -210,17 +206,18 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int demo_slidingupdown_above=0x7f03000b;
         public static final int demo_slidingupdown_behind=0x7f03000c;
         public static final int demo_slidingupdown_main=0x7f03000d;
-        public static final int demo_swipe_above=0x7f03000e;
-        public static final int demo_swipe_behind=0x7f03000f;
-        public static final int demo_swipe_item=0x7f030010;
-        public static final int demo_viewpage_imagelayout=0x7f030011;
-        public static final int demo_viewpage_main=0x7f030012;
-        public static final int demo_viewpager_image_layout=0x7f030013;
-        public static final int demo_zoomimageview_main=0x7f030014;
-        public static final int main=0x7f030015;
-        public static final int pull2refresh_footer=0x7f030016;
-        public static final int pull2refresh_head=0x7f030017;
-        public static final int slidingmenumain=0x7f030018;
+        public static final int demo_slipbutton_main=0x7f03000e;
+        public static final int demo_swipe_above=0x7f03000f;
+        public static final int demo_swipe_behind=0x7f030010;
+        public static final int demo_swipe_item=0x7f030011;
+        public static final int demo_viewpage_imagelayout=0x7f030012;
+        public static final int demo_viewpage_main=0x7f030013;
+        public static final int demo_viewpager_image_layout=0x7f030014;
+        public static final int demo_zoomimageview_main=0x7f030015;
+        public static final int main=0x7f030016;
+        public static final int pull2refresh_footer=0x7f030017;
+        public static final int pull2refresh_head=0x7f030018;
+        public static final int slidingmenumain=0x7f030019;
     }
     public static final class menu {
         public static final int main=0x7f080000;
