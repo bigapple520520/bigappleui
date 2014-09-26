@@ -13,6 +13,7 @@ import com.dazzle.bigappleui.demo.lettersort.LetterSortDemoActivity;
 import com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity;
 import com.dazzle.bigappleui.demo.slidingmenu.SlidingMenuDemoActivity;
 import com.dazzle.bigappleui.demo.slidingupdown.SlidingUpDownDemoActivity;
+import com.dazzle.bigappleui.demo.view.NumRadioButtonDemoActivity;
 import com.dazzle.bigappleui.demo.view.SlipButtonDemoActivity;
 import com.dazzle.bigappleui.demo.view.roundedimageview.RoundedImageViewDemoActivity;
 import com.dazzle.bigappleui.demo.view.zoomimageview.ZoomImageViewDemoActivity;
@@ -28,7 +29,7 @@ public class BigappleUiMain extends Activity {
         setContentView(R.layout.main);
         content = (LinearLayout) findViewById(R.id.content);
 
-        addButton("gif动态图显示", GifViewDemoActivity.class);
+        addButton("gif动态图显示和roundedImageView测试", GifViewDemoActivity.class);
         addButton("viewpage图片切页实现", ViewPageDemoActivity.class);
         addButton("cyclepage图片切页实现", CyclePageDemoActivity.class);
         addButton("列表字母分类排序 + 侧滑删除", LetterSortDemoActivity.class);
@@ -38,6 +39,7 @@ public class BigappleUiMain extends Activity {
         addButton("图片显示支持缩放旋转实现", ZoomImageViewDemoActivity.class);
         addButton("圆角图片实现", RoundedImageViewDemoActivity.class);
         addButton("SlipButton滑块demo", SlipButtonDemoActivity.class);
+        addButton("NumRadioButton测试", NumRadioButtonDemoActivity.class);
     }
 
     private void addButton(String text, final Class<?> clazz) {

@@ -121,11 +121,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int viewBehind=0x7f010002;
     }
+    public static final class color {
+        public static final int tab_btn_text_color=0x7f050002;
+        public static final int tab_btn_text_normal=0x7f050000;
+        public static final int tab_btn_text_sel=0x7f050001;
+    }
     public static final class dimen {
-        public static final int demo_swipe_behind_offset=0x7f050003;
-        public static final int padding_large=0x7f050002;
-        public static final int padding_medium=0x7f050001;
-        public static final int padding_small=0x7f050000;
+        public static final int demo_swipe_behind_offset=0x7f060003;
+        public static final int padding_large=0x7f060002;
+        public static final int padding_medium=0x7f060001;
+        public static final int padding_small=0x7f060000;
     }
     public static final class drawable {
         public static final int demo_gifview_pic=0x7f020000;
@@ -152,44 +157,75 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int gif_pic2=0x7f020015;
         public static final int ic_action_search=0x7f020016;
         public static final int ic_launcher=0x7f020017;
-        public static final int pic1=0x7f020018;
-        public static final int pic2=0x7f020019;
-        public static final int pic3=0x7f02001a;
-        public static final int pic4=0x7f02001b;
-        public static final int pull2refresh_arrow=0x7f02001c;
+        public static final int msg_new=0x7f020018;
+        public static final int msg_new2=0x7f020019;
+        public static final int pic1=0x7f02001a;
+        public static final int pic2=0x7f02001b;
+        public static final int pic3=0x7f02001c;
+        public static final int pic4=0x7f02001d;
+        public static final int pull2refresh_arrow=0x7f02001e;
+        public static final int slip_bg_off=0x7f02001f;
+        public static final int slip_bg_on=0x7f020020;
+        public static final int slip_btn_off=0x7f020021;
+        public static final int slip_btn_on=0x7f020022;
+        public static final int tab_bg=0x7f020023;
+        public static final int tab_btn_bg=0x7f020024;
+        public static final int tab_btn_bg_sel=0x7f020025;
+        public static final int tab_btn_top0=0x7f020026;
+        public static final int tab_btn_top1=0x7f020027;
+        public static final int tab_btn_top2=0x7f020028;
+        public static final int tab_btn_top3=0x7f020029;
+        public static final int tab_btn_top4=0x7f02002a;
+        public static final int tab_btn_top_normal0_student=0x7f02002b;
+        public static final int tab_btn_top_normal0_teacher=0x7f02002c;
+        public static final int tab_btn_top_normal1=0x7f02002d;
+        public static final int tab_btn_top_normal2=0x7f02002e;
+        public static final int tab_btn_top_normal4=0x7f02002f;
+        public static final int tab_btn_top_sel0_student=0x7f020030;
+        public static final int tab_btn_top_sel0_teacher=0x7f020031;
+        public static final int tab_btn_top_sel1=0x7f020032;
+        public static final int tab_btn_top_sel2=0x7f020033;
+        public static final int tab_btn_top_sel4=0x7f020034;
     }
     public static final class id {
-        public static final int aboveText=0x7f04000d;
+        public static final int aboveText=0x7f040014;
         public static final int button=0x7f040009;
         public static final int button1=0x7f040006;
         public static final int button2=0x7f040007;
-        public static final int content=0x7f040015;
+        public static final int content=0x7f04001c;
         public static final int cyclePage=0x7f040004;
         public static final int fullscreen=0x7f040003;
         public static final int gif=0x7f040008;
-        public static final int iv_behind_img=0x7f04000f;
+        public static final int image=0x7f040012;
+        public static final int iv_behind_img=0x7f040016;
         public static final int left=0x7f040000;
-        public static final int leftText=0x7f040011;
-        public static final int letterSortView=0x7f04000a;
-        public static final int listview=0x7f04000b;
+        public static final int leftText=0x7f040018;
+        public static final int letterSortView=0x7f04000b;
+        public static final int listview=0x7f040013;
         public static final int margin=0x7f040002;
-        public static final int menu_settings=0x7f04001e;
-        public static final int pull2refresh_footer_progressbar=0x7f040016;
-        public static final int pull2refresh_footer_textview=0x7f040017;
-        public static final int pull2refresh_head=0x7f040018;
-        public static final int pull2refresh_head_arrowimageview=0x7f040019;
-        public static final int pull2refresh_head_lastupdatedtextview=0x7f04001c;
-        public static final int pull2refresh_head_progressbar=0x7f04001a;
-        public static final int pull2refresh_head_tipstextview=0x7f04001b;
+        public static final int menu_settings=0x7f040025;
+        public static final int pull2refresh_footer_progressbar=0x7f04001d;
+        public static final int pull2refresh_footer_textview=0x7f04001e;
+        public static final int pull2refresh_head=0x7f04001f;
+        public static final int pull2refresh_head_arrowimageview=0x7f040020;
+        public static final int pull2refresh_head_lastupdatedtextview=0x7f040023;
+        public static final int pull2refresh_head_progressbar=0x7f040021;
+        public static final int pull2refresh_head_tipstextview=0x7f040022;
         public static final int right=0x7f040001;
-        public static final int roundedImageView=0x7f04000c;
-        public static final int slidingMenu=0x7f04000e;
-        public static final int slidingUpDown=0x7f040010;
-        public static final int slidingmenumain=0x7f04001d;
-        public static final int swipeview=0x7f040012;
+        public static final int roundedImageView=0x7f04000a;
+        public static final int slidingMenu=0x7f040015;
+        public static final int slidingUpDown=0x7f040017;
+        public static final int slidingmenumain=0x7f040024;
+        public static final int swipeview=0x7f040019;
+        public static final int tabbtn0=0x7f04000d;
+        public static final int tabbtn1=0x7f04000e;
+        public static final int tabbtn2=0x7f04000f;
+        public static final int tabbtn3=0x7f040010;
+        public static final int tabbtn4=0x7f040011;
+        public static final int tabs=0x7f04000c;
         public static final int textview=0x7f040005;
-        public static final int viewPage=0x7f040013;
-        public static final int zoomImageView=0x7f040014;
+        public static final int viewPage=0x7f04001a;
+        public static final int zoomImageView=0x7f04001b;
     }
     public static final class layout {
         public static final int demo_cyclepage_main=0x7f030000;
@@ -197,39 +233,48 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int demo_lettersort_item_split=0x7f030002;
         public static final int demo_lettersort_main=0x7f030003;
         public static final int demo_lettersort_textview=0x7f030004;
-        public static final int demo_pull2refresh_main=0x7f030005;
-        public static final int demo_roundedimageview_main=0x7f030006;
-        public static final int demo_slidingmenu_above=0x7f030007;
-        public static final int demo_slidingmenu_main=0x7f030008;
-        public static final int demo_slidingmenu_menu_left=0x7f030009;
-        public static final int demo_slidingmenu_menu_right=0x7f03000a;
-        public static final int demo_slidingupdown_above=0x7f03000b;
-        public static final int demo_slidingupdown_behind=0x7f03000c;
-        public static final int demo_slidingupdown_main=0x7f03000d;
-        public static final int demo_slipbutton_main=0x7f03000e;
-        public static final int demo_swipe_above=0x7f03000f;
-        public static final int demo_swipe_behind=0x7f030010;
-        public static final int demo_swipe_item=0x7f030011;
-        public static final int demo_viewpage_imagelayout=0x7f030012;
-        public static final int demo_viewpage_main=0x7f030013;
-        public static final int demo_viewpager_image_layout=0x7f030014;
-        public static final int demo_zoomimageview_main=0x7f030015;
-        public static final int main=0x7f030016;
-        public static final int pull2refresh_footer=0x7f030017;
-        public static final int pull2refresh_head=0x7f030018;
-        public static final int slidingmenumain=0x7f030019;
+        public static final int demo_numradiobutton_main=0x7f030005;
+        public static final int demo_numradiobutton_main_sub=0x7f030006;
+        public static final int demo_numradiobutton_main_sub1=0x7f030007;
+        public static final int demo_pull2refresh_main=0x7f030008;
+        public static final int demo_roundedimageview_main=0x7f030009;
+        public static final int demo_slidingmenu_above=0x7f03000a;
+        public static final int demo_slidingmenu_main=0x7f03000b;
+        public static final int demo_slidingmenu_menu_left=0x7f03000c;
+        public static final int demo_slidingmenu_menu_right=0x7f03000d;
+        public static final int demo_slidingupdown_above=0x7f03000e;
+        public static final int demo_slidingupdown_behind=0x7f03000f;
+        public static final int demo_slidingupdown_main=0x7f030010;
+        public static final int demo_slipbutton_main=0x7f030011;
+        public static final int demo_swipe_above=0x7f030012;
+        public static final int demo_swipe_behind=0x7f030013;
+        public static final int demo_swipe_item=0x7f030014;
+        public static final int demo_viewpage_imagelayout=0x7f030015;
+        public static final int demo_viewpage_main=0x7f030016;
+        public static final int demo_viewpager_image_layout=0x7f030017;
+        public static final int demo_zoomimageview_main=0x7f030018;
+        public static final int main=0x7f030019;
+        public static final int pull2refresh_footer=0x7f03001a;
+        public static final int pull2refresh_head=0x7f03001b;
+        public static final int slidingmenumain=0x7f03001c;
     }
     public static final class menu {
-        public static final int main=0x7f080000;
+        public static final int main=0x7f090000;
     }
     public static final class string {
-        public static final int app_name=0x7f060000;
-        public static final int hello_world=0x7f060001;
-        public static final int menu_settings=0x7f060002;
-        public static final int title_activity_main=0x7f060003;
+        public static final int app_name=0x7f070000;
+        public static final int hello_world=0x7f070001;
+        public static final int menu_settings=0x7f070002;
+        public static final int tab_btn_text0_wzy=0x7f070004;
+        public static final int tab_btn_text1_qd=0x7f070005;
+        public static final int tab_btn_text2_dy=0x7f070006;
+        public static final int tab_btn_text3_lt=0x7f070007;
+        public static final int tab_btn_text4_wd=0x7f070008;
+        public static final int title_activity_main=0x7f070003;
     }
     public static final class style {
-        public static final int AppTheme=0x7f070000;
+        public static final int AppTheme=0x7f080000;
+        public static final int tab_btn_style=0x7f080001;
     }
     public static final class styleable {
         /** Attributes that can be used with a SlidingMenu.

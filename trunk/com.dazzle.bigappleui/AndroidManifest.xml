@@ -4,7 +4,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="10"
         android:targetSdkVersion="15" />
 
     <application
@@ -29,6 +29,7 @@
         <activity android:name="com.dazzle.bigappleui.demo.view.roundedimageview.RoundedImageViewDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.SlipButtonDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.slidingupdown.SlidingUpDownDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.view.NumRadioButtonDemoActivity" />
     </application>
 
 </manifest>

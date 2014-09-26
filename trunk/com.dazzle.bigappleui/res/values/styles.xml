@@ -1,5 +1,14 @@
 <resources>
-
     <style name="AppTheme" parent="android:Theme.Light" />
-
+    <style name="tab_btn_style">
+        <item name="android:layout_width" >0dp</item>
+        <item name="android:layout_height" >fill_parent</item>
+        <item name="android:layout_weight" >1</item>
+        <item name="android:button" >@null</item>
+        <item name="android:textColor" >@color/tab_btn_text_color</item>
+        <item name="android:textSize" >14sp</item>
+        <item name="android:gravity" >center_horizontal</item>
+        <item name="android:layout_gravity">bottom</item> 
+        <item name="android:background" >@drawable/tab_btn_bg</item>
+    </style>
 </resources>

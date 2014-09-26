@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+        <include layout="@layout/demo_numradiobutton_main_sub1" />
+        <include layout="@layout/demo_numradiobutton_main_sub" />
+        <include layout="@layout/demo_numradiobutton_main_sub" />
+        <include layout="@layout/demo_numradiobutton_main_sub" />
+        <include layout="@layout/demo_numradiobutton_main_sub" />
+    </FrameLayout>
+    <RadioGroup
+        android:id="@+id/tabs"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/tab_bg"
+        android:orientation="horizontal"
+        android:paddingTop="4dp">
+        <com.dazzle.bigappleui.view.NumRadioButton
+            android:id="@+id/tabbtn0"
+            style="@style/tab_btn_style"
+            android:drawableTop="@drawable/tab_btn_top0"
+            android:text="@string/tab_btn_text0_wzy"/>
+        <com.dazzle.bigappleui.view.NumRadioButton
+            android:id="@+id/tabbtn1"
+            style="@style/tab_btn_style"
+            android:drawableTop="@drawable/tab_btn_top1"
+            android:text="@string/tab_btn_text1_qd" />
+        <com.dazzle.bigappleui.view.NumRadioButton
+            android:id="@+id/tabbtn2"
+            style="@style/tab_btn_style"
+            android:drawableTop="@drawable/tab_btn_top2"
+            android:text="@string/tab_btn_text2_dy"/>
+        <com.dazzle.bigappleui.view.NumRadioButton
+            android:id="@+id/tabbtn3"
+            style="@style/tab_btn_style"
+            android:drawableTop="@drawable/tab_btn_top3"
+            android:text="@string/tab_btn_text3_lt" />
+        <com.dazzle.bigappleui.view.NumRadioButton
+            android:id="@+id/tabbtn4"
+            style="@style/tab_btn_style"
+            android:drawableTop="@drawable/tab_btn_top4"
+            android:text="@string/tab_btn_text4_wd" />
+    </RadioGroup>
+</LinearLayout>
