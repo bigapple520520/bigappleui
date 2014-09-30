@@ -1,6 +1,8 @@
 package com.dazzle.bigappleui.demo.gifview;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,11 +51,13 @@ public class GifViewDemoActivity extends Activity {
 
     private void testRoundImageView() {
         RoundedImageView roundedImageView = (RoundedImageView) findViewById(R.id.roundedImageView);
-        roundedImageView.setCornerRadius(500f);
-        roundedImageView.setBorderWidth(10f);
+        // roundedImageView.setCornerRadius(500f);
+        // roundedImageView.setBorderWidth(10f);
         // roundedImageView.setOval(true);
-        roundedImageView.setMutateBackground(true);
-        roundedImageView.setImageResource(R.drawable.demo_viewpage_pic1);
-        roundedImageView.setBackgroundResource(R.drawable.demo_viewpage_pic2);
+        roundedImageView.setCornerRadius(R.dimen.dp40);
+        // roundedImageView.setMutateBackground(true);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.demo_viewpage_pic1);
+        roundedImageView.setImageBitmap(bm);
+        // roundedImageView.setBackgroundResource(R.drawable.demo_viewpage_pic2);
     }
 }
