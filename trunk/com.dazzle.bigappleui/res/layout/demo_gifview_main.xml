@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"/>
     <com.dazzle.bigappleui.view.roundedimageview.RoundedImageView
         android:id="@+id/roundedImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
+        android:layout_width="40dp"
+        android:layout_height="40dp" 
         android:src="@drawable/demo_viewpage_pic3"/>
 </LinearLayout>
