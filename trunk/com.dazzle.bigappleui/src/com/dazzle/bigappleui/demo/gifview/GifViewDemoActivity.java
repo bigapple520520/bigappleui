@@ -1,8 +1,6 @@
 package com.dazzle.bigappleui.demo.gifview;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,6 +9,7 @@ import android.widget.Button;
 import com.dazzle.bigappleui.R;
 import com.dazzle.bigappleui.gifview.GifView;
 import com.dazzle.bigappleui.view.roundedimageview.RoundedImageView;
+import com.winupon.andframe.bigapple.bitmap.AnBitmapUtilsFace;
 
 /**
  * 显示gifview控件demo
@@ -24,6 +23,7 @@ public class GifViewDemoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_gifview_main);
+        AnBitmapUtilsFace.init(this.getApplicationContext());
 
         final GifView gif = (GifView) findViewById(R.id.gif);
         gif.setGifImage(R.drawable.demo_gifview_pic);
@@ -56,8 +56,10 @@ public class GifViewDemoActivity extends Activity {
         // roundedImageView.setOval(true);
         roundedImageView.setCornerRadius(R.dimen.dp40);
         // roundedImageView.setMutateBackground(true);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.demo_viewpage_pic1);
-        roundedImageView.setImageBitmap(bm);
-        // roundedImageView.setBackgroundResource(R.drawable.demo_viewpage_pic2);
+        // Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.demo_viewpage_pic1);
+        // roundedImageView.setImageBitmap(bm);
+        // AnBitmapUtilsFace.getInstance().display(roundedImageView,
+        // "http://weikefile.wanpeng.net/upload/photo/20140930/17/FF8080813A3EEE1C013A43152AD009F6/s.jpg?43");
+        roundedImageView.setBackgroundResource(R.drawable.demo_viewpage_pic2);
     }
 }
