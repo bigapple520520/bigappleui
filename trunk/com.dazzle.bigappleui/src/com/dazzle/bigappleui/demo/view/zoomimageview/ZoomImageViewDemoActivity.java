@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import com.dazzle.bigappleui.R;
 import com.dazzle.bigappleui.view.ZoomImageView;
+import com.dazzle.bigappleui.view.photoview.PhotoView;
+import com.dazzle.bigappleui.view.photoview.PhotoViewAttacher.OnPhotoTapListener;
 
 /**
  * 图片显示，支持两点缩放，及旋转
@@ -19,8 +21,26 @@ public class ZoomImageViewDemoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_zoomimageview_main);
-
-        ZoomImageView zoomImageView = (ZoomImageView) findViewById(R.id.zoomImageView);
+        //init();
+        init2();
+    }
+    
+    private void init2(){
+    	PhotoView photoView = (PhotoView) findViewById(R.id.photoView);
+    	photoView.setVisibility(View.VISIBLE);
+    	photoView.setImageResource(R.drawable.demo_zoomimageview_pic);
+    	
+    	photoView.setOnPhotoTapListener(new OnPhotoTapListener() {
+			@Override
+			public void onPhotoTap(View view, float x, float y) {
+				ZoomImageViewDemoActivity.this.finish();
+			}
+		});
+    }
+    
+    private void init(){
+    	ZoomImageView zoomImageView = (ZoomImageView) findViewById(R.id.zoomImageView);
+    	zoomImageView.setVisibility(View.VISIBLE);
 
         zoomImageView.setLongClickTime(1000);
         zoomImageView.setOnClickListener(new View.OnClickListener() {

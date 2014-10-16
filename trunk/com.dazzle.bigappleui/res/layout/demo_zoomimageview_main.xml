@@ -5,5 +5,11 @@
     <com.dazzle.bigappleui.view.ZoomImageView
         android:id="@+id/zoomImageView" 
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        android:visibility="gone" />
+    <com.dazzle.bigappleui.view.photoview.PhotoView
+        android:id="@+id/photoView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone" />
 </RelativeLayout>

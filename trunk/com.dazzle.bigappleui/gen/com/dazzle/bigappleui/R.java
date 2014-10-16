@@ -193,7 +193,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int button=0x7f040009;
         public static final int button1=0x7f040006;
         public static final int button2=0x7f040007;
-        public static final int content=0x7f04001c;
+        public static final int content=0x7f04001d;
         public static final int cyclePage=0x7f040004;
         public static final int fullscreen=0x7f040003;
         public static final int gif=0x7f040008;
@@ -204,19 +204,20 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int letterSortView=0x7f04000b;
         public static final int listview=0x7f040013;
         public static final int margin=0x7f040002;
-        public static final int menu_settings=0x7f040025;
-        public static final int pull2refresh_footer_progressbar=0x7f04001d;
-        public static final int pull2refresh_footer_textview=0x7f04001e;
-        public static final int pull2refresh_head=0x7f04001f;
-        public static final int pull2refresh_head_arrowimageview=0x7f040020;
-        public static final int pull2refresh_head_lastupdatedtextview=0x7f040023;
-        public static final int pull2refresh_head_progressbar=0x7f040021;
-        public static final int pull2refresh_head_tipstextview=0x7f040022;
+        public static final int menu_settings=0x7f040026;
+        public static final int photoView=0x7f04001c;
+        public static final int pull2refresh_footer_progressbar=0x7f04001e;
+        public static final int pull2refresh_footer_textview=0x7f04001f;
+        public static final int pull2refresh_head=0x7f040020;
+        public static final int pull2refresh_head_arrowimageview=0x7f040021;
+        public static final int pull2refresh_head_lastupdatedtextview=0x7f040024;
+        public static final int pull2refresh_head_progressbar=0x7f040022;
+        public static final int pull2refresh_head_tipstextview=0x7f040023;
         public static final int right=0x7f040001;
         public static final int roundedImageView=0x7f04000a;
         public static final int slidingMenu=0x7f040015;
         public static final int slidingUpDown=0x7f040017;
-        public static final int slidingmenumain=0x7f040024;
+        public static final int slidingmenumain=0x7f040025;
         public static final int swipeview=0x7f040019;
         public static final int tabbtn0=0x7f04000d;
         public static final int tabbtn1=0x7f04000e;
@@ -333,7 +334,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.dazzle.bigappleui:behindOffset
+          @attr name android:behindOffset
         */
         public static final int SlidingMenu_behindOffset = 3;
         /**
@@ -347,7 +348,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.dazzle.bigappleui:behindScrollScale
+          @attr name android:behindScrollScale
         */
         public static final int SlidingMenu_behindScrollScale = 5;
         /**
@@ -363,7 +364,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.dazzle.bigappleui:behindWidth
+          @attr name android:behindWidth
         */
         public static final int SlidingMenu_behindWidth = 4;
         /**
@@ -377,7 +378,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.dazzle.bigappleui:fadeDegree
+          @attr name android:fadeDegree
         */
         public static final int SlidingMenu_fadeDegree = 11;
         /**
@@ -391,7 +392,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.dazzle.bigappleui:fadeEnabled
+          @attr name android:fadeEnabled
         */
         public static final int SlidingMenu_fadeEnabled = 10;
         /**
@@ -408,7 +409,7 @@ containing a value of this type.
 <tr><td><code>left</code></td><td>0</td><td></td></tr>
 <tr><td><code>right</code></td><td>1</td><td></td></tr>
 </table>
-          @attr name com.dazzle.bigappleui:mode
+          @attr name android:mode
         */
         public static final int SlidingMenu_mode = 0;
         /**
@@ -418,7 +419,7 @@ containing a value of this type.
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.dazzle.bigappleui:selectorDrawable
+          @attr name android:selectorDrawable
         */
         public static final int SlidingMenu_selectorDrawable = 13;
         /**
@@ -432,7 +433,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.dazzle.bigappleui:selectorEnabled
+          @attr name android:selectorEnabled
         */
         public static final int SlidingMenu_selectorEnabled = 12;
         /**
@@ -442,7 +443,7 @@ containing a value of this type.
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.dazzle.bigappleui:shadowDrawable
+          @attr name android:shadowDrawable
         */
         public static final int SlidingMenu_shadowDrawable = 8;
         /**
@@ -458,7 +459,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.dazzle.bigappleui:shadowWidth
+          @attr name android:shadowWidth
         */
         public static final int SlidingMenu_shadowWidth = 9;
         /**
@@ -475,7 +476,7 @@ containing a value of this type.
 <tr><td><code>margin</code></td><td>0</td><td></td></tr>
 <tr><td><code>fullscreen</code></td><td>1</td><td></td></tr>
 </table>
-          @attr name com.dazzle.bigappleui:touchModeAbove
+          @attr name android:touchModeAbove
         */
         public static final int SlidingMenu_touchModeAbove = 6;
         /**
@@ -492,7 +493,7 @@ containing a value of this type.
 <tr><td><code>margin</code></td><td>0</td><td></td></tr>
 <tr><td><code>fullscreen</code></td><td>1</td><td></td></tr>
 </table>
-          @attr name com.dazzle.bigappleui:touchModeBehind
+          @attr name android:touchModeBehind
         */
         public static final int SlidingMenu_touchModeBehind = 7;
         /**
@@ -502,7 +503,7 @@ containing a value of this type.
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.dazzle.bigappleui:viewAbove
+          @attr name android:viewAbove
         */
         public static final int SlidingMenu_viewAbove = 1;
         /**
@@ -512,7 +513,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.dazzle.bigappleui:viewBehind
+          @attr name android:viewBehind
         */
         public static final int SlidingMenu_viewBehind = 2;
     };
