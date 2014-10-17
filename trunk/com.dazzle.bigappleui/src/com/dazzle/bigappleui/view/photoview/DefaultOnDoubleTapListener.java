@@ -18,8 +18,8 @@ public class DefaultOnDoubleTapListener implements GestureDetector.OnDoubleTapLi
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        if (null != this.photoViewAttacher){
-        	return false;
+        if (null == this.photoViewAttacher) {
+            return false;
         }
 
         ImageView imageView = photoViewAttacher.getImageView();
@@ -32,10 +32,8 @@ public class DefaultOnDoubleTapListener implements GestureDetector.OnDoubleTapLi
                 // Check to see if the user tapped on the photo
                 if (displayRect.contains(x, y)) {
 
-                    float xResult = (x - displayRect.left)
-                            / displayRect.width();
-                    float yResult = (y - displayRect.top)
-                            / displayRect.height();
+                    float xResult = (x - displayRect.left) / displayRect.width();
+                    float yResult = (y - displayRect.top) / displayRect.height();
 
                     photoViewAttacher.getOnPhotoTapListener().onPhotoTap(imageView, xResult, yResult);
                     return true;
@@ -51,8 +49,9 @@ public class DefaultOnDoubleTapListener implements GestureDetector.OnDoubleTapLi
 
     @Override
     public boolean onDoubleTap(MotionEvent ev) {
-        if (photoViewAttacher == null)
+        if (photoViewAttacher == null) {
             return false;
+        }
 
         try {
             float scale = photoViewAttacher.getScale();
@@ -61,12 +60,15 @@ public class DefaultOnDoubleTapListener implements GestureDetector.OnDoubleTapLi
 
             if (scale < photoViewAttacher.getMediumScale()) {
                 photoViewAttacher.setScale(photoViewAttacher.getMediumScale(), x, y, true);
-            } else if (scale >= photoViewAttacher.getMediumScale() && scale < photoViewAttacher.getMaximumScale()) {
+            }
+            else if (scale >= photoViewAttacher.getMediumScale() && scale < photoViewAttacher.getMaximumScale()) {
                 photoViewAttacher.setScale(photoViewAttacher.getMaximumScale(), x, y, true);
-            } else {
+            }
+            else {
                 photoViewAttacher.setScale(photoViewAttacher.getMinimumScale(), x, y, true);
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
             // Can sometimes happen when getX() and getY() is called
         }
 

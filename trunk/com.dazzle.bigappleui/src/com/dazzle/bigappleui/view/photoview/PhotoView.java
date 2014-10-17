@@ -1,9 +1,5 @@
 package com.dazzle.bigappleui.view.photoview;
 
-import com.dazzle.bigappleui.view.photoview.PhotoViewAttacher.OnMatrixChangedListener;
-import com.dazzle.bigappleui.view.photoview.PhotoViewAttacher.OnPhotoTapListener;
-import com.dazzle.bigappleui.view.photoview.PhotoViewAttacher.OnViewTapListener;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -13,6 +9,10 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.widget.ImageView;
+
+import com.dazzle.bigappleui.view.photoview.PhotoViewAttacher.OnMatrixChangedListener;
+import com.dazzle.bigappleui.view.photoview.PhotoViewAttacher.OnPhotoTapListener;
+import com.dazzle.bigappleui.view.photoview.PhotoViewAttacher.OnViewTapListener;
 
 public class PhotoView extends ImageView implements IPhotoView {
 
@@ -39,8 +39,6 @@ public class PhotoView extends ImageView implements IPhotoView {
         }
     }
 
-   
-    
     @Override
     public void setRotationTo(float rotationDegree) {
         mAttacher.setRotationTo(rotationDegree);
@@ -71,21 +69,15 @@ public class PhotoView extends ImageView implements IPhotoView {
         return mAttacher.setDisplayMatrix(finalRectangle);
     }
 
-    
-
     @Override
     public float getMinimumScale() {
         return mAttacher.getMinimumScale();
     }
 
-    
-
     @Override
     public float getMediumScale() {
         return mAttacher.getMediumScale();
     }
-
-   
 
     @Override
     public float getMaximumScale() {
@@ -107,21 +99,15 @@ public class PhotoView extends ImageView implements IPhotoView {
         mAttacher.setAllowParentInterceptOnEdge(allow);
     }
 
-   
-
     @Override
     public void setMinimumScale(float minimumScale) {
         mAttacher.setMinimumScale(minimumScale);
     }
 
-    
-
     @Override
     public void setMediumScale(float mediumScale) {
         mAttacher.setMediumScale(mediumScale);
     }
-
-    
 
     @Override
     public void setMaximumScale(float maximumScale) {
@@ -202,7 +188,8 @@ public class PhotoView extends ImageView implements IPhotoView {
     public void setScaleType(ScaleType scaleType) {
         if (null != mAttacher) {
             mAttacher.setScaleType(scaleType);
-        } else {
+        }
+        else {
             mPendingScaleType = scaleType;
         }
     }

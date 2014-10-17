@@ -1,11 +1,10 @@
 package com.dazzle.bigappleui.view.photoview.gestures;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
-@TargetApi(8)
+//targetapi8
 public class FroyoGestureDetector extends EclairGestureDetector {
 
     protected final ScaleGestureDetector mDetector;
@@ -18,11 +17,11 @@ public class FroyoGestureDetector extends EclairGestureDetector {
             public boolean onScale(ScaleGestureDetector detector) {
                 float scaleFactor = detector.getScaleFactor();
 
-                if (Float.isNaN(scaleFactor) || Float.isInfinite(scaleFactor))
+                if (Float.isNaN(scaleFactor) || Float.isInfinite(scaleFactor)) {
                     return false;
+                }
 
-                mListener.onScale(scaleFactor,
-                        detector.getFocusX(), detector.getFocusY());
+                mListener.onScale(scaleFactor, detector.getFocusX(), detector.getFocusY());
                 return true;
             }
 

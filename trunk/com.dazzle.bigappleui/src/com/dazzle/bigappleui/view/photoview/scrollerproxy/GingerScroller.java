@@ -1,10 +1,9 @@
 package com.dazzle.bigappleui.view.photoview.scrollerproxy;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.widget.OverScroller;
 
-@TargetApi(9)
+//@TargetApi(9)
 public class GingerScroller extends ScrollerProxy {
 
     protected final OverScroller mScroller;
@@ -27,7 +26,7 @@ public class GingerScroller extends ScrollerProxy {
 
     @Override
     public void fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY,
-                      int overX, int overY) {
+            int overX, int overY) {
         mScroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY, overX, overY);
     }
 

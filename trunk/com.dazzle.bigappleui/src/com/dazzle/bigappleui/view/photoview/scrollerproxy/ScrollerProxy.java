@@ -9,9 +9,11 @@ public abstract class ScrollerProxy {
     public static ScrollerProxy getScroller(Context context) {
         if (VERSION.SDK_INT < VERSION_CODES.GINGERBREAD) {
             return new PreGingerScroller(context);
-        } else if (VERSION.SDK_INT < VERSION_CODES.ICE_CREAM_SANDWICH) {
+        }
+        else if (VERSION.SDK_INT < 14) {// 14=VERSION_CODES.ICE_CREAM_SANDWICH
             return new GingerScroller(context);
-        } else {
+        }
+        else {
             return new IcsScroller(context);
         }
     }
@@ -19,7 +21,7 @@ public abstract class ScrollerProxy {
     public abstract boolean computeScrollOffset();
 
     public abstract void fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY,
-                               int maxY, int overX, int overY);
+            int maxY, int overX, int overY);
 
     public abstract void forceFinished(boolean finished);
 
@@ -28,6 +30,5 @@ public abstract class ScrollerProxy {
     public abstract int getCurrX();
 
     public abstract int getCurrY();
-
 
 }
