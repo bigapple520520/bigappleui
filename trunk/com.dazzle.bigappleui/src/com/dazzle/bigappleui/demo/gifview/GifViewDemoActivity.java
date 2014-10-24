@@ -1,6 +1,7 @@
 package com.dazzle.bigappleui.demo.gifview;
 
 import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,12 +55,16 @@ public class GifViewDemoActivity extends Activity {
         // roundedImageView.setCornerRadius(500f);
         // roundedImageView.setBorderWidth(10f);
         // roundedImageView.setOval(true);
-        roundedImageView.setCornerRadius(R.dimen.dp40);
+        // roundedImageView.setCornerRadius(R.dimen.dp40);
+        roundedImageView.setCircle(true);
         // roundedImageView.setMutateBackground(true);
         // Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.demo_viewpage_pic1);
         // roundedImageView.setImageBitmap(bm);
         // AnBitmapUtilsFace.getInstance().display(roundedImageView,
         // "http://weikefile.wanpeng.net/upload/photo/20140930/17/FF8080813A3EEE1C013A43152AD009F6/s.jpg?43");
-        roundedImageView.setBackgroundResource(R.drawable.demo_viewpage_pic2);
+        // roundedImageView.setBackgroundResource(R.drawable.slip_bg_off);
+
+        roundedImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pic1));
     }
+
 }

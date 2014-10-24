@@ -128,6 +128,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class dimen {
         public static final int demo_swipe_behind_offset=0x7f060003;
+        public static final int dp100=0x7f060005;
         public static final int dp40=0x7f060004;
         public static final int padding_large=0x7f060002;
         public static final int padding_medium=0x7f060001;

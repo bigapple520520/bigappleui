@@ -43,6 +43,8 @@ public class RoundedImageView extends ImageView {
      */
     private boolean isOval = false;
 
+    private boolean isCircle = false;
+
     /**
      * 背景是否可变，这个参数好像暂时没起作用
      */
@@ -300,8 +302,16 @@ public class RoundedImageView extends ImageView {
         invalidate();
     }
 
-    // ////////////////////////////////////////////////////////内部方法///////////////////////////////////////////
+    public boolean isCircle() {
+        return isCircle;
+    }
 
+    public void setCircle(boolean isCircle) {
+        this.isCircle = isCircle;
+        updateDrawableAttrs();
+    }
+
+    // ////////////////////////////////////////////////////////内部方法///////////////////////////////////////////
     // 根据资源resid解析出资源对象
     private Drawable resolveResource() {
         Resources res = getResources();
@@ -345,7 +355,7 @@ public class RoundedImageView extends ImageView {
 
         if (drawable instanceof RoundedDrawable) {
             ((RoundedDrawable) drawable).setScaleType(mScaleType).setCornerRadius(cornerRadius)
-                    .setBorderWidth(borderWidth).setBorderColor(borderColor).setOval(isOval);
+                    .setBorderWidth(borderWidth).setBorderColor(borderColor).setOval(isOval).setCircle(isCircle);
         }
         else if (drawable instanceof LayerDrawable) {
             // 遍历修改所有图层的参数

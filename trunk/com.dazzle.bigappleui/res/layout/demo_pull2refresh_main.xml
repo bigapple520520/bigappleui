@@ -2,10 +2,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
+    <Button 
+        android:id="@+id/button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="点击刷新"/>
     <com.dazzle.bigappleui.pull2refresh.PullToRefreshListView
         android:id="@+id/listview" 
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_below="@+id/button"
         android:dividerHeight="1.0dp"
         android:fadingEdge="none"
         android:scrollingCache="false" />

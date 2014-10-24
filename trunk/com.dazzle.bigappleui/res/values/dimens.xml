@@ -6,5 +6,6 @@
     
     <dimen name="demo_swipe_behind_offset">100dp</dimen>
     <dimen name="dp40">15dp</dimen>
+    <dimen name="dp100">100dp</dimen>
 
 </resources>
