@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Button;
 
 import com.dazzle.bigappleui.R;
 import com.dazzle.bigappleui.pull2refresh.PullToRefreshListView;
+import com.dazzle.bigappleui.pullrefresh.PullRefreshScrollViewActivity;
 
 /**
  * 下拉刷新控件，使用时，需要引入<br>
@@ -32,6 +34,14 @@ public class Pull2RefreshDemoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_pull2refresh_main);
+        Button gotoButton = (Button) findViewById(R.id.gotoButton);
+        gotoButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                startActivity(new Intent(Pull2RefreshDemoActivity.this, PullRefreshScrollViewActivity.class));
+            }
+        });
+
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new Button.OnClickListener() {
             @Override

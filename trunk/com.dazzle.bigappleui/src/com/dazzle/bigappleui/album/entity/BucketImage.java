@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-7 下午2:43:21 $
  */
-public class ImageItem implements Serializable {
+public class BucketImage implements Serializable {
     private static final long serialVersionUID = 9054513023521353382L;
 
     public String imageId;// 图片id

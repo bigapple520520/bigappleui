@@ -5,6 +5,7 @@
  */
 package com.dazzle.bigappleui.view.photoview.app.core;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.ImageView;
 
@@ -30,11 +31,13 @@ public abstract class ImageLoader {
      */
     public synchronized static void init(Context context) {
         if (null == anBitmapUtils) {
+            if (context instanceof Activity) {
+                context = ((Activity) context).getApplication();
+            }
+
             anBitmapUtils = new AnBitmapUtils(context);
             anBitmapUtils.getGlobalConfig().setMemoryCacheSize(1024 * 1024);
-        }
 
-        if (null == localImageLoader) {
             localImageLoader = new LocalImageLoader(context);
             localImageLoader.getLocalImageLoaderConfig().setMemoryCacheSize(1024 * 1024);
         }

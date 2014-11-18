@@ -20,8 +20,8 @@ import android.provider.MediaStore.Images.Media;
 import android.provider.MediaStore.Images.Thumbnails;
 import android.util.Log;
 
-import com.dazzle.bigappleui.album.entity.ImageBucket;
-import com.dazzle.bigappleui.album.entity.ImageItem;
+import com.dazzle.bigappleui.album.entity.Bucket;
+import com.dazzle.bigappleui.album.entity.BucketImage;
 
 /**
  * 获取相册数据帮助类
@@ -36,7 +36,7 @@ public class AlbumHelper {
 
     private Context context;
     private boolean hasBuildImagesBucketList = false;// 是否创建了图片集
-    private Map<String, ImageBucket> bucketMap = new HashMap<String, ImageBucket>();
+    private Map<String, Bucket> bucketMap = new HashMap<String, Bucket>();
 
     /**
      * 获取单例
@@ -78,7 +78,7 @@ public class AlbumHelper {
      * @param refresh
      * @return
      */
-    public Map<String, ImageBucket> getImagesBucketMap(boolean needRefresh) {
+    public Map<String, Bucket> getImagesBucketMap(boolean needRefresh) {
         if (needRefresh || (!needRefresh && !hasBuildImagesBucketList)) {
             bucketMap.clear();
             buildImagesBucketList();
@@ -92,7 +92,7 @@ public class AlbumHelper {
      * @param refresh
      * @return
      */
-    public Map<String, ImageBucket> getImagesBucketMapSortByDatemodify(boolean needRefresh) {
+    public Map<String, Bucket> getImagesBucketMapSortByDatemodify(boolean needRefresh) {
         if (needRefresh || (!needRefresh && !hasBuildImagesBucketList)) {
             bucketMap.clear();
             buildImagesBucketList();
@@ -105,15 +105,14 @@ public class AlbumHelper {
      * 根据修改时间排序
      */
     public void sortByDatemodify() {
-        for (Entry<String, ImageBucket> entry : bucketMap.entrySet()) {
-            ImageBucket imageBucket = entry.getValue();
+        for (Entry<String, Bucket> entry : bucketMap.entrySet()) {
+            Bucket imageBucket = entry.getValue();
             if (null != imageBucket.imageList) {
-                Collections.sort(imageBucket.imageList, new Comparator<ImageItem>() {
+                Collections.sort(imageBucket.imageList, new Comparator<BucketImage>() {
                     @Override
-                    public int compare(ImageItem imageItem1, ImageItem imageItem2) {
+                    public int compare(BucketImage imageItem1, BucketImage imageItem2) {
                         long dateModifyLong1 = Long.valueOf(imageItem1.dateModify);
                         long dateModifyLong2 = Long.valueOf(imageItem2.dateModify);
-
                         return dateModifyLong1 < dateModifyLong2 ? 1 : -1;
                     }
                 });
@@ -175,15 +174,15 @@ public class AlbumHelper {
                     String bucketId = cursor.getString(bucketIdColumn);
                     String bucketName = cursor.getString(bucketDisplayNameColumn);
                     String imagePath = cursor.getString(imagePathColumn);
-                    ImageBucket bucket = bucketMap.get(bucketId);
+                    Bucket bucket = bucketMap.get(bucketId);
                     if (null == bucket) {
-                        bucket = new ImageBucket();
+                        bucket = new Bucket();
                         bucketMap.put(bucketId, bucket);
-                        bucket.imageList = new ArrayList<ImageItem>();
+                        bucket.imageList = new ArrayList<BucketImage>();
                         bucket.bucketName = bucketName;
                         bucket.bucketId = bucketId;
                     }
-                    ImageItem imageItem = new ImageItem();
+                    BucketImage imageItem = new BucketImage();
                     imageItem.imageId = imageId;
                     imageItem.imagePath = imagePath;
                     imageItem.thumbnailPath = imageId2ThumbnailPathMap.get(imageId);

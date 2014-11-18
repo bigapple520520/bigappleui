@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.dazzle.bigappleui.demo.album.AlbumDemo;
 import com.dazzle.bigappleui.demo.gifview.GifViewDemoActivity;
 import com.dazzle.bigappleui.demo.lettersort.LetterSortDemoActivity;
 import com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity;
@@ -35,11 +36,12 @@ public class BigappleUiMain extends Activity {
         addButton("列表字母分类排序 + 侧滑删除", LetterSortDemoActivity.class);
         addButton("侧滑模式实现", SlidingMenuDemoActivity.class);
         addButton("上下滑动有惊喜实现", SlidingUpDownDemoActivity.class);
-        addButton("下拉刷新实现", Pull2RefreshDemoActivity.class);
+        addButton("下拉刷新控件", Pull2RefreshDemoActivity.class);
         addButton("查看大图缩放控件demo", ZoomImageViewDemoActivity.class);
         addButton("圆角图片实现", RoundedImageViewDemoActivity.class);
         addButton("SlipButton滑块demo", SlipButtonDemoActivity.class);
         addButton("NumRadioButton测试", NumRadioButtonDemoActivity.class);
+        addButton("album选择相册", AlbumDemo.class);
     }
 
     private void addButton(String text, final Class<?> clazz) {

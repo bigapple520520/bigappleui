@@ -36,17 +36,24 @@
         <activity android:name="com.dazzle.bigappleui.demo.lettersort.LetterSortDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.slidingmenu.SlidingMenuDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity2" />
         <activity android:name="com.dazzle.bigappleui.demo.view.zoomimageview.ZoomImageViewDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.roundedimageview.RoundedImageViewDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.SlipButtonDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.slidingupdown.SlidingUpDownDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.NumRadioButtonDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.album.AlbumDemo" />
+        <activity android:name="com.dazzle.bigappleui.pullrefresh.PullRefreshListViewActivity" />
+        <activity android:name="com.dazzle.bigappleui.pullrefresh.PullRefreshScrollViewActivity" />
         
-        <!-- 查看大图控件需要在这里注册Activity，或者注册继承他的自定义的Activity -->
+        <!-- 查看大图控件需要在这里注册Activity，或者注册继承他的自定义的Activity，获自定义 -->
         <activity android:name="com.dazzle.bigappleui.view.photoview.app.ViewImageActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
-        
         <!-- 自定义 -->
         <activity android:name="com.dazzle.bigappleui.demo.view.zoomimageview.MyViewImageActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
+    
+        <!-- 如果想要使用相册，如要配置下面的Activity -->
+        <activity android:name="com.dazzle.bigappleui.album.activity.BucketActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
+        <activity android:name="com.dazzle.bigappleui.album.activity.BucketImageActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
     </application>
 
 </manifest>
