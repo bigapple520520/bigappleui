@@ -117,7 +117,6 @@ public class HeaderLoadingLayout extends LoadingLayout {
     protected void onStateChanged(State curState, State oldState) {
         mArrowImageView.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.INVISIBLE);
-
         super.onStateChanged(curState, oldState);
     }
 
@@ -149,7 +148,7 @@ public class HeaderLoadingLayout extends LoadingLayout {
         mArrowImageView.clearAnimation();
         mArrowImageView.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
-        mHintTextView.setText("正在加载中");
+        mHintTextView.setText("正在加载...");
     }
 
 }

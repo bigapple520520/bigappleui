@@ -50,29 +50,22 @@ public class PullToRefreshWebView extends PullToRefreshBase<WebView> {
         super(context, attrs, defStyle);
     }
 
-    /**
-     * @see com.nj1s.lib.pullrefresh.PullToRefreshBase#createRefreshableView(android.content.Context,
-     *      android.util.AttributeSet)
-     */
     @Override
     protected WebView createRefreshableView(Context context, AttributeSet attrs) {
         WebView webView = new WebView(context);
         return webView;
     }
 
-    /**
-     * @see com.nj1s.lib.pullrefresh.PullToRefreshBase#isReadyForPullDown()
-     */
     @Override
     protected boolean isReadyForPullDown() {
         return mRefreshableView.getScrollY() == 0;
     }
 
-    /**
-     * @see com.nj1s.lib.pullrefresh.PullToRefreshBase#isReadyForPullUp()
-     */
     @Override
     protected boolean isReadyForPullUp() {
+        /**
+         * 这里的逻辑是这样的：WebView的高减去这个控件本身的高就是可滑动区间偏移
+         */
         float exactContentHeight = FloatMath.floor(mRefreshableView.getContentHeight() * mRefreshableView.getScale());
         return mRefreshableView.getScrollY() >= (exactContentHeight - mRefreshableView.getHeight());
     }

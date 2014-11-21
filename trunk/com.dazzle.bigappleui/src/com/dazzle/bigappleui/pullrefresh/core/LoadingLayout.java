@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
- * 这个类定义了Header和Footer的共通行为
+ * 这个类定义了Header和Footer布局的共通行为，即他们的基类
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-17 上午11:32:39 $
@@ -56,7 +56,6 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
      */
     public LoadingLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
         init(context, attrs);
     }
 
@@ -83,10 +82,10 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
      * 显示或隐藏这个布局
      * 
      * @param show
-     *            flag
+     *            true显示false不显示
      */
     public void show(boolean show) {
-        // If is showing, do nothing.
+        // 设置的显示状态和当前一致，什么都不做直接返回
         if (show == (View.VISIBLE == getVisibility())) {
             return;
         }
@@ -107,20 +106,18 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
      * 设置最后更新的时间文本
      * 
      * @param label
-     *            文本
+     *            时间文本
      */
     public void setLastUpdatedLabel(CharSequence label) {
-
     }
 
     /**
      * 设置加载中的图片
      * 
      * @param drawable
-     *            图片
+     *            图片资源
      */
     public void setLoadingDrawable(Drawable drawable) {
-
     }
 
     /**
@@ -130,7 +127,6 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
      *            拉动的文本
      */
     public void setPullLabel(CharSequence pullLabel) {
-
     }
 
     /**
@@ -140,7 +136,6 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
      *            刷新文本
      */
     public void setRefreshingLabel(CharSequence refreshingLabel) {
-
     }
 
     /**
@@ -150,7 +145,6 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
      *            释放文本
      */
     public void setReleaseLabel(CharSequence releaseLabel) {
-
     }
 
     @Override
@@ -169,7 +163,6 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 
     @Override
     public void onPull(float scale) {
-
     }
 
     /**
@@ -194,23 +187,18 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
         case RESET:
             onReset();
             break;
-
         case RELEASE_TO_REFRESH:
             onReleaseToRefresh();
             break;
-
         case PULL_TO_REFRESH:
             onPullToRefresh();
             break;
-
         case REFRESHING:
             onRefreshing();
             break;
-
         case NO_MORE_DATA:
             onNoMoreData();
             break;
-
         default:
             break;
         }
@@ -220,35 +208,30 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
      * 当状态设置为{@link State#RESET}时调用
      */
     protected void onReset() {
-
     }
 
     /**
      * 当状态设置为{@link State#PULL_TO_REFRESH}时调用
      */
     protected void onPullToRefresh() {
-
     }
 
     /**
      * 当状态设置为{@link State#RELEASE_TO_REFRESH}时调用
      */
     protected void onReleaseToRefresh() {
-
     }
 
     /**
      * 当状态设置为{@link State#REFRESHING}时调用
      */
     protected void onRefreshing() {
-
     }
 
     /**
      * 当状态设置为{@link State#NO_MORE_DATA}时调用
      */
     protected void onNoMoreData() {
-
     }
 
     /**

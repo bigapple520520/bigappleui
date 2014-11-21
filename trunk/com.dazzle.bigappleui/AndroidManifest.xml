@@ -35,14 +35,19 @@
         <activity android:name="com.dazzle.bigappleui.demo.viewpage.CyclePageDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.lettersort.LetterSortDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.slidingmenu.SlidingMenuDemoActivity" />
-        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity" />
-        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity2" />
         <activity android:name="com.dazzle.bigappleui.demo.view.zoomimageview.ZoomImageViewDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.roundedimageview.RoundedImageViewDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.SlipButtonDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.slidingupdown.SlidingUpDownDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.NumRadioButtonDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.album.AlbumDemo" />
+        
+        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.ListViewDemo" />
+        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.GridViewDemo" />
+        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.WebViewDemo" />
+        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.ScrollViewDemo" />
+        
         <activity android:name="com.dazzle.bigappleui.pullrefresh.PullRefreshListViewActivity" />
         <activity android:name="com.dazzle.bigappleui.pullrefresh.PullRefreshScrollViewActivity" />
         

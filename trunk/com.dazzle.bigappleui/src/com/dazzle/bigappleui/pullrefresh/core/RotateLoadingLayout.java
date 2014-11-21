@@ -15,10 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dazzle.bigappleui.R;
-import com.dazzle.bigappleui.pullrefresh.core.LoadingLayout;
 
 /**
- * 这个类封装了下拉刷新的布局
+ * 这个类封装了下拉刷新的布局，有些低版本的手机不支持，慎用
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-17 上午11:34:15 $

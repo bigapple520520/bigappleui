@@ -7,7 +7,7 @@ import android.view.View;
 import com.dazzle.bigappleui.pullrefresh.core.PullToRefreshBase.OnRefreshListener;
 
 /**
- * 定义了拉动刷新的接口
+ * 定义了拉动刷新的接口，一些主要操作方法
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-13 下午4:07:20 $
@@ -18,7 +18,7 @@ public interface IPullToRefresh<T extends View> {
      * 设置当前下拉刷新是否可用
      * 
      * @param pullRefreshEnabled
-     *            true表示可用，false表示不可用
+     *            true可用，false不可用
      */
     public void setPullRefreshEnabled(boolean pullRefreshEnabled);
 
@@ -26,7 +26,7 @@ public interface IPullToRefresh<T extends View> {
      * 设置当前上拉加载更多是否可用
      * 
      * @param pullLoadEnabled
-     *            true表示可用，false表示不可用
+     *            true可用，false不可用
      */
     public void setPullLoadEnabled(boolean pullLoadEnabled);
 
@@ -55,17 +55,9 @@ public interface IPullToRefresh<T extends View> {
     /**
      * 滑动到底部加载是否可用
      * 
-     * @return true可用，否则不可用
+     * @return true可用，false不可用
      */
     public boolean isScrollLoadEnabled();
-
-    /**
-     * 设置刷新的监听器
-     * 
-     * @param refreshListener
-     *            监听器对象
-     */
-    public void setOnRefreshListener(OnRefreshListener<T> refreshListener);
 
     /**
      * 结束下拉刷新
@@ -76,6 +68,22 @@ public interface IPullToRefresh<T extends View> {
      * 结束上拉加载更多
      */
     public void onPullUpRefreshComplete();
+
+    /**
+     * 设置刷新的监听器
+     * 
+     * @param refreshListener
+     *            监听器对象
+     */
+    public void setOnRefreshListener(OnRefreshListener<T> refreshListener);
+
+    /**
+     * 设置最后更新的时间文本
+     * 
+     * @param label
+     *            时间文本
+     */
+    public void setLastUpdatedLabel(CharSequence label);
 
     /**
      * 得到可刷新的View对象
@@ -97,13 +105,5 @@ public interface IPullToRefresh<T extends View> {
      * @return Footer布局对象
      */
     public LoadingLayout getFooterLoadingLayout();
-
-    /**
-     * 设置最后更新的时间文本
-     * 
-     * @param label
-     *            文本
-     */
-    public void setLastUpdatedLabel(CharSequence label);
 
 }

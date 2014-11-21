@@ -8,23 +8,19 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.Adapter;
 import android.widget.GridView;
 
-import com.dazzle.bigappleui.pullrefresh.core.FooterLoadingLayout;
 import com.dazzle.bigappleui.pullrefresh.core.ILoadingLayout.State;
 import com.dazzle.bigappleui.pullrefresh.core.LoadingLayout;
 import com.dazzle.bigappleui.pullrefresh.core.PullToRefreshBase;
 
 /**
- * 这个类实现了GridView下拉刷新，上加载更多和滑到底部自动加载
+ * 这个类实现了GridView下拉刷新，上加载更多，注意不支持滚动到底部加载更多
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-17 上午11:38:59 $
  */
 public class PullToRefreshGridView extends PullToRefreshBase<GridView> implements OnScrollListener {
-
-    /** ListView */
+    /** GridView */
     private GridView mGridView;
-    /** 用于滑到底部自动加载的Footer */
-    private LoadingLayout mFooterLayout;
     /** 滚动的监听器 */
     private OnScrollListener mScrollListener;
 
@@ -62,31 +58,13 @@ public class PullToRefreshGridView extends PullToRefreshBase<GridView> implement
      */
     public PullToRefreshGridView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
-        setPullLoadEnabled(false);
     }
 
     @Override
     protected GridView createRefreshableView(Context context, AttributeSet attrs) {
-        GridView gridView = new GridView(context);
-        mGridView = gridView;
-        gridView.setOnScrollListener(this);
-
-        return gridView;
-    }
-
-    /**
-     * 设置是否有更多数据的标志
-     * 
-     * @param hasMoreData
-     *            true表示还有更多的数据，false表示没有更多数据了
-     */
-    public void setHasMoreData(boolean hasMoreData) {
-        if (null != mFooterLayout) {
-            if (!hasMoreData) {
-                mFooterLayout.setState(State.NO_MORE_DATA);
-            }
-        }
+        mGridView = new GridView(context);
+        mGridView.setOnScrollListener(this);
+        return mGridView;
     }
 
     /**
@@ -107,44 +85,6 @@ public class PullToRefreshGridView extends PullToRefreshBase<GridView> implement
     @Override
     protected boolean isReadyForPullDown() {
         return isFirstItemVisible();
-    }
-
-    @Override
-    protected void startLoading() {
-        super.startLoading();
-
-        if (null != mFooterLayout) {
-            mFooterLayout.setState(State.REFRESHING);
-        }
-    }
-
-    @Override
-    public void onPullUpRefreshComplete() {
-        super.onPullUpRefreshComplete();
-
-        if (null != mFooterLayout) {
-            mFooterLayout.setState(State.RESET);
-        }
-    }
-
-    @Override
-    public void setScrollLoadEnabled(boolean scrollLoadEnabled) {
-        super.setScrollLoadEnabled(scrollLoadEnabled);
-
-        if (scrollLoadEnabled) {
-            // 设置Footer
-            if (null == mFooterLayout) {
-                mFooterLayout = new FooterLoadingLayout(getContext());
-            }
-
-            // mGridView.removeFooterView(mFooterLayout);
-            // mGridView.addFooterView(mFooterLayout, null, false);
-        }
-        else {
-            if (null != mFooterLayout) {
-                // mGridView.removeFooterView(mFooterLayout);
-            }
-        }
     }
 
     @Override
@@ -170,12 +110,27 @@ public class PullToRefreshGridView extends PullToRefreshBase<GridView> implement
     }
 
     /**
+     * 设置是否有更多数据的标志
+     * 
+     * @param hasMoreData
+     *            true表示还有更多的数据，false表示没有更多数据了
+     */
+    public void setHasMoreData(boolean hasMoreData) {
+        if (!hasMoreData) {
+            LoadingLayout footerLoadingLayout = getFooterLoadingLayout();
+            if (null != footerLoadingLayout) {
+                footerLoadingLayout.setState(State.NO_MORE_DATA);
+            }
+        }
+    }
+
+    /**
      * 表示是否还有更多数据
      * 
      * @return true表示还有更多数据
      */
-    private boolean hasMoreData() {
-        if ((null != mFooterLayout) && (mFooterLayout.getState() == State.NO_MORE_DATA)) {
+    public boolean hasMoreData() {
+        if ((null != getFooterLoadingLayout()) && (getFooterLoadingLayout().getState() == State.NO_MORE_DATA)) {
             return false;
         }
 
@@ -218,9 +173,8 @@ public class PullToRefreshGridView extends PullToRefreshBase<GridView> implement
         final int lastVisiblePosition = mGridView.getLastVisiblePosition();
 
         /**
-         * This check should really just be: lastVisiblePosition == lastItemPosition, but ListView internally uses a
-         * FooterView which messes the positions up. For me we'll just subtract one to account for it and rely on the
-         * inner condition which checks getBottom().
+         * 这个检查条件其实应该是：lastVisiblePosition == lastItemPosition,但是ListView内部会使用一个FooterView导致了位置错乱。
+         * 我的解决方案就是减去一个，然后在内部用getBottom()方法再去判断一下
          */
         if (lastVisiblePosition >= lastItemPosition - 1) {
             final int childIndex = lastVisiblePosition - mGridView.getFirstVisiblePosition();
@@ -234,4 +188,5 @@ public class PullToRefreshGridView extends PullToRefreshBase<GridView> implement
 
         return false;
     }
+
 }

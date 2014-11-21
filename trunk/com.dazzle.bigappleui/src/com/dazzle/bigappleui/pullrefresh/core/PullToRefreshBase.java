@@ -6,7 +6,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
@@ -122,75 +121,27 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 
         addRefreshableView(context, mRefreshableView);
         addHeaderAndFooter(context);
-
-        // 得到Header的高度，这个高度需要用这种方式得到，在onLayout方法里面得到的高度始终是0
-        getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                refreshLoadingViewsSize();
-                getViewTreeObserver().removeGlobalOnLayoutListener(this);
-            }
-        });
-    }
-
-    /**
-     * 初始化padding，我们根据header和footer的高度来设置top padding和bottom padding
-     */
-    private void refreshLoadingViewsSize() {
-        // 得到header和footer的内容高度，它将会作为拖动刷新的一个临界值，如果拖动距离大于这个高度
-        // 然后再松开手，就会触发刷新操作
-        int headerHeight = (null != mHeaderLayout) ? mHeaderLayout.getContentSize() : 0;
-        int footerHeight = (null != mFooterLayout) ? mFooterLayout.getContentSize() : 0;
-
-        if (headerHeight < 0) {
-            headerHeight = 0;
-        }
-
-        if (footerHeight < 0) {
-            footerHeight = 0;
-        }
-
-        mHeaderHeight = headerHeight;
-        mFooterHeight = footerHeight;
-
-        // 这里得到Header和Footer的高度，设置的padding的top和bottom就应该是header和footer的高度
-        // 因为header和footer是完全看不见的
-        headerHeight = (null != mHeaderLayout) ? mHeaderLayout.getMeasuredHeight() : 0;
-        footerHeight = (null != mFooterLayout) ? mFooterLayout.getMeasuredHeight() : 0;
-        if (0 == footerHeight) {
-            footerHeight = mFooterHeight;
-        }
-
-        int pLeft = getPaddingLeft();
-        int pTop = getPaddingTop();
-        int pRight = getPaddingRight();
-        int pBottom = getPaddingBottom();
-
-        pTop = -headerHeight;
-        pBottom = -footerHeight;
-
-        setPadding(pLeft, pTop, pRight, pBottom);
     }
 
     @Override
     protected final void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        // We need to update the header/footer when our size changes
+        // 当footer布局和header布局变动时，需要修改padding值，让他们处于不可见状态
         refreshLoadingViewsSize();
 
-        // 设置刷新View的大小
+        // 重新设置包装器的高度
         refreshRefreshableViewSize(w, h);
 
         /**
          * As we're currently in a Layout Pass, we need to schedule another one to layout any changes we've made here
          */
-        post(new Runnable() {
-            @Override
-            public void run() {
-                requestLayout();
-            }
-        });
+        // post(new Runnable() {
+        // @Override
+        // public void run() {
+        // // requestLayout();
+        // }
+        // });
     }
 
     @Override
@@ -199,7 +150,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
             throw new IllegalArgumentException("This class only supports VERTICAL orientation.");
         }
 
-        // Only support vertical orientation
+        // 这个控件虽然是继承了LinearLayout，但是只能支持垂直VERTICAL布局哦
         super.setOrientation(orientation);
     }
 
@@ -233,9 +184,9 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
             final float deltaY = event.getY() - mLastMotionY;
             final float absDiff = Math.abs(deltaY);
             // 这里有三个条件：
-            // 1，位移差大于mTouchSlop，这是为了防止快速拖动引发刷新
+            // 1，位移差大于mTouchSlop，这是为了防止细微滑动，而此时用户是本不想滑动的误差
             // 2，isPullRefreshing()，如果当前正在下拉刷新的话，是允许向上滑动，并把刷新的HeaderView挤上去
-            // 3，isPullLoading()，理由与第2条相同
+            // 3，isPullLoading()，如果正在上拉加载更多，是允许向下滑动，并把刷新的footer挤下去
             if (absDiff > mTouchSlop || isPullRefreshing() || isPullLoading()) {
                 mLastMotionY = event.getY();
                 // 第一个显示出来，Header已经显示或拉下
@@ -246,7 +197,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
                     // 2，deltaY > 0.5f：表示下拉的值大于0.5f
                     mIsHandledTouchEvent = (Math.abs(getScrollYValue()) > 0 || deltaY > 0.5f);
                     // 如果截断事件，我们则仍然把这个事件交给刷新View去处理，典型的情况是让ListView/GridView将按下
-                    // Child的Selector隐藏
+                    // Child的Selector隐藏，防止事件冲突，因为当mIsHandledTouchEvent返回true时系统不会再把事件传递给子控件了
                     if (mIsHandledTouchEvent) {
                         mRefreshableView.onTouchEvent(event);
                     }
@@ -257,7 +208,6 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
                 }
             }
             break;
-
         default:
             break;
         }
@@ -296,16 +246,16 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
                 mIsHandledTouchEvent = false;
                 // 当第一个显示出来时
                 if (isReadyForPullDown()) {
-                    // 调用刷新
                     if (mPullRefreshEnabled && (mPullDownState == State.RELEASE_TO_REFRESH)) {
+                        // 下拉到一定程度触发的
                         startRefreshing();
                         handled = true;
                     }
                     resetHeaderLayout();
                 }
                 else if (isReadyForPullUp()) {
-                    // 加载更多
                     if (isPullLoadEnabled() && (mPullUpState == State.RELEASE_TO_REFRESH)) {
+                        // 上拉到一定程度触发的
                         startLoading();
                         handled = true;
                     }
@@ -313,116 +263,11 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
                 }
             }
             break;
-
         default:
             break;
         }
 
         return handled;
-    }
-
-    @Override
-    public void setPullRefreshEnabled(boolean pullRefreshEnabled) {
-        mPullRefreshEnabled = pullRefreshEnabled;
-    }
-
-    @Override
-    public void setPullLoadEnabled(boolean pullLoadEnabled) {
-        mPullLoadEnabled = pullLoadEnabled;
-    }
-
-    @Override
-    public void setScrollLoadEnabled(boolean scrollLoadEnabled) {
-        mScrollLoadEnabled = scrollLoadEnabled;
-    }
-
-    @Override
-    public boolean isPullRefreshEnabled() {
-        return mPullRefreshEnabled && (null != mHeaderLayout);
-    }
-
-    @Override
-    public boolean isPullLoadEnabled() {
-        return mPullLoadEnabled && (null != mFooterLayout);
-    }
-
-    @Override
-    public boolean isScrollLoadEnabled() {
-        return mScrollLoadEnabled;
-    }
-
-    @Override
-    public void setOnRefreshListener(OnRefreshListener<T> refreshListener) {
-        mRefreshListener = refreshListener;
-    }
-
-    @Override
-    public void onPullDownRefreshComplete() {
-        if (isPullRefreshing()) {
-            mPullDownState = State.RESET;
-            onStateChanged(State.RESET, true);
-
-            // 回滚动有一个时间，我们在回滚完成后再设置状态为normal
-            // 在将LoadingLayout的状态设置为normal之前，我们应该禁止
-            // 截断Touch事件，因为设里有一个post状态，如果有post的Runnable
-            // 未被执行时，用户再一次发起下拉刷新，如果正在刷新时，这个Runnable
-            // 再次被执行到，那么就会把正在刷新的状态改为正常状态，这就不符合期望
-            postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setInterceptTouchEventEnabled(true);
-                    mHeaderLayout.setState(State.RESET);
-                }
-            }, getSmoothScrollDuration());
-
-            resetHeaderLayout();
-            setInterceptTouchEventEnabled(false);
-        }
-    }
-
-    @Override
-    public void onPullUpRefreshComplete() {
-        if (isPullLoading()) {
-            mPullUpState = State.RESET;
-            onStateChanged(State.RESET, false);
-
-            postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setInterceptTouchEventEnabled(true);
-                    mFooterLayout.setState(State.RESET);
-                }
-            }, getSmoothScrollDuration());
-
-            resetFooterLayout();
-            setInterceptTouchEventEnabled(false);
-        }
-    }
-
-    @Override
-    public T getRefreshableView() {
-        return mRefreshableView;
-    }
-
-    @Override
-    public LoadingLayout getHeaderLoadingLayout() {
-        return mHeaderLayout;
-    }
-
-    @Override
-    public LoadingLayout getFooterLoadingLayout() {
-        return mFooterLayout;
-    }
-
-    @Override
-    public void setLastUpdatedLabel(CharSequence label) {
-        if (null != mHeaderLayout) {
-            mHeaderLayout.setLastUpdatedLabel(label);
-        }
-
-        if (null != mFooterLayout) {
-            mFooterLayout.setLastUpdatedLabel(label);
-        }
     }
 
     /**
@@ -447,30 +292,15 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
     }
 
     /**
-     * 创建可以刷新的View
+     * 得到平滑滚动的时间，派生类可以重写这个方法来控件滚动时间
      * 
-     * @param context
-     *            context
-     * @param attrs
-     *            属性
-     * @return View
+     * @return 返回值时间为毫秒
      */
-    protected abstract T createRefreshableView(Context context, AttributeSet attrs);
+    protected long getSmoothScrollDuration() {
+        return SCROLL_DURATION;
+    }
 
-    /**
-     * 判断刷新的View是否滑动到顶部
-     * 
-     * @return true表示已经滑动到顶部，否则false
-     */
-    protected abstract boolean isReadyForPullDown();
-
-    /**
-     * 判断刷新的View是否滑动到底
-     * 
-     * @return true表示已经滑动到底部，否则false
-     */
-    protected abstract boolean isReadyForPullUp();
-
+    // //////////////////////////////////////////创建头部或者尾部方法///////////////////////////////////////////
     /**
      * 创建Header的布局
      * 
@@ -497,17 +327,20 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
         return new FooterLoadingLayout(context);
     }
 
+    // ///////////////////////////////调整布局方法////////////////////////////////////////////////////
     /**
-     * 得到平滑滚动的时间，派生类可以重写这个方法来控件滚动时间
-     * 
-     * @return 返回值时间为毫秒
+     * 主要设置padding的top值和bottom值，这样可使头部和尾部布局处于不可见状态
      */
-    protected long getSmoothScrollDuration() {
-        return SCROLL_DURATION;
+    private void refreshLoadingViewsSize() {
+        mHeaderHeight = (null != mHeaderLayout) ? mHeaderLayout.getMeasuredHeight() : 0;
+        mFooterHeight = (null != mFooterLayout) ? mFooterLayout.getMeasuredHeight() : 0;
+        setPadding(getPaddingLeft(), getPaddingTop() - mHeaderHeight, getPaddingRight(), getPaddingBottom()
+                - mFooterHeight);
     }
 
     /**
-     * 计算刷新View的大小
+     * 重新设置刷新包装器的高度，使其到正常高度<br>
+     * 因为在addRefreshableView方法中我们为了确保footer的高度测量正常，而把包装器的高度设置了一个很小的值
      * 
      * @param width
      *            当前容器的宽度
@@ -524,6 +357,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
         }
     }
 
+    // //////////////////////////添加头部，尾部，中间View方法//////////////////////////////////////////////////
     /**
      * 将刷新View添加到当前容器中
      * 
@@ -533,22 +367,19 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
      *            可以刷新的View
      */
     protected void addRefreshableView(Context context, T refreshableView) {
-        int width = ViewGroup.LayoutParams.MATCH_PARENT;
-        int height = ViewGroup.LayoutParams.MATCH_PARENT;
-
-        // 创建一个包装容器
+        // 创建一个包装容器，并把刷新容器放入包装容器中去
         mRefreshableViewWrapper = new FrameLayout(context);
-        mRefreshableViewWrapper.addView(refreshableView, width, height);
+        mRefreshableViewWrapper.addView(refreshableView, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
 
-        // 这里把Refresh view的高度设置为一个很小的值，它的高度最终会在onSizeChanged()方法中设置为MATCH_PARENT
-        // 这样做的原因是，如果此是它的height是MATCH_PARENT，那么footer得到的高度就是0，所以，我们先设置高度很小
-        // 我们就可以得到header和footer的正常高度，当onSizeChanged后，Refresh view的高度又会变为正常。
-        height = 10;
-        addView(mRefreshableViewWrapper, new LinearLayout.LayoutParams(width, height));
+        // 这里把包装器的高度设置为一个很小的值，它的高度最终会在onSizeChanged()方法中设置为MATCH_PARENT
+        // 这样做的原因是，如果此是它的height是MATCH_PARENT，那么在测量footer时，footer得到的高度就是0，所以，我们先设置高度很小
+        // 我们就可以得到footer的正常高度，当onSizeChanged后，包装器的高度又会变为正常。
+        addView(mRefreshableViewWrapper, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 10));
     }
 
     /**
-     * 添加Header和Footer
+     * 添加Header和Footer布局
      * 
      * @param context
      *            context
@@ -556,27 +387,11 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
     protected void addHeaderAndFooter(Context context) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        final LoadingLayout headerLayout = mHeaderLayout;
-        final LoadingLayout footerLayout = mFooterLayout;
-
-        if (null != headerLayout) {
-            if (this == headerLayout.getParent()) {
-                removeView(headerLayout);
-            }
-
-            addView(headerLayout, 0, params);
-        }
-
-        if (null != footerLayout) {
-            if (this == footerLayout.getParent()) {
-                removeView(footerLayout);
-            }
-
-            addView(footerLayout, -1, params);
-        }
+        addView(mHeaderLayout, 0, params);
+        addView(mFooterLayout, -1, params);
     }
 
+    // ///////////////////////////////拉动头部或者尾部方法////////////////////////////////////////////////////////
     /**
      * 拉动Header Layout时调用
      * 
@@ -648,45 +463,53 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
         }
     }
 
+    // ///////////////////////////////////////设置头部或者尾部方法///////////////////////////////////////////
+
     /**
-     * 得置header
+     * 重置header,规则是：<br>
+     * 如果不是正在加载中状态，header设置到不可见<br>
+     * 如果是正在加载状态：（1）小于等于header高设置header不可见，（2）Y偏移大于header高显示header可见
      */
     protected void resetHeaderLayout() {
         final int scrollY = Math.abs(getScrollYValue());
         final boolean refreshing = isPullRefreshing();
 
-        if (refreshing && scrollY <= mHeaderHeight) {
+        if (!refreshing) {
             smoothScrollTo(0);
-            return;
-        }
-
-        if (refreshing) {
-            smoothScrollTo(-mHeaderHeight);
         }
         else {
-            smoothScrollTo(0);
+            if (scrollY <= mHeaderHeight) {
+                smoothScrollTo(0);
+            }
+            else {
+                smoothScrollTo(-mHeaderHeight);
+            }
         }
     }
 
     /**
-     * 重置footer
+     * 重置footer,规则是：<br>
+     * 如果不是正在加载中状态，footer设置到不可见<br>
+     * 如果是正在加载状态：（1）小于等于footer高设置footer不可见，（2）Y偏移大于footer高显示footer可见
      */
     protected void resetFooterLayout() {
         int scrollY = Math.abs(getScrollYValue());
         boolean isPullLoading = isPullLoading();
 
-        if (isPullLoading && scrollY <= mFooterHeight) {
+        if (!isPullLoading) {
             smoothScrollTo(0);
-            return;
-        }
-
-        if (isPullLoading) {
-            smoothScrollTo(mFooterHeight);
         }
         else {
-            smoothScrollTo(0);
+            if (scrollY <= mFooterHeight) {
+                smoothScrollTo(0);
+            }
+            else {
+                smoothScrollTo(mFooterHeight);
+            }
         }
     }
+
+    // ////////////////////////////////////////////判断是否在刷新或者加载更多方法//////////////////////////////////
 
     /**
      * 判断是否正在下拉刷新
@@ -706,6 +529,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
         return (mPullUpState == State.REFRESHING);
     }
 
+    // /////////////////////////////////////////开始刷新或者加载更多方法///////////////////////////////////////////
     /**
      * 开始刷新，当下拉松开后被调用
      */
@@ -723,7 +547,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
         }
 
         if (null != mRefreshListener) {
-            // 因为滚动回原始位置的时间是200，我们需要等回滚完后才执行刷新回调
+            // 因为滚动到回原始位置需要一定时间，所以我们需要等回滚完后才执行刷新回调
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -761,17 +585,15 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
     }
 
     /**
-     * 当状态发生变化时调用
+     * 得到当前Y的滚动值
      * 
-     * @param state
-     *            状态
-     * @param isPullDown
-     *            是否向下
+     * @return 滚动值
      */
-    protected void onStateChanged(State state, boolean isPullDown) {
-
+    private int getScrollYValue() {
+        return getScrollY();
     }
 
+    // /////////////////////////////////////在Y轴方向滚动///////////////////////////////////////////////////
     /**
      * 设置滚动位置
      * 
@@ -797,16 +619,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
     }
 
     /**
-     * 得到当前Y的滚动值
-     * 
-     * @return 滚动值
-     */
-    private int getScrollYValue() {
-        return getScrollY();
-    }
-
-    /**
-     * 平滑滚动
+     * 平滑滚动到指定位置，不进行延时
      * 
      * @param newScrollValue
      *            滚动的值
@@ -816,7 +629,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
     }
 
     /**
-     * 平滑滚动
+     * 平滑滚动到到指定位置
      * 
      * @param newScrollValue
      *            滚动的值
@@ -831,12 +644,9 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
         }
 
         int oldScrollValue = this.getScrollYValue();
-        boolean post = (oldScrollValue != newScrollValue);
-        if (post) {
+        if (oldScrollValue != newScrollValue) {
             mSmoothScrollRunnable = new SmoothScrollRunnable(oldScrollValue, newScrollValue, duration);
-        }
 
-        if (post) {
             if (delayMillis > 0) {
                 postDelayed(mSmoothScrollRunnable, delayMillis);
             }
@@ -846,6 +656,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
         }
     }
 
+    // /////////////////////////////////设置是否截断touch事件/////////////////////////////////////////
     /**
      * 设置是否截断touch事件
      * 
@@ -865,6 +676,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
         return mInterceptEventEnable;
     }
 
+    // ////////////////////////////////////////////内部类以及接口/////////////////////////////////////////////////
     /**
      * 实现了平滑滚动的Runnable
      * 
@@ -907,7 +719,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
         @Override
         public void run() {
             /**
-             * If the duration is 0, we scroll the view to target y directly.
+             * 如果间隔时间小于0，我们就直接定位到目的地
              */
             if (mDuration <= 0) {
                 setScrollTo(0, mScrollToY);
@@ -915,7 +727,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
             }
 
             /**
-             * Only set mStartTime if this is the first time we're starting, else actually calculate the Y delta
+             * 这个任务类第一次执行时，先设置开始时间为当前时间，之后会开始计算Y轴需要滑动的距离
              */
             if (mStartTime == -1) {
                 mStartTime = System.currentTimeMillis();
@@ -937,7 +749,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
                 setScrollTo(0, mCurrentY);
             }
 
-            // If we're not at the target Y, keep going...
+            // 如果当前的Y轴位置还没有达到预定位置，继续post该任务到UI线程执行，达到持续滑动中...
             if (mContinueRunning && mScrollToY != mCurrentY) {
                 PullToRefreshBase.this.postDelayed(this, 16);// SUPPRESS CHECKSTYLE
             }
@@ -952,11 +764,152 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
         }
     }
 
+    // /////////////////////////////////IPullToRefresh实现////////////////////////////////////////////////////////
+    @Override
+    public void setPullRefreshEnabled(boolean pullRefreshEnabled) {
+        mPullRefreshEnabled = pullRefreshEnabled;
+    }
+
+    @Override
+    public void setPullLoadEnabled(boolean pullLoadEnabled) {
+        mPullLoadEnabled = pullLoadEnabled;
+    }
+
+    @Override
+    public void setScrollLoadEnabled(boolean scrollLoadEnabled) {
+        mScrollLoadEnabled = scrollLoadEnabled;
+    }
+
+    @Override
+    public boolean isPullRefreshEnabled() {
+        return mPullRefreshEnabled && (null != mHeaderLayout);
+    }
+
+    @Override
+    public boolean isPullLoadEnabled() {
+        return mPullLoadEnabled && (null != mFooterLayout);
+    }
+
+    @Override
+    public boolean isScrollLoadEnabled() {
+        return mScrollLoadEnabled;
+    }
+
+    @Override
+    public void setOnRefreshListener(OnRefreshListener<T> refreshListener) {
+        mRefreshListener = refreshListener;
+    }
+
+    @Override
+    public void onPullDownRefreshComplete() {
+        if (isPullRefreshing()) {
+            mPullDownState = State.RESET;
+            onStateChanged(State.RESET, true);
+
+            resetHeaderLayout();
+            setInterceptTouchEventEnabled(false);
+
+            // 回滚到正常状态有个时间间隔，在这个过程中我们要禁止进入拦截事件方法
+            // 因为如果不禁止，那么在回滚的过程中如果用户又发起刷新操作，而这时上一个回滚完成时会把状态设置成RESET
+            // 那么后面那次的刷新操作的状态就会被污染，我们不希望这样的
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setInterceptTouchEventEnabled(true);
+                    mHeaderLayout.setState(State.RESET);
+                }
+            }, getSmoothScrollDuration());
+        }
+    }
+
+    @Override
+    public void onPullUpRefreshComplete() {
+        if (isPullLoading()) {
+            mPullUpState = State.RESET;
+            onStateChanged(State.RESET, false);
+
+            resetFooterLayout();
+            setInterceptTouchEventEnabled(false);
+
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setInterceptTouchEventEnabled(true);
+                    mFooterLayout.setState(State.RESET);
+                }
+            }, getSmoothScrollDuration());
+        }
+    }
+
+    @Override
+    public T getRefreshableView() {
+        return mRefreshableView;
+    }
+
+    @Override
+    public LoadingLayout getHeaderLoadingLayout() {
+        return mHeaderLayout;
+    }
+
+    @Override
+    public LoadingLayout getFooterLoadingLayout() {
+        return mFooterLayout;
+    }
+
+    @Override
+    public void setLastUpdatedLabel(CharSequence label) {
+        if (null != mHeaderLayout) {
+            mHeaderLayout.setLastUpdatedLabel(label);
+        }
+
+        if (null != mFooterLayout) {
+            mFooterLayout.setLastUpdatedLabel(label);
+        }
+    }
+
+    // //////////////////////////////////子类可继承方法//////////////////////////////////////////////////////
+    /**
+     * 当状态发生变化时调用
+     * 
+     * @param state
+     *            状态
+     * @param isPullDown
+     *            是否是下拉刷新
+     */
+    protected void onStateChanged(State state, boolean isPullDown) {
+    }
+
+    // ////////////////////////////////子类必须继承方法/////////////////////////////////////////////////////
+    /**
+     * 创建可以刷新的View
+     * 
+     * @param context
+     *            context
+     * @param attrs
+     *            属性
+     * @return View
+     */
+    protected abstract T createRefreshableView(Context context, AttributeSet attrs);
+
+    /**
+     * 判断刷新的View是否滑动到顶部
+     * 
+     * @return true表示已经滑动到顶部，否则false
+     */
+    protected abstract boolean isReadyForPullDown();
+
+    /**
+     * 判断刷新的View是否滑动到底
+     * 
+     * @return true表示已经滑动到底部，否则false
+     */
+    protected abstract boolean isReadyForPullUp();
+
     /**
      * 定义了下拉刷新和上拉加载更多的接口
      * 
      * @author xuan
-     * @version $Revision: 1.0 $, $Date: 2014-11-13 下午4:09:26 $
+     * @version $Revision: 1.0 $, $Date: 2014-11-20 上午10:35:48 $
      */
     public interface OnRefreshListener<V extends View> {
 

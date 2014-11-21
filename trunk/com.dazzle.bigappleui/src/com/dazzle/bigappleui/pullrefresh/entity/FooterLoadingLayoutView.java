@@ -17,6 +17,7 @@ import android.widget.TextView;
  */
 public class FooterLoadingLayoutView {
     public LinearLayout root;
+    public LinearLayout footerContent;
     public ProgressBar progressBar;
     public TextView textView;
 }

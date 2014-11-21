@@ -8,6 +8,7 @@ package com.dazzle.bigappleui.pullrefresh.core;
 import android.app.Activity;
 import android.graphics.Color;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,23 +34,34 @@ public abstract class ViewHelper {
         LinearLayout root = new LinearLayout(activity);
         root.setOrientation(LinearLayout.HORIZONTAL);
 
-        // 进度条
+        // 创建footerContent布局
+        LinearLayout footerContent = new LinearLayout(activity);
+        LinearLayout.LayoutParams footerContentLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, getPx(activity, 60));
+        footerContent.setLayoutParams(footerContentLp);
+        footerContent.setGravity(Gravity.CENTER);
+        root.addView(footerContent);
+
+        // 创建进度条布局
         ProgressBar progressBar = new ProgressBar(activity);
         LinearLayout.LayoutParams progressBarLp = new LinearLayout.LayoutParams(getPx(activity, 28),
                 getPx(activity, 28));
+        progressBarLp.setMargins(0, 0, getPx(activity, 8), 0);
         progressBar.setLayoutParams(progressBarLp);
-        root.addView(progressBar);
+        footerContent.addView(progressBar);
 
-        // 提示文本
+        // 创建提示文本布局
         TextView textView = new TextView(activity);
-        LinearLayout.LayoutParams textViewLp = new LinearLayout.LayoutParams(getPx(activity, 28), getPx(activity, 28));
+        LinearLayout.LayoutParams textViewLp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         textView.setLayoutParams(textViewLp);
         textView.setTextColor(Color.parseColor("#999999"));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        root.addView(textView);
+        footerContent.addView(textView);
 
         FooterLoadingLayoutView footerLoadingLayoutView = new FooterLoadingLayoutView();
         footerLoadingLayoutView.root = root;
+        footerLoadingLayoutView.footerContent = footerContent;
         footerLoadingLayoutView.progressBar = progressBar;
         footerLoadingLayoutView.textView = textView;
         return footerLoadingLayoutView;

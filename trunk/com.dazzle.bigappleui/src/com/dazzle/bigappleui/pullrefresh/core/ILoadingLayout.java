@@ -7,6 +7,37 @@ package com.dazzle.bigappleui.pullrefresh.core;
  * @version $Revision: 1.0 $, $Date: 2014-11-13 下午3:48:40 $
  */
 public interface ILoadingLayout {
+
+    /**
+     * 设置当前状态，派生类应该根据这个状态的变化来改变View的变化
+     * 
+     * @param state
+     *            状态
+     */
+    public void setState(State state);
+
+    /**
+     * 得到当前的状态
+     * 
+     * @return 状态
+     */
+    public State getState();
+
+    /**
+     * 得到当前Layout的内容大小，它将作为一个刷新的临界点，即下拉到一定程度后改变到可刷新状态
+     * 
+     * @return 高度
+     */
+    public int getContentSize();
+
+    /**
+     * 在拉动时调用
+     * 
+     * @param scale
+     *            拉动的比例
+     */
+    public void onPull(float scale);
+
     /**
      * 下拉刷新各个过程的状态
      */
@@ -42,35 +73,5 @@ public interface ILoadingLayout {
          */
         NO_MORE_DATA,
     }
-
-    /**
-     * 设置当前状态，派生类应该根据这个状态的变化来改变View的变化
-     * 
-     * @param state
-     *            状态
-     */
-    public void setState(State state);
-
-    /**
-     * 得到当前的状态
-     * 
-     * @return 状态
-     */
-    public State getState();
-
-    /**
-     * 得到当前Layout的内容大小，它将作为一个刷新的临界点
-     * 
-     * @return 高度
-     */
-    public int getContentSize();
-
-    /**
-     * 在拉动时调用
-     * 
-     * @param scale
-     *            拉动的比例
-     */
-    public void onPull(float scale);
 
 }

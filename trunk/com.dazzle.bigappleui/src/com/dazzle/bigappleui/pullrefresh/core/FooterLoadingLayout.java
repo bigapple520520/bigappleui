@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.dazzle.bigappleui.pullrefresh.entity.FooterLoadingLayoutView;
 
 /**
- * 这个类封装了上拉刷新的布局
+ * 这个类封装了上拉加载更多的布局
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-17 上午9:51:49 $
@@ -40,16 +40,15 @@ public class FooterLoadingLayout extends LoadingLayout {
      *            context
      */
     private void init(Context context) {
-        mProgressBar = footerLoadingLayoutView.progressBar;
-        mHintView = footerLoadingLayoutView.textView;
         setState(State.RESET);
     }
 
     @Override
     protected View createLoadingView(Context context, AttributeSet attrs) {
         footerLoadingLayoutView = ViewHelper.getFooterLoadingLayoutView((Activity) context);
-        View container = footerLoadingLayoutView.root;
-        return container;
+        mProgressBar = footerLoadingLayoutView.progressBar;
+        mHintView = footerLoadingLayoutView.textView;
+        return footerLoadingLayoutView.root;
     }
 
     @Override
@@ -76,7 +75,7 @@ public class FooterLoadingLayout extends LoadingLayout {
 
     @Override
     protected void onReset() {
-        mHintView.setText("正在加载中");
+        mHintView.setText("正在加载...");
     }
 
     @Override
@@ -95,7 +94,7 @@ public class FooterLoadingLayout extends LoadingLayout {
     protected void onRefreshing() {
         mProgressBar.setVisibility(View.VISIBLE);
         mHintView.setVisibility(View.VISIBLE);
-        mHintView.setText("正在加载中");
+        mHintView.setText("正在加载...");
     }
 
     @Override
