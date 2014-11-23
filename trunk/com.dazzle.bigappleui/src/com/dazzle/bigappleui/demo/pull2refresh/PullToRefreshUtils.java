@@ -87,15 +87,13 @@ public abstract class PullToRefreshUtils {
 
                 // 判断是否滚动到底部
                 boolean scrollEnd = false;
-                try {
-                    if (view.getPositionForView(pull2refresh_footer) == view.getLastVisiblePosition()) {
-                        scrollEnd = true;
+                if (view.getLastVisiblePosition() == view.getCount() - 1
+                        && listView.getVisibleItemCount() != view.getCount()) {
+                    scrollEnd = true;
+
+                    if (View.VISIBLE != pull2refresh_footer.getVisibility()) {
+                        pull2refresh_footer.setVisibility(View.VISIBLE);
                     }
-                }
-                catch (Exception e) {
-                    // @TODO:这里用异常来判断false，有欠妥当
-                    scrollEnd = false;
-                    e.printStackTrace();
                 }
 
                 if (scrollEnd) {
@@ -130,6 +128,9 @@ public abstract class PullToRefreshUtils {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 listView.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+                if (visibleItemCount == totalItemCount) {
+                    pull2refresh_footer.setVisibility(View.INVISIBLE);
+                }
             }
         });
     }

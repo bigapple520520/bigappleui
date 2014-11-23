@@ -41,6 +41,8 @@ public class RoundedDrawable extends Drawable {
     private final Matrix mShaderMatrix = new Matrix();
 
     private float mCornerRadius = 0;
+    private boolean isCircle = false;
+
     private boolean mOval = false;
     private float mBorderWidth = 0;
     private ColorStateList mBorderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
@@ -180,6 +182,15 @@ public class RoundedDrawable extends Drawable {
 
     @Override
     public void draw(Canvas canvas) {
+        // // 如果画圆，那么以画圆为先
+        // if (isCircle) {
+        // float right = mDrawableRect.right;
+        // float bottom = mDrawableRect.bottom;
+        // float radius = right > bottom ? right / 2 : bottom / 2;
+        // canvas.drawCircle(radius, radius, radius, mBitmapPaint);
+        // return;
+        // }
+
         if (mOval) {
             if (mBorderWidth > 0) {
                 canvas.drawOval(mDrawableRect, mBitmapPaint);
@@ -364,6 +375,15 @@ public class RoundedDrawable extends Drawable {
             mScaleType = scaleType;
             updateShaderMatrix();
         }
+        return this;
+    }
+
+    public boolean isCircle() {
+        return isCircle;
+    }
+
+    public RoundedDrawable setCircle(boolean isCircle) {
+        this.isCircle = isCircle;
         return this;
     }
 

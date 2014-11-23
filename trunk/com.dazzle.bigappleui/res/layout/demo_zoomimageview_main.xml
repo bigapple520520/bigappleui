@@ -1,7 +1,23 @@
-<RelativeLayout 
+<LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <Button 
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="查看resid大图"/>
+    <Button 
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="查看本地或者网络大图"/>
+    <Button 
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="自定义加载图片实现demo"/>
     <com.dazzle.bigappleui.view.ZoomImageView
         android:id="@+id/zoomImageView" 
         android:layout_width="fill_parent"
@@ -12,4 +28,4 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:visibility="gone" />
-</RelativeLayout>
+</LinearLayout>

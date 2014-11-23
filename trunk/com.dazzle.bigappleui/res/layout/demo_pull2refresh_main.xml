@@ -1,7 +1,33 @@
-<RelativeLayout 
+<LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <Button 
+        android:id="@+id/webviewBtn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="基于WebView下拉刷新"/>
+    <Button 
+        android:id="@+id/scrollViewBtn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="基于ScrollView下拉刷新"/>
+    <Button 
+        android:id="@+id/listViewBtn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="基于ListView下拉刷新"/>
+    <Button 
+        android:id="@+id/gridViewBtn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="基于GridView下拉刷新"/>
+    <Button 
+        android:id="@+id/button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="点击刷新"/>
     <com.dazzle.bigappleui.pull2refresh.PullToRefreshListView
         android:id="@+id/listview" 
         android:layout_width="fill_parent"
@@ -9,4 +35,4 @@
         android:dividerHeight="1.0dp"
         android:fadingEdge="none"
         android:scrollingCache="false" />
-</RelativeLayout>
+</LinearLayout>

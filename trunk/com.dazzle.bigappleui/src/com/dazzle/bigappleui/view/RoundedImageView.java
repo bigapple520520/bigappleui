@@ -26,104 +26,100 @@ import android.widget.ImageView;
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2013-8-5 下午5:19:35 $
  */
+@Deprecated
 public class RoundedImageView extends ImageView {
-	private final Context context;
-	private float roundPx;
+    private final Context context;
+    private float roundPx;
 
-	public RoundedImageView(Context context) {
-		super(context);
-		this.context = context;
-	}
+    public RoundedImageView(Context context) {
+        super(context);
+        this.context = context;
+    }
 
-	public RoundedImageView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		this.context = context;
-	}
+    public RoundedImageView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        this.context = context;
+    }
 
-	public RoundedImageView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		this.context = context;
-	}
+    public RoundedImageView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        this.context = context;
+    }
 
-	// ////////////////////////////////////////设置圆角图片///////////////////////////////////////////////////////////
-	@Override
-	public void setImageDrawable(Drawable drawable) {
-		BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+    // ////////////////////////////////////////设置圆角图片///////////////////////////////////////////////////////////
+    @Override
+    public void setImageDrawable(Drawable drawable) {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
 
-		Bitmap roundedBitmap = getRoundedCornerBitmap(
-				bitmapDrawable.getBitmap(), roundPx);
+        Bitmap roundedBitmap = getRoundedCornerBitmap(bitmapDrawable.getBitmap(), roundPx);
 
-		super.setImageDrawable(new BitmapDrawable(context.getResources(),
-				roundedBitmap));
-	}
+        super.setImageDrawable(new BitmapDrawable(context.getResources(), roundedBitmap));
+    }
 
-	@Override
-	public void setImageBitmap(Bitmap bitmap) {
-		setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
-	}
+    @Override
+    public void setImageBitmap(Bitmap bitmap) {
+        setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
+    }
 
-	@Override
-	public void setImageResource(int resId) {
-		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
-		setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
-	}
+    @Override
+    public void setImageResource(int resId) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
+        setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
+    }
 
-	// ////////////////////////////////////////设置圆角背景///////////////////////////////////////////////////////////
-	@Override
-	public void setBackgroundDrawable(Drawable drawable) {
-		BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+    // ////////////////////////////////////////设置圆角背景///////////////////////////////////////////////////////////
+    @Override
+    public void setBackgroundDrawable(Drawable drawable) {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
 
-		Bitmap roundedBitmap = getRoundedCornerBitmap(
-				bitmapDrawable.getBitmap(), roundPx);
+        Bitmap roundedBitmap = getRoundedCornerBitmap(bitmapDrawable.getBitmap(), roundPx);
 
-		super.setBackgroundDrawable(new BitmapDrawable(context.getResources(),
-				roundedBitmap));
-	}
+        super.setBackgroundDrawable(new BitmapDrawable(context.getResources(), roundedBitmap));
+    }
 
-	public void setBackgroundDrawable(Bitmap bitmap) {
-		setBackgroundDrawable(new BitmapDrawable(context.getResources(), bitmap));
-	}
+    public void setBackgroundDrawable(Bitmap bitmap) {
+        setBackgroundDrawable(new BitmapDrawable(context.getResources(), bitmap));
+    }
 
-	public void setBackgroundDrawable(int resId) {
-		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
-		setBackgroundDrawable(new BitmapDrawable(context.getResources(), bitmap));
-	}
+    public void setBackgroundDrawable(int resId) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
+        setBackgroundDrawable(new BitmapDrawable(context.getResources(), bitmap));
+    }
 
-	public float getRoundPx() {
-		return roundPx;
-	}
+    public float getRoundPx() {
+        return roundPx;
+    }
 
-	public void setRoundPx(float roundPx) {
-		this.roundPx = roundPx;
-	}
+    public void setRoundPx(float roundPx) {
+        this.roundPx = roundPx;
+    }
 
-	/**
-	 * 把图片装成圆角
-	 * 
-	 * @param bitmap
-	 * @param roundPx
-	 * @return
-	 */
-	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPx) {
-		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-				bitmap.getHeight(), Config.ARGB_8888);
-		Canvas canvas = new Canvas(output);
+    /**
+     * 把图片装成圆角
+     * 
+     * @param bitmap
+     * @param roundPx
+     * @return
+     */
+    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPx) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
 
-		final int color = 0xff424242;
+        final int color = 0xff424242;
 
-		final Paint paint = new Paint();
-		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-		final RectF rectF = new RectF(rect);
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
 
-		paint.setAntiAlias(true);
-		canvas.drawARGB(0, 0, 0, 0);
-		paint.setColor(color);
-		canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
 
-		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-		canvas.drawBitmap(bitmap, rect, rect, paint);
+        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
 
-		return output;
-	}
+        return output;
+    }
 
 }
