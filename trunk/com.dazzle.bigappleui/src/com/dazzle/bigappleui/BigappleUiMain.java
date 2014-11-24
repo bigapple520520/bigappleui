@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.dazzle.bigappleui.demo.DrawImageActivityDemo;
 import com.dazzle.bigappleui.demo.album.AlbumDemo;
 import com.dazzle.bigappleui.demo.gifview.GifViewDemoActivity;
 import com.dazzle.bigappleui.demo.lettersort.LetterSortDemoActivity;
@@ -30,6 +31,7 @@ public class BigappleUiMain extends Activity {
         setContentView(R.layout.main);
         content = (LinearLayout) findViewById(R.id.content);
 
+        addButton("代码画的图片", DrawImageActivityDemo.class);
         addButton("gif动态图显示和roundedImageView测试", GifViewDemoActivity.class);
         addButton("viewpage图片切页实现", ViewPageDemoActivity.class);
         addButton("cyclepage图片切页实现", CyclePageDemoActivity.class);

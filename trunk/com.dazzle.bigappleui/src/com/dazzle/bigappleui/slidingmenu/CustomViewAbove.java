@@ -30,7 +30,7 @@ import com.dazzle.bigappleui.slidingmenu.SlidingMenu.OnClosedListener;
 import com.dazzle.bigappleui.slidingmenu.SlidingMenu.OnOpenedListener;
 
 /**
- * 主界面
+ * 这个类表示侧滑组件中主界面Content
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2013-11-13 下午7:14:53 $
@@ -44,6 +44,7 @@ public class CustomViewAbove extends ViewGroup {
     private static final int MIN_DISTANCE_FOR_FLING = 25; // dips
 
     private static final Interpolator sInterpolator = new Interpolator() {
+        @Override
         public float getInterpolation(float t) {
             t -= 1.0f;
             return t * t * t * t * t + 1.0f;

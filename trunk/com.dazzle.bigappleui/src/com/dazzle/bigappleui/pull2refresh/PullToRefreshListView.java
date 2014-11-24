@@ -23,10 +23,12 @@ import com.dazzle.bigappleui.utils.M;
  * 下拉刷新控件，使用时，需要引入<br>
  * 一个箭头图片：pull2refresh_arrow.png<br>
  * 一个头部布局文件：pull2refresh_footer.xml<br>
- * 一个尾部布局文件：pull2refresh_head.xml（这个不是必须的，只有想用尾部刷新时，引入即可）
+ * 一个尾部布局文件：pull2refresh_head.xml（这个不是必须的，只有想用尾部刷新时，引入即可）<br>
+ * 请使用：pullrefresh包下的widget中的PullToRefreshListView，那个效果更好，扩展性也不错
  * 
  * @author xuan
  */
+@Deprecated
 public class PullToRefreshListView extends ListView implements OnScrollListener {
     private static final String TAG = "PullToRefreshListView";
     public static final boolean DEBUG = false;

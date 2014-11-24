@@ -3,7 +3,7 @@
  * Copyright (c) 2014 ZDSoft Networks, Inc. All rights reserved.
  * $Id$
  */
-package com.dazzle.bigappleui.album.view;
+package com.dazzle.bigappleui.utils;
 
 import android.graphics.Color;
 

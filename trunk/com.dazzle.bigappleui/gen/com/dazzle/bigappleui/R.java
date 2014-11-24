@@ -189,7 +189,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tab_btn_top_sel1=0x7f020033;
         public static final int tab_btn_top_sel2=0x7f020034;
         public static final int tab_btn_top_sel4=0x7f020035;
-        public static final int xsearch_msg_pull_arrow_down=0x7f020036;
     }
     public static final class id {
         public static final int aboveText=0x7f04001c;
@@ -214,7 +213,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int listViewBtn=0x7f040019;
         public static final int listview=0x7f04001b;
         public static final int margin=0x7f040002;
-        public static final int menu_settings=0x7f040039;
+        public static final int menu_settings=0x7f04002f;
         public static final int photoView=0x7f040025;
         public static final int pull2refresh_footer_progressbar=0x7f040027;
         public static final int pull2refresh_footer_textview=0x7f040028;
@@ -223,22 +222,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int pull2refresh_head_lastupdatedtextview=0x7f04002d;
         public static final int pull2refresh_head_progressbar=0x7f04002b;
         public static final int pull2refresh_head_tipstextview=0x7f04002c;
-        public static final int pull_to_load_footer_content=0x7f04002e;
-        public static final int pull_to_load_footer_hint_textview=0x7f040030;
-        public static final int pull_to_load_footer_progressbar=0x7f04002f;
-        public static final int pull_to_refresh_header_arrow=0x7f040036;
-        public static final int pull_to_refresh_header_content=0x7f040031;
-        public static final int pull_to_refresh_header_hint_textview=0x7f040033;
-        public static final int pull_to_refresh_header_progressbar=0x7f040037;
-        public static final int pull_to_refresh_header_text=0x7f040032;
-        public static final int pull_to_refresh_header_time=0x7f040035;
-        public static final int pull_to_refresh_last_update_time_text=0x7f040034;
         public static final int right=0x7f040001;
         public static final int roundedImageView=0x7f04000e;
         public static final int scrollViewBtn=0x7f040018;
         public static final int slidingMenu=0x7f04001d;
         public static final int slidingUpDown=0x7f04001f;
-        public static final int slidingmenumain=0x7f040038;
+        public static final int slidingmenumain=0x7f04002e;
         public static final int swipeview=0x7f040021;
         public static final int tabbtn0=0x7f040011;
         public static final int tabbtn1=0x7f040012;
@@ -282,9 +271,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int main=0x7f03001b;
         public static final int pull2refresh_footer=0x7f03001c;
         public static final int pull2refresh_head=0x7f03001d;
-        public static final int pull_to_load_footer=0x7f03001e;
-        public static final int pull_to_refresh_header=0x7f03001f;
-        public static final int slidingmenumain=0x7f030020;
+        public static final int slidingmenumain=0x7f03001e;
     }
     public static final class menu {
         public static final int main=0x7f090000;

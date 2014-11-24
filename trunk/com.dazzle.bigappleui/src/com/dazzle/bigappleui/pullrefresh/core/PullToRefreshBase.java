@@ -29,26 +29,34 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
     private float mLastMotionY = -1;
     /** 下拉刷新和加载更多的监听器 */
     private OnRefreshListener<T> mRefreshListener;
+
+    /** 可刷新View的包装布局 */
+    private FrameLayout mRefreshableViewWrapper;
     /** 下拉刷新的布局 */
     private LoadingLayout mHeaderLayout;
     /** 上拉加载更多的布局 */
     private LoadingLayout mFooterLayout;
+
     /** HeaderView的高度 */
     private int mHeaderHeight;
     /** FooterView的高度 */
     private int mFooterHeight;
+
     /** 下拉刷新是否可用 */
     private boolean mPullRefreshEnabled = true;
     /** 上拉加载是否可用 */
     private boolean mPullLoadEnabled = false;
     /** 判断滑动到底部加载是否可用 */
     private boolean mScrollLoadEnabled = false;
+
     /** 是否截断touch事件 */
     private boolean mInterceptEventEnable = true;
     /** 表示是否消费了touch事件，如果是，则不调用父类的onTouchEvent方法 */
     private boolean mIsHandledTouchEvent = false;
+
     /** 移动点的保护范围值 */
     private int mTouchSlop;
+
     /** 下拉的状态 */
     private State mPullDownState = State.NONE;
     /** 上拉的状态 */
@@ -57,8 +65,6 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
     protected T mRefreshableView;
     /** 平滑滚动的Runnable */
     private SmoothScrollRunnable mSmoothScrollRunnable;
-    /** 可刷新View的包装布局 */
-    private FrameLayout mRefreshableViewWrapper;
 
     /**
      * 构造方法
@@ -111,9 +117,9 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
+        mRefreshableView = createRefreshableView(context, attrs);
         mHeaderLayout = createHeaderLoadingLayout(context, attrs);
         mFooterLayout = createFooterLoadingLayout(context, attrs);
-        mRefreshableView = createRefreshableView(context, attrs);
 
         if (null == mRefreshableView) {
             throw new NullPointerException("Refreshable view can not be null.");
@@ -126,31 +132,19 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
     @Override
     protected final void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
         // 当footer布局和header布局变动时，需要修改padding值，让他们处于不可见状态
         refreshLoadingViewsSize();
-
         // 重新设置包装器的高度
         refreshRefreshableViewSize(w, h);
-
-        /**
-         * As we're currently in a Layout Pass, we need to schedule another one to layout any changes we've made here
-         */
-        // post(new Runnable() {
-        // @Override
-        // public void run() {
-        // // requestLayout();
-        // }
-        // });
     }
 
     @Override
     public void setOrientation(int orientation) {
+        // 这个控件虽然是继承了LinearLayout，但是只能支持垂直VERTICAL布局哦
         if (LinearLayout.VERTICAL != orientation) {
             throw new IllegalArgumentException("This class only supports VERTICAL orientation.");
         }
 
-        // 这个控件虽然是继承了LinearLayout，但是只能支持垂直VERTICAL布局哦
         super.setOrientation(orientation);
     }
 

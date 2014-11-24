@@ -20,8 +20,8 @@ import android.provider.MediaStore.Images.Media;
 import android.provider.MediaStore.Images.Thumbnails;
 import android.util.Log;
 
-import com.dazzle.bigappleui.album.entity.Bucket;
-import com.dazzle.bigappleui.album.entity.BucketImage;
+import com.dazzle.bigappleui.album.entity.ImageBucket;
+import com.dazzle.bigappleui.album.entity.ImageItem;
 
 /**
  * 获取相册数据帮助类
@@ -36,14 +36,14 @@ public class AlbumHelper {
 
     private Context context;
     private boolean hasBuildImagesBucketList = false;// 是否创建了图片集
-    private Map<String, Bucket> bucketMap = new HashMap<String, Bucket>();
+    private Map<String, ImageBucket> bucketMap = new HashMap<String, ImageBucket>();
 
     /**
      * 获取单例
      * 
      * @return
      */
-    public static AlbumHelper instance() {
+    public synchronized static AlbumHelper instance() {
         if (null == instance) {
             throw new NullPointerException("请先调用初始化方法：init(Context context)");
         }
@@ -78,7 +78,7 @@ public class AlbumHelper {
      * @param refresh
      * @return
      */
-    public Map<String, Bucket> getImagesBucketMap(boolean needRefresh) {
+    public Map<String, ImageBucket> getImagesBucketMap(boolean needRefresh) {
         if (needRefresh || (!needRefresh && !hasBuildImagesBucketList)) {
             bucketMap.clear();
             buildImagesBucketList();
@@ -92,7 +92,7 @@ public class AlbumHelper {
      * @param refresh
      * @return
      */
-    public Map<String, Bucket> getImagesBucketMapSortByDatemodify(boolean needRefresh) {
+    public Map<String, ImageBucket> getImagesBucketMapSortByDatemodify(boolean needRefresh) {
         if (needRefresh || (!needRefresh && !hasBuildImagesBucketList)) {
             bucketMap.clear();
             buildImagesBucketList();
@@ -105,14 +105,14 @@ public class AlbumHelper {
      * 根据修改时间排序
      */
     public void sortByDatemodify() {
-        for (Entry<String, Bucket> entry : bucketMap.entrySet()) {
-            Bucket imageBucket = entry.getValue();
+        for (Entry<String, ImageBucket> entry : bucketMap.entrySet()) {
+            ImageBucket imageBucket = entry.getValue();
             if (null != imageBucket.imageList) {
-                Collections.sort(imageBucket.imageList, new Comparator<BucketImage>() {
+                Collections.sort(imageBucket.imageList, new Comparator<ImageItem>() {
                     @Override
-                    public int compare(BucketImage imageItem1, BucketImage imageItem2) {
-                        long dateModifyLong1 = Long.valueOf(imageItem1.dateModify);
-                        long dateModifyLong2 = Long.valueOf(imageItem2.dateModify);
+                    public int compare(ImageItem imageItem1, ImageItem imageItem2) {
+                        long dateModifyLong1 = Long.valueOf(imageItem1.dateModified);
+                        long dateModifyLong2 = Long.valueOf(imageItem2.dateModified);
                         return dateModifyLong1 < dateModifyLong2 ? 1 : -1;
                     }
                 });
@@ -153,13 +153,21 @@ public class AlbumHelper {
         return imageId2ThumbnailPathMap;
     }
 
+    /**
+     * 通知到媒体库有变动，设置成false后，下次就会重新build媒体库
+     */
+    public void notifyAlbumChange() {
+        hasBuildImagesBucketList = false;
+    }
+
     // 获取所有图片的数据
     private void buildImagesBucketList() {
         // 获取缩略图的map
         HashMap<String, String> imageId2ThumbnailPathMap = getImageId2ThumbnailPathMap();
 
         // 获取大图数据，组装进缩略
-        String columns[] = new String[] { Media._ID, Media.BUCKET_ID, Media.DATA, Media.BUCKET_DISPLAY_NAME };
+        String columns[] = new String[] { Media._ID, Media.BUCKET_ID, Media.DATA, Media.BUCKET_DISPLAY_NAME,
+                Media.DATE_ADDED, Media.DATE_MODIFIED };
         Cursor cursor = context.getContentResolver().query(Media.EXTERNAL_CONTENT_URI, columns, null, null, null);
 
         try {
@@ -169,23 +177,30 @@ public class AlbumHelper {
                 int bucketIdColumn = cursor.getColumnIndexOrThrow(Media.BUCKET_ID);// 对应文件夹的编号
                 int bucketDisplayNameColumn = cursor.getColumnIndexOrThrow(Media.BUCKET_DISPLAY_NAME);// 文件夹的名称
                 int imagePathColumn = cursor.getColumnIndexOrThrow(Media.DATA);// 原图的路径
+                int dateAddedColumn = cursor.getColumnIndexOrThrow(Media.DATE_ADDED);
+                int dateModifiedColumn = cursor.getColumnIndexOrThrow(Media.DATE_MODIFIED);
                 do {
                     String imageId = cursor.getString(imageIdColumn);
                     String bucketId = cursor.getString(bucketIdColumn);
                     String bucketName = cursor.getString(bucketDisplayNameColumn);
                     String imagePath = cursor.getString(imagePathColumn);
-                    Bucket bucket = bucketMap.get(bucketId);
+                    String dateAdded = cursor.getString(dateAddedColumn);
+                    String dateModified = cursor.getString(dateModifiedColumn);
+
+                    ImageBucket bucket = bucketMap.get(bucketId);
                     if (null == bucket) {
-                        bucket = new Bucket();
+                        bucket = new ImageBucket();
                         bucketMap.put(bucketId, bucket);
-                        bucket.imageList = new ArrayList<BucketImage>();
+                        bucket.imageList = new ArrayList<ImageItem>();
                         bucket.bucketName = bucketName;
                         bucket.bucketId = bucketId;
                     }
-                    BucketImage imageItem = new BucketImage();
+                    ImageItem imageItem = new ImageItem();
                     imageItem.imageId = imageId;
                     imageItem.imagePath = imagePath;
                     imageItem.thumbnailPath = imageId2ThumbnailPathMap.get(imageId);
+                    imageItem.dateAdded = dateAdded;
+                    imageItem.dateModified = dateModified;
                     bucket.imageList.add(imageItem);
                 }
                 while (cursor.moveToNext());

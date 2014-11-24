@@ -12,7 +12,7 @@ import com.dazzle.bigappleui.album.activity.BucketActivity;
 import com.dazzle.bigappleui.album.core.AlbumConfig;
 
 /**
- * 启动相册工具类
+ * 这个类可以启动相册Activity的工具类
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-12 下午1:35:16 $
@@ -20,10 +20,11 @@ import com.dazzle.bigappleui.album.core.AlbumConfig;
 public abstract class AlbumUtils {
 
     /**
-     * 多选，可限制选择张数
+     * 启动相册，多选操作，限制选择张数
      * 
      * @param activity
      * @param limitCount
+     *            限制张数
      * @param requestCode
      */
     public static void gotoAlbumForMulti(Activity activity, int limitCount, int requestCode) {
@@ -35,20 +36,22 @@ public abstract class AlbumUtils {
     }
 
     /**
-     * 多选，不限制选择张数
+     * 启动相册，多选操作，可以无限制的选择张数
      * 
      * @param activity
      * @param requestCode
+     *            返回标识
      */
     public static void gotoAlbumForMulti(Activity activity, int requestCode) {
         gotoAlbumForMulti(activity, -1, requestCode);
     }
 
     /**
-     * 单选
+     * 启动相册，单选操作
      * 
      * @param activity
      * @param requestCode
+     *            返回标识
      */
     public static void gotoAlbumForSingle(Activity activity, int requestCode) {
         Intent intent = new Intent();

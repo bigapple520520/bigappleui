@@ -8,8 +8,6 @@ package com.dazzle.bigappleui.album.entity;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.dazzle.bigappleui.album.view.ImageViewSel;
-
 /**
  * 图片列表Item的View
  * 
@@ -19,8 +17,8 @@ import com.dazzle.bigappleui.album.view.ImageViewSel;
 public class BucketImageListItemView {
     public RelativeLayout root;
     public ImageView imageView;
-    public ImageViewSel imageViewSel;
+    public ImageView imageViewSel;
 
     // dto
-    public BucketImage bucketImage;
+    public ImageItem bucketImage;
 }

@@ -13,12 +13,12 @@ import java.io.Serializable;
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-7 下午2:43:21 $
  */
-public class BucketImage implements Serializable {
+public class ImageItem implements Serializable {
     private static final long serialVersionUID = 9054513023521353382L;
 
     public String imageId;// 图片id
     public String thumbnailPath;// 缩略图路径
     public String imagePath;// 原图路径
     public String dateAdded = "0";// 被添加时间
-    public String dateModify = "0";// 最近被修改时间，距离1970年的秒数
+    public String dateModified = "0";// 最近被修改时间，距离1970年的秒数
 }

@@ -1,18 +1,17 @@
 package com.dazzle.bigappleui.pullrefresh.core;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dazzle.bigappleui.R;
+import com.dazzle.bigappleui.pullrefresh.entity.HeaderLoadingLayoutView;
 
 /**
  * 这个类封装了下拉刷新的布局
@@ -23,8 +22,6 @@ import com.dazzle.bigappleui.R;
 public class HeaderLoadingLayout extends LoadingLayout {
     /** 旋转动画时间 */
     private static final int ROTATE_ANIM_DURATION = 150;
-    /** Header的容器 */
-    private RelativeLayout mHeaderContainer;
     /** 箭头图片 */
     private ImageView mArrowImageView;
     /** 进度条 */
@@ -39,6 +36,9 @@ public class HeaderLoadingLayout extends LoadingLayout {
     private Animation mRotateUpAnim;
     /** 向下的动画 */
     private Animation mRotateDownAnim;
+
+    /** header部分的布局 */
+    private HeaderLoadingLayoutView headerLoadingLayoutView;
 
     /**
      * 构造方法
@@ -71,12 +71,11 @@ public class HeaderLoadingLayout extends LoadingLayout {
      *            context
      */
     private void init(Context context) {
-        mHeaderContainer = (RelativeLayout) findViewById(R.id.pull_to_refresh_header_content);
-        mArrowImageView = (ImageView) findViewById(R.id.pull_to_refresh_header_arrow);
-        mHintTextView = (TextView) findViewById(R.id.pull_to_refresh_header_hint_textview);
-        mProgressBar = (ProgressBar) findViewById(R.id.pull_to_refresh_header_progressbar);
-        mHeaderTimeView = (TextView) findViewById(R.id.pull_to_refresh_header_time);
-        mHeaderTimeViewTitle = (TextView) findViewById(R.id.pull_to_refresh_last_update_time_text);
+        mArrowImageView = headerLoadingLayoutView.arrow;
+        mHintTextView = headerLoadingLayoutView.headerTextHint;
+        mProgressBar = headerLoadingLayoutView.progressBar;
+        mHeaderTimeView = headerLoadingLayoutView.headerTextTimeText;
+        mHeaderTimeViewTitle = headerLoadingLayoutView.headerTextTimeHint;
 
         float pivotValue = 0.5f; // SUPPRESS CHECKSTYLE
         float toDegree = -180f; // SUPPRESS CHECKSTYLE
@@ -99,18 +98,13 @@ public class HeaderLoadingLayout extends LoadingLayout {
     }
 
     @Override
-    public int getContentSize() {
-        if (null != mHeaderContainer) {
-            return mHeaderContainer.getHeight();
-        }
-
-        return (int) (getResources().getDisplayMetrics().density * 60);
+    protected View createLoadingView(Context context, AttributeSet attrs) {
+        headerLoadingLayoutView = ViewHelper.getHeaderLoadingLayoutView((Activity) context);
+        return headerLoadingLayoutView.root;
     }
 
     @Override
-    protected View createLoadingView(Context context, AttributeSet attrs) {
-        View container = LayoutInflater.from(context).inflate(R.layout.pull_to_refresh_header, null);
-        return container;
+    protected void onNoMoreData() {
     }
 
     @Override

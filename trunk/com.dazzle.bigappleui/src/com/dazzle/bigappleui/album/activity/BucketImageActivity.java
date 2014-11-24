@@ -20,7 +20,7 @@ import android.widget.RelativeLayout;
 
 import com.dazzle.bigappleui.album.core.AlbumConfig;
 import com.dazzle.bigappleui.album.core.ImageLoader;
-import com.dazzle.bigappleui.album.entity.BucketImage;
+import com.dazzle.bigappleui.album.entity.ImageItem;
 import com.dazzle.bigappleui.album.entity.BucketImageActivityView;
 import com.dazzle.bigappleui.album.entity.BucketImageListItemView;
 import com.dazzle.bigappleui.utils.DisplayUtils;
@@ -39,7 +39,7 @@ public class BucketImageActivity extends Activity {
     private int mScreenWidth;
     private int padding;
 
-    private List<BucketImage> allImageList;// 当前相册的所有图片
+    private List<ImageItem> allImageList;// 当前相册的所有图片
     private boolean ifMultiple;// 是否是多选模式
     private int limitCount;// 显示可选数
     private String bucketName;// 相册名称
@@ -52,7 +52,7 @@ public class BucketImageActivity extends Activity {
         setContentView(bucketImageActivityView.root);
 
         // 获取参数
-        allImageList = (List<BucketImage>) getIntent().getSerializableExtra(AlbumConfig.PARAM_IMAGELIST);
+        allImageList = (List<ImageItem>) getIntent().getSerializableExtra(AlbumConfig.PARAM_IMAGELIST);
         limitCount = getIntent().getIntExtra(AlbumConfig.PARAM_LIMIT_COUNT, -1);
         bucketName = getIntent().getStringExtra(AlbumConfig.PARAM_BUCKETNAME);
         ifMultiple = getIntent().getBooleanExtra(AlbumConfig.PARAM_IF_MULTIPLE_CHOICE, true);
@@ -176,7 +176,7 @@ public class BucketImageActivity extends Activity {
             imageViewSel.setLayoutParams(imageViewSelLp);
 
             // 显示图片
-            final BucketImage bucketImage = allImageList.get(position);
+            final ImageItem bucketImage = allImageList.get(position);
             bucketImageListItemView.bucketImage = bucketImage;
             ImageLoader.display(BucketImageActivity.this, imageView, bucketImage.thumbnailPath, bucketImage.imagePath);
 

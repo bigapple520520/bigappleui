@@ -22,7 +22,7 @@ import android.widget.RelativeLayout;
 import com.dazzle.bigappleui.R;
 import com.dazzle.bigappleui.album.AlbumUtils;
 import com.dazzle.bigappleui.album.core.AlbumConfig;
-import com.dazzle.bigappleui.album.entity.BucketImage;
+import com.dazzle.bigappleui.album.entity.ImageItem;
 import com.winupon.andframe.bigapple.bitmap.BitmapDisplayConfig;
 import com.winupon.andframe.bigapple.bitmap.local.LocalImageLoaderFace;
 
@@ -119,20 +119,20 @@ public class AlbumDemo extends Activity {
 
         switch (requestCode) {
         case ACTIVITY_RESULT_1:
-            List<BucketImage> temp1 = AlbumConfig.getSelListAndClear();
-            for (BucketImage bi : temp1) {
+            List<ImageItem> temp1 = AlbumConfig.getSelListAndClear();
+            for (ImageItem bi : temp1) {
                 selPathList.add(bi.imagePath);
             }
             break;
         case ACTIVITY_RESULT_2:
-            List<BucketImage> temp2 = AlbumConfig.getSelListAndClear();
-            for (BucketImage bi : temp2) {
+            List<ImageItem> temp2 = AlbumConfig.getSelListAndClear();
+            for (ImageItem bi : temp2) {
                 selPathList.add(bi.imagePath);
             }
             break;
         case ACTIVITY_RESULT_3:
-            List<BucketImage> temp3 = AlbumConfig.getSelListAndClear();
-            for (BucketImage bi : temp3) {
+            List<ImageItem> temp3 = AlbumConfig.getSelListAndClear();
+            for (ImageItem bi : temp3) {
                 selPathList.add(bi.imagePath);
             }
             break;

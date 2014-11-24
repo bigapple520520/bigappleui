@@ -25,22 +25,10 @@ public class FooterLoadingLayout extends LoadingLayout {
 
     public FooterLoadingLayout(Context context) {
         super(context);
-        init(context);
     }
 
     public FooterLoadingLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
-    }
-
-    /**
-     * 初始化
-     * 
-     * @param context
-     *            context
-     */
-    private void init(Context context) {
-        setState(State.RESET);
     }
 
     @Override
@@ -52,40 +40,21 @@ public class FooterLoadingLayout extends LoadingLayout {
     }
 
     @Override
-    public void setLastUpdatedLabel(CharSequence label) {
-    }
-
-    @Override
-    public int getContentSize() {
-        View view = footerLoadingLayoutView.root;
-        if (null != view) {
-            return view.getHeight();
-        }
-
-        return (int) (getResources().getDisplayMetrics().density * 40);
-    }
-
-    @Override
-    protected void onStateChanged(State curState, State oldState) {
-        mProgressBar.setVisibility(View.GONE);
-        mHintView.setVisibility(View.INVISIBLE);
-
-        super.onStateChanged(curState, oldState);
-    }
-
-    @Override
     protected void onReset() {
-        mHintView.setText("正在加载...");
+        mProgressBar.setVisibility(View.GONE);
+        mHintView.setVisibility(View.GONE);
     }
 
     @Override
     protected void onPullToRefresh() {
+        mProgressBar.setVisibility(View.GONE);
         mHintView.setVisibility(View.VISIBLE);
         mHintView.setText("上拉可以刷新");
     }
 
     @Override
     protected void onReleaseToRefresh() {
+        mProgressBar.setVisibility(View.GONE);
         mHintView.setVisibility(View.VISIBLE);
         mHintView.setText("松开后刷新");
     }
@@ -99,6 +68,7 @@ public class FooterLoadingLayout extends LoadingLayout {
 
     @Override
     protected void onNoMoreData() {
+        mProgressBar.setVisibility(View.GONE);
         mHintView.setVisibility(View.VISIBLE);
         mHintView.setText("已经到底啦");
     }

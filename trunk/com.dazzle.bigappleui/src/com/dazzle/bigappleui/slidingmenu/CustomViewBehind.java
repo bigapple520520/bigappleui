@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import com.dazzle.bigappleui.slidingmenu.SlidingMenu.CanvasTransformer;
 
 /**
- * 左右侧滑菜单
+ * 这个类表示侧滑组件中侧滑出来的界面
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2013-11-13 下午7:15:06 $

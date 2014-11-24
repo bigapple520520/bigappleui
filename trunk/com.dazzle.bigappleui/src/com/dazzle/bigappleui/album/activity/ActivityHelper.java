@@ -25,9 +25,9 @@ import com.dazzle.bigappleui.album.entity.BucketActivityView;
 import com.dazzle.bigappleui.album.entity.BucketImageActivityView;
 import com.dazzle.bigappleui.album.entity.BucketImageListItemView;
 import com.dazzle.bigappleui.album.entity.BucketListItemView;
-import com.dazzle.bigappleui.album.view.ColorUtils;
-import com.dazzle.bigappleui.album.view.ImageViewSel;
+import com.dazzle.bigappleui.utils.ColorUtils;
 import com.dazzle.bigappleui.utils.DisplayUtils;
+import com.dazzle.bigappleui.view.img.HookImageView;
 
 /**
  * Activity创建帮助类
@@ -342,7 +342,7 @@ public abstract class ActivityHelper {
         root.addView(imageView);
 
         // 选中后的图
-        ImageViewSel imageViewSel = new ImageViewSel(activity);
+        ImageView imageViewSel = new HookImageView(activity);
         RelativeLayout.LayoutParams imageViewSelLp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         imageViewSel.setLayoutParams(imageViewSelLp);

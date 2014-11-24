@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dazzle.bigappleui.album.entity.BucketImage;
+import com.dazzle.bigappleui.album.entity.ImageItem;
 
 /**
  * 相册的全局配置
@@ -41,19 +41,19 @@ public abstract class AlbumConfig {
     /**
      * 选择时临时存放处，用户不应该用到的
      */
-    public static Map<String, BucketImage> tempSelMap = new HashMap<String, BucketImage>();
+    public static Map<String, ImageItem> tempSelMap = new HashMap<String, ImageItem>();
     /**
      * 点击确定后选中的图片，用户应该调用getSelList方法获取，而不是直接使用selList
      */
-    public static List<BucketImage> selList = new ArrayList<BucketImage>();
+    public static List<ImageItem> selList = new ArrayList<ImageItem>();
 
     /**
      * 获取选中的图片
      * 
      * @return
      */
-    public static List<BucketImage> getSelListAndClear() {
-        List<BucketImage> temp = new ArrayList<BucketImage>(selList);
+    public static List<ImageItem> getSelListAndClear() {
+        List<ImageItem> temp = new ArrayList<ImageItem>(selList);
         selList.clear();
         return temp;
     }

@@ -27,9 +27,9 @@ import android.widget.TextView;
 import com.dazzle.bigappleui.album.core.AlbumConfig;
 import com.dazzle.bigappleui.album.core.AlbumHelper;
 import com.dazzle.bigappleui.album.core.ImageLoader;
-import com.dazzle.bigappleui.album.entity.Bucket;
+import com.dazzle.bigappleui.album.entity.ImageBucket;
 import com.dazzle.bigappleui.album.entity.BucketActivityView;
-import com.dazzle.bigappleui.album.entity.BucketImage;
+import com.dazzle.bigappleui.album.entity.ImageItem;
 import com.dazzle.bigappleui.album.entity.BucketListItemView;
 import com.winupon.andframe.bigapple.utils.Validators;
 
@@ -43,7 +43,7 @@ public class BucketActivity extends Activity {
     public static final String TAG = "BucketActivity";
     private BucketActivityView bucketActivityView;
 
-    private List<Bucket> bucketList;// 相册列表
+    private List<ImageBucket> bucketList;// 相册列表
 
     private boolean ifMultiple;// 判断是否多选模式
     private int limitCount;// 显示可选数
@@ -82,14 +82,14 @@ public class BucketActivity extends Activity {
 
         // 获取相册数据
         AlbumHelper.init(this);
-        Map<String, Bucket> bucketMap = AlbumHelper.instance().getImagesBucketMapSortByDatemodify(true);
-        bucketList = new ArrayList<Bucket>(bucketMap.values());
+        Map<String, ImageBucket> bucketMap = AlbumHelper.instance().getImagesBucketMapSortByDatemodify(true);
+        bucketList = new ArrayList<ImageBucket>(bucketMap.values());
 
         // 设置设配器
         bucketActivityView.gridView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bucket bucket = (Bucket) view.getTag();
+                ImageBucket bucket = (ImageBucket) view.getTag();
                 // 传递文件夹地址到文件夹内容显示类
                 Intent intent = new Intent();
                 intent.setClass(BucketActivity.this, BucketImageActivity.class);
@@ -167,13 +167,13 @@ public class BucketActivity extends Activity {
             TextView nameTextView = bucketListItemView.nameTextView;
             TextView countTextView = bucketListItemView.countTextView;
 
-            Bucket imageBucket = bucketList.get(position);
+            ImageBucket imageBucket = bucketList.get(position);
             view.setTag(imageBucket);
 
             nameTextView.setText(imageBucket.bucketName);
             countTextView.setText(String.valueOf(imageBucket.imageList.size()));
 
-            List<BucketImage> imageItemList = imageBucket.imageList;
+            List<ImageItem> imageItemList = imageBucket.imageList;
             if (!Validators.isEmpty(imageItemList)) {
                 String thumbPath = imageBucket.imageList.get(0).thumbnailPath;
                 String sourcePath = imageBucket.imageList.get(0).imagePath;
