@@ -35,7 +35,7 @@ import com.dazzle.bigappleui.view.img.HookImageView;
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-10 上午10:04:23 $
  */
-public abstract class ActivityHelper {
+public abstract class ViewHelper {
 
     /**
      * 布局选择相册的那个界面

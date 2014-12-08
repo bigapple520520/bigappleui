@@ -25,7 +25,9 @@ public class SlidingMenuDemoActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.demo_slidingmenu_main);
+        // setContentView(R.layout.demo_slidingmenu_main);
+        slidingMenu = new SlidingMenu(this);
+        setContentView(slidingMenu);
 
         // 侧滑主界面
         View above = LayoutInflater.from(this).inflate(R.layout.demo_slidingmenu_above, null);
@@ -36,7 +38,7 @@ public class SlidingMenuDemoActivity extends Activity {
         View menuRight = LayoutInflater.from(this).inflate(R.layout.demo_slidingmenu_menu_right, null);
 
         // 设置侧滑界面参数
-        slidingMenu = (SlidingMenu) findViewById(R.id.slidingMenu);
+        // slidingMenu = (SlidingMenu) findViewById(R.id.slidingMenu);
         slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);// 左右都可以侧滑模式
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);// 全屏都可以触发侧滑（指定view除外）
 
@@ -62,7 +64,7 @@ public class SlidingMenuDemoActivity extends Activity {
 
         // 侧滑时背景的渐变效果
         slidingMenu.setFadeEnabled(true);
-        slidingMenu.setFadeDegree(0.8f);
+        slidingMenu.setFadeDegree(1.0f);
 
         // 各种事件
         slidingMenu.setOnOpenListener(new OnOpenListener() {

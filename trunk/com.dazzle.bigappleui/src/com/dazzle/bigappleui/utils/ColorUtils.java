@@ -18,7 +18,7 @@ public abstract class ColorUtils {
     public static final String TOP_BTN_COLOR_PRESSED = "#17000000";// 半透明
 
     /**
-     * 获取颜色值
+     * 根据16进制串获取颜色值
      * 
      * @param colorStr
      * @return

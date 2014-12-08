@@ -8,13 +8,16 @@ package com.dazzle.bigappleui.album.entity;
 import java.util.List;
 
 /**
- * 一个相册的实体对象
+ * 这个类表示一个相册的实体对象
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-7 下午2:45:27 $
  */
 public class ImageBucket {
-    public String bucketId;// 相册id
-    public String bucketName;// 相册名称
-    public List<ImageItem> imageList;// 相册中的图片列表
+    /** 相册id */
+    public String bucketId;
+    /** 相册名称 */
+    public String bucketName;
+    /** 相册中的图片列表 */
+    public List<ImageItem> imageList;
 }

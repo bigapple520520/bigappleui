@@ -12,10 +12,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.dazzle.bigappleui.R;
 import com.dazzle.bigappleui.utils.UnreadBitmapProcessor;
 import com.dazzle.bigappleui.view.NumRadioButton;
+import com.winupon.andframe.bigapple.utils.ToastUtils;
 
 /**
  * RadioButton加未读消息
@@ -24,6 +27,7 @@ import com.dazzle.bigappleui.view.NumRadioButton;
  * @version $Revision: 1.0 $, $Date: 2014-9-12 上午9:35:39 $
  */
 public class NumRadioButtonDemoActivity extends Activity {
+    private RadioGroup tabs;
     private NumRadioButton tabbtn0;
     private NumRadioButton tabbtn1;
     private NumRadioButton tabbtn2;
@@ -42,6 +46,7 @@ public class NumRadioButtonDemoActivity extends Activity {
         tabbtn2 = (NumRadioButton) findViewById(R.id.tabbtn2);
         tabbtn3 = (NumRadioButton) findViewById(R.id.tabbtn3);
         tabbtn4 = (NumRadioButton) findViewById(R.id.tabbtn4);
+        tabs = (RadioGroup) findViewById(R.id.tabs);
         button = (Button) findViewById(R.id.button);
         image = (ImageView) findViewById(R.id.image);
 
@@ -49,7 +54,8 @@ public class NumRadioButtonDemoActivity extends Activity {
         processor.setOffsetHeightByDp(50);
         processor.setOffsetWidthByDp(50);
 
-        tabbtn0.setNum(4, R.drawable.msg_new);
+        // tabbtn0.setNum(4, R.drawable.msg_new);
+        tabbtn0.setPoint(R.drawable.msg_new);
         tabbtn0.clearNum();
 
         tabbtn1.setOffsetHeightByDp(10);
@@ -69,6 +75,12 @@ public class NumRadioButtonDemoActivity extends Activity {
                 image.setImageBitmap(processor.process(BitmapFactory.decodeResource(getResources(), R.drawable.pic1), 1));
             }
         });
-    }
 
+        tabs.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup arg0, int position) {
+                ToastUtils.displayTextShort(NumRadioButtonDemoActivity.this, "选中" + position);
+            }
+        });
+    }
 }

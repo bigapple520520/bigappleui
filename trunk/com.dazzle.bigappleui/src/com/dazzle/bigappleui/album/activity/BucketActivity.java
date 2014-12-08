@@ -27,14 +27,14 @@ import android.widget.TextView;
 import com.dazzle.bigappleui.album.core.AlbumConfig;
 import com.dazzle.bigappleui.album.core.AlbumHelper;
 import com.dazzle.bigappleui.album.core.ImageLoader;
-import com.dazzle.bigappleui.album.entity.ImageBucket;
 import com.dazzle.bigappleui.album.entity.BucketActivityView;
-import com.dazzle.bigappleui.album.entity.ImageItem;
 import com.dazzle.bigappleui.album.entity.BucketListItemView;
+import com.dazzle.bigappleui.album.entity.ImageBucket;
+import com.dazzle.bigappleui.album.entity.ImageItem;
 import com.winupon.andframe.bigapple.utils.Validators;
 
 /**
- * 相册文件夹级界面
+ * 这个类是显示所有相册界面
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-10 上午9:53:46 $
@@ -43,15 +43,18 @@ public class BucketActivity extends Activity {
     public static final String TAG = "BucketActivity";
     private BucketActivityView bucketActivityView;
 
-    private List<ImageBucket> bucketList;// 相册列表
+    /** 相册列表 */
+    private List<ImageBucket> bucketList;
 
-    private boolean ifMultiple;// 判断是否多选模式
-    private int limitCount;// 显示可选数
+    /** 判断是否是多选模式，true表示多选，false表示单选即选择后马上返回 */
+    private boolean ifMultiple;
+    /** 多选时可限制选择的图片张数，如果是-1表示可以无限制的选 */
+    private int limitCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bucketActivityView = ActivityHelper.getBucketActivityView(this);
+        bucketActivityView = ViewHelper.getBucketActivityView(this);
         setContentView(bucketActivityView.root);
         ImageLoader.init(this);
 
@@ -62,7 +65,7 @@ public class BucketActivity extends Activity {
         }
         limitCount = getIntent().getIntExtra(AlbumConfig.PARAM_LIMIT_COUNT, -1);
 
-        // 返回
+        // 返回按钮事件
         bucketActivityView.leftTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,7 +73,7 @@ public class BucketActivity extends Activity {
             }
         });
 
-        // 确定
+        // 选择后确定按钮事件
         bucketActivityView.rightTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,17 +83,18 @@ public class BucketActivity extends Activity {
             }
         });
 
-        // 获取相册数据
+        // 获取图库中的所有相册图片
         AlbumHelper.init(this);
         Map<String, ImageBucket> bucketMap = AlbumHelper.instance().getImagesBucketMapSortByDatemodify(true);
         bucketList = new ArrayList<ImageBucket>(bucketMap.values());
 
-        // 设置设配器
+        // 设置设配器数据，并加上点击事件
+        bucketActivityView.gridView.setAdapter(new BucketListAdapter());
         bucketActivityView.gridView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // 点击跳转到具体相册，显示相册内所有图片
                 ImageBucket bucket = (ImageBucket) view.getTag();
-                // 传递文件夹地址到文件夹内容显示类
                 Intent intent = new Intent();
                 intent.setClass(BucketActivity.this, BucketImageActivity.class);
                 intent.putExtra(AlbumConfig.PARAM_IMAGELIST, (Serializable) bucket.imageList);
@@ -100,7 +104,6 @@ public class BucketActivity extends Activity {
                 startActivityForResult(intent, AlbumConfig.BACK_FROM_ALUBEN);
             }
         });
-        bucketActivityView.gridView.setAdapter(new BucketListAdapter());
     }
 
     @Override
@@ -112,7 +115,8 @@ public class BucketActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AlbumConfig.tempSelMap.clear();// 清理临时选择的图片
+        // 清理临时选择的图片
+        AlbumConfig.tempSelMap.clear();
     }
 
     @Override
@@ -161,7 +165,7 @@ public class BucketActivity extends Activity {
     private class BucketListAdapter extends BaseAdapter {
         @Override
         public View getView(int position, View view, ViewGroup parent) {
-            BucketListItemView bucketListItemView = ActivityHelper.getBucketListItemView(BucketActivity.this);
+            BucketListItemView bucketListItemView = ViewHelper.getBucketListItemView(BucketActivity.this);
             view = bucketListItemView.root;
             ImageView imageView = bucketListItemView.imageView;
             TextView nameTextView = bucketListItemView.nameTextView;

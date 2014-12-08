@@ -113,7 +113,9 @@ public class AlbumHelper {
                     public int compare(ImageItem imageItem1, ImageItem imageItem2) {
                         long dateModifyLong1 = Long.valueOf(imageItem1.dateModified);
                         long dateModifyLong2 = Long.valueOf(imageItem2.dateModified);
-                        return dateModifyLong1 < dateModifyLong2 ? 1 : -1;
+
+                        // 注意：这个JDK7里面TimSort排序的标准Comparator写法
+                        return dateModifyLong1 == dateModifyLong2 ? 0 : (dateModifyLong1 < dateModifyLong2 ? 1 : -1);
                     }
                 });
             }

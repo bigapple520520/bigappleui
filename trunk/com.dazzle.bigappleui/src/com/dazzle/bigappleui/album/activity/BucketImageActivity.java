@@ -20,14 +20,14 @@ import android.widget.RelativeLayout;
 
 import com.dazzle.bigappleui.album.core.AlbumConfig;
 import com.dazzle.bigappleui.album.core.ImageLoader;
-import com.dazzle.bigappleui.album.entity.ImageItem;
 import com.dazzle.bigappleui.album.entity.BucketImageActivityView;
 import com.dazzle.bigappleui.album.entity.BucketImageListItemView;
+import com.dazzle.bigappleui.album.entity.ImageItem;
 import com.dazzle.bigappleui.utils.DisplayUtils;
 import com.winupon.andframe.bigapple.utils.ToastUtils;
 
 /**
- * 显示某一个相册的所有图片
+ * 这个类是显示某一个相册的所有图片
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-11 下午3:35:00 $
@@ -48,7 +48,7 @@ public class BucketImageActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bucketImageActivityView = ActivityHelper.getBucketImageActivityView(this);
+        bucketImageActivityView = ViewHelper.getBucketImageActivityView(this);
         setContentView(bucketImageActivityView.root);
 
         // 获取参数
@@ -157,7 +157,7 @@ public class BucketImageActivity extends Activity {
         @Override
         public View getView(int position, View view, ViewGroup parent) {
             // 创建View
-            BucketImageListItemView bucketImageListItemView = ActivityHelper
+            BucketImageListItemView bucketImageListItemView = ViewHelper
                     .getBucketImageListItemView(BucketImageActivity.this);
             view = bucketImageListItemView.root;
             ImageView imageView = bucketImageListItemView.imageView;

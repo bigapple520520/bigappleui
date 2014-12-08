@@ -25,14 +25,17 @@ public abstract class AlbumConfig {
      * 相册图片列表
      */
     public static final String PARAM_IMAGELIST = "param.imagelist";
+
     /**
      * 相册名称
      */
     public static final String PARAM_BUCKETNAME = "param.bucketname";
+
     /**
      * 表示是否单选
      */
     public static final String PARAM_IF_MULTIPLE_CHOICE = "param.if.multiple.choice";
+
     /**
      * 设置可选限制参数，如果用户不设置的话，表示是可以选无限个
      */
@@ -42,13 +45,14 @@ public abstract class AlbumConfig {
      * 选择时临时存放处，用户不应该用到的
      */
     public static Map<String, ImageItem> tempSelMap = new HashMap<String, ImageItem>();
+
     /**
      * 点击确定后选中的图片，用户应该调用getSelList方法获取，而不是直接使用selList
      */
     public static List<ImageItem> selList = new ArrayList<ImageItem>();
 
     /**
-     * 获取选中的图片
+     * 获取选中的图片，而后进行清理
      * 
      * @return
      */

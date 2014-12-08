@@ -37,7 +37,6 @@ import com.dazzle.bigappleui.slidingmenu.SlidingMenu.OnOpenedListener;
  */
 public class CustomViewAbove extends ViewGroup {
     private static final String TAG = "CustomViewAbove";
-
     private static final boolean DEBUG = false;
 
     private static final int MAX_SETTLE_DURATION = 600; // ms
@@ -54,7 +53,7 @@ public class CustomViewAbove extends ViewGroup {
     // 主界面view
     private View mContent;
 
-    // 当前item：0左侧滑界面、1主界面、2右侧滑界面
+    /** 当前item：0左侧滑界面、1主界面、2右侧滑界面 */
     private int mCurItem;
 
     private Scroller mScroller;

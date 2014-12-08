@@ -28,33 +28,67 @@ public class NumRadioButton extends RadioButton {
     public static final int NOT_INIT_BITMAP = -1;// 不加载背景
     public static final int TRANSPARENT_BITMAP = 0;// 使用默认透明的背景
 
-    private static Paint paint;
-    static {
-        paint = new Paint();
-        paint.setTextAlign(Align.CENTER);
-    }
+    /** 绘制画笔 */
+    private Paint paint;
 
+    /** 需要绘制的未读消息数 */
     private int num;
+    /** 未读消息数的背景 */
     private Bitmap drawBitmap;
+    /** 控件的宽 */
     private int width;
 
-    // 未读提示默认是在图标的右上角，用下面两个参数可以进行便宜调整
+    /** 未读提示默认是在图标的右上角，用下面两个参数可以进行偏移调整，右上角为（0，0）点，左方和下方为正方向 */
     private float offsetWidth = 0;
     private float offsetHeight = 0;
 
-    private float paintTextSize = 0;// 数字体大小
+    /** 数字字体大小 */
+    private float paintTextSize = 0;
+    /** 数字字体颜色 */
     private int paintColor = Color.WHITE;
 
+    /** 判断是否需要绘制数字：true绘制false不绘制 */
+    private boolean canDrawNum = true;// 是否进行数字绘制
+
+    /**
+     * 构造方法
+     * 
+     * @param context
+     */
     public NumRadioButton(Context context) {
         super(context);
+        init();
     }
 
+    /**
+     * 构造方法
+     * 
+     * @param context
+     * @param attrs
+     */
     public NumRadioButton(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
+    /**
+     * 构造方法
+     * 
+     * @param context
+     * @param attrs
+     * @param defStyle
+     */
     public NumRadioButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init();
+    }
+
+    /**
+     * 初始化操作
+     */
+    private void init() {
+        paint = new Paint();
+        paint.setTextAlign(Align.CENTER);
     }
 
     @Override
@@ -66,29 +100,43 @@ public class NumRadioButton extends RadioButton {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (num > 0 && null != drawBitmap) {
-            // 设置画笔参数
-            if (0 == paintTextSize) {
-                paintTextSize = drawBitmap.getWidth() * 0.8f;// 字体的图片默认根据背景的大小来调整
-            }
-            paint.setTextSize(paintTextSize);
-            paint.setColor(paintColor);
+        if (null == drawBitmap) {
+            return;
+        }
 
-            // 画上红色的圈圈，如果没有初始化过背景就不绘制背景
+        if (!canDrawNum) {
+            // 表示只画一个背景
             int left = width - drawBitmap.getWidth();
             canvas.drawBitmap(drawBitmap, left - offsetWidth, 0 + offsetHeight, paint);
+        }
+        else {
+            if (num > 0) {
+                // 设置画笔参数
+                if (0 == paintTextSize) {
+                    paintTextSize = drawBitmap.getWidth() * 0.8f;// 字体的图片默认根据背景的大小来调整
+                }
+                paint.setTextSize(paintTextSize);
+                paint.setColor(paintColor);
 
-            // 画上数字
-            int x = (int) (width - drawBitmap.getWidth() / 2d);
-            int y = (int) (drawBitmap.getWidth() * 0.8d);
+                // 画上红色的圈圈，如果没有初始化过背景就不绘制背景
+                int left = width - drawBitmap.getWidth();
+                canvas.drawBitmap(drawBitmap, left - offsetWidth, 0 + offsetHeight, paint);
 
-            String text = num > 9 ? "n" : String.valueOf(num);
-            canvas.drawText(text, x - offsetWidth, y + offsetHeight, paint);
+                // 画上数字
+                int x = (int) (width - drawBitmap.getWidth() / 2d);
+                int y = (int) (drawBitmap.getWidth() * 0.8d);
+
+                String text = num > 9 ? "n" : String.valueOf(num);
+                canvas.drawText(text, x - offsetWidth, y + offsetHeight, paint);
+            }
+            else {
+                // num小于等于0不进行绘制
+            }
         }
     }
 
     /**
-     * 获取未读消息数
+     * 获取绘制的未读消息数字
      * 
      * @return
      */
@@ -97,7 +145,19 @@ public class NumRadioButton extends RadioButton {
     }
 
     /**
-     * 设置未读消息数
+     * 只设置未读消息的背景，不绘制数字，所以内部会把canDrawNum设置成false
+     * 
+     * @param resid
+     *            绘制消息提示红点
+     */
+    public void setPoint(int resid) {
+        canDrawNum = false;
+        initDrawBitmap(resid);
+        invalidate();
+    }
+
+    /**
+     * 设置未读消息数，resid是需要绘制的背景
      * 
      * @param n
      *            如果n小于等于0，不会绘制未读消息数
@@ -106,6 +166,7 @@ public class NumRadioButton extends RadioButton {
      */
     public void setNum(int n, int resid) {
         if (n != num) {
+            canDrawNum = true;
             this.num = n;
             initDrawBitmap(resid);
             invalidate();
@@ -113,7 +174,7 @@ public class NumRadioButton extends RadioButton {
     }
 
     /**
-     * 设置未读消息数
+     * 设置未读消息数，背景为透明，即是显示数字
      * 
      * @param n
      *            如果n小于等于0，不会绘制未读消息数
@@ -125,10 +186,11 @@ public class NumRadioButton extends RadioButton {
     }
 
     /**
-     * 去掉未读消息数
+     * 去掉未读消息数，会去掉背景和数字
      */
     public void clearNum() {
-        setNum(0, NumRadioButton.NOT_INIT_BITMAP);
+        initDrawBitmap(NOT_INIT_BITMAP);
+        invalidate();
     }
 
     // /////////////////////////////////////////////设置数字体颜色////////////////////////////////////////////////
@@ -136,6 +198,7 @@ public class NumRadioButton extends RadioButton {
      * 设置数字体颜色
      * 
      * @param paintColor
+     *            color的颜色值
      */
     public void setPaintColor(int paintColor) {
         this.paintColor = paintColor;
@@ -143,61 +206,103 @@ public class NumRadioButton extends RadioButton {
 
     // /////////////////////////////////////////////设置数字体大小///////////////////////////////////////////////
     /**
-     * 用px设置数字大小
+     * 设置数字大小
      * 
      * @param paintTextSize
+     *            px为单位
      */
     public void setPaintTextSizeByPx(float paintTextSizePx) {
         this.paintTextSize = paintTextSizePx;
     }
 
     /**
-     * 用dp设置数字大小
+     * 设置数字大小
      * 
      * @param paintTextSizeDp
+     *            dp为单位
      */
     public void setPaintTextSizeBySp(float paintTextSizeSp) {
         this.paintTextSize = getPxBySp(paintTextSizeSp);
     }
 
+    /**
+     * 设置数字大小
+     * 
+     * @param resId
+     *            dimens文件中的值设置
+     */
+    public void setPaintTextSizeByRes(int resId) {
+        this.paintTextSize = getResources().getDimension(resId);
+    }
+
     // //////////////////////////////////////////设置未读块的偏移////////////////////////////////////////////////
     /**
-     * 根据px值设置偏移宽
+     * 设置提示点距离右边的距离
      * 
      * @param offsetWidthPx
+     *            px为单位
      */
     public void setOffsetWidthByPx(float offsetWidthPx) {
         this.offsetWidth = offsetWidthPx;
     }
 
     /**
-     * 根据px值设置便宜高
-     * 
-     * @param offsetHeightPx
-     */
-    public void setOffsetHeightByPx(float offsetHeightPx) {
-        this.offsetHeight = offsetHeightPx;
-    }
-
-    /**
-     * 根据px值设置偏移宽
+     * 设置提示点距离右边的距离
      * 
      * @param offsetWidthDp
+     *            dp为单位
      */
     public void setOffsetWidthByDp(float offsetWidthDp) {
         this.offsetWidth = getPxByDp(offsetWidthDp);
     }
 
     /**
-     * 根据px值设置便宜高
+     * 设置提示点距离右边的距离
+     * 
+     * @param resId
+     *            dimens中的值为单位
+     */
+    public void setOffsetWidthByRes(int resId) {
+        this.offsetWidth = getResources().getDimension(resId);
+    }
+
+    /**
+     * 设置提示点距离上边的距离
+     * 
+     * @param offsetHeightPx
+     *            px为单位
+     */
+    public void setOffsetHeightByPx(float offsetHeightPx) {
+        this.offsetHeight = offsetHeightPx;
+    }
+
+    /**
+     * 设置提示点距离上边的距离
      * 
      * @param offsetHeightDp
+     *            dp为单位
      */
     public void setOffsetHeightByDp(float offsetHeightDp) {
         this.offsetHeight = getPxByDp(offsetHeightDp);
     }
 
+    /**
+     * 设置提示点距离上边的距离
+     * 
+     * @param resId
+     *            dimens文件中的值
+     */
+    public void setOffsetHeightByRes(int resId) {
+        this.offsetHeight = getResources().getDimension(resId);
+    }
+
     // //////////////////////////////////////////内置工具方法////////////////////////////////////////////////
+    /**
+     * sp单位转换成px
+     * 
+     * @param sp
+     * @return
+     */
     private float getPxBySp(float sp) {
         Context context = getContext();
         if (context instanceof Activity) {
@@ -208,6 +313,12 @@ public class NumRadioButton extends RadioButton {
         }
     }
 
+    /**
+     * dp单位转换成px
+     * 
+     * @param dp
+     * @return
+     */
     private float getPxByDp(float dp) {
         Context context = getContext();
         if (context instanceof Activity) {
@@ -218,13 +329,20 @@ public class NumRadioButton extends RadioButton {
         }
     }
 
+    /**
+     * 设置背景图资源
+     * 
+     * @param resid
+     *            资源文件id
+     */
     private void initDrawBitmap(int resid) {
         if (NumRadioButton.NOT_INIT_BITMAP == resid) {
+            drawBitmap = null;
             return;
         }
 
         if (NumRadioButton.TRANSPARENT_BITMAP == resid) {
-            // 无背景透明
+            // 无背景透明，在只需要绘制数字不需要背景的时候有用到
             drawBitmap = Bitmap.createBitmap(22, 22, Bitmap.Config.ALPHA_8);
         }
         else {
