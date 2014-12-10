@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.dazzle.bigappleui.pullrefresh.entity.FooterLoadingLayoutView;
 import com.dazzle.bigappleui.pullrefresh.entity.HeaderLoadingLayoutView;
-import com.dazzle.bigappleui.utils.DisplayUtils;
+import com.dazzle.bigappleui.utils.ui.BaseUIHelper;
 import com.dazzle.bigappleui.view.img.ArrowImageView;
 
 /**
@@ -27,7 +27,7 @@ import com.dazzle.bigappleui.view.img.ArrowImageView;
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-17 上午10:08:09 $
  */
-public abstract class ViewHelper {
+public abstract class PullToRefreshUIHelper extends BaseUIHelper {
 
     /**
      * 获取下拉刷新尾部布局
@@ -165,10 +165,6 @@ public abstract class ViewHelper {
         headerLoadingLayoutView.arrow = arrow;
         headerLoadingLayoutView.progressBar = progressBar;
         return headerLoadingLayoutView;
-    }
-
-    private static int getPx(Activity activity, int dp) {
-        return (int) DisplayUtils.getPxByDp(activity, dp);
     }
 
 }

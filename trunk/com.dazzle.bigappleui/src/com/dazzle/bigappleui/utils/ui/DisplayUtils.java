@@ -1,4 +1,4 @@
-package com.dazzle.bigappleui.utils;
+package com.dazzle.bigappleui.utils.ui;
 
 import android.app.Activity;
 import android.util.DisplayMetrics;

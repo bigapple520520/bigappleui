@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.dazzle.bigappleui.demo.DrawImageActivityDemo;
 import com.dazzle.bigappleui.demo.album.AlbumDemo;
+import com.dazzle.bigappleui.demo.fileexplorer.FileExplorerDemo;
 import com.dazzle.bigappleui.demo.gifview.GifViewDemoActivity;
 import com.dazzle.bigappleui.demo.lettersort.LetterSortDemoActivity;
 import com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity;
@@ -44,6 +45,7 @@ public class BigappleUiMain extends Activity {
         addButton("SlipButton滑块demo", SlipButtonDemoActivity.class);
         addButton("NumRadioButton测试", NumRadioButtonDemoActivity.class);
         addButton("album选择相册", AlbumDemo.class);
+        addButton("文件选择器", FileExplorerDemo.class);
     }
 
     private void addButton(String text, final Class<?> clazz) {

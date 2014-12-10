@@ -42,6 +42,7 @@
         <activity android:name="com.dazzle.bigappleui.demo.view.NumRadioButtonDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.album.AlbumDemo" />
         <activity android:name="com.dazzle.bigappleui.demo.DrawImageActivityDemo" />
+        <activity android:name="com.dazzle.bigappleui.demo.fileexplorer.FileExplorerDemo" />
         
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.ListViewDemo" />
@@ -60,6 +61,9 @@
         <!-- 如果想要使用相册，如要配置下面的Activity -->
         <activity android:name="com.dazzle.bigappleui.album.activity.BucketActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
         <activity android:name="com.dazzle.bigappleui.album.activity.BucketImageActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
+    
+        <!-- 如果想要使用文件选择器，要配置下面的Activity -->
+        <activity android:name="com.dazzle.bigappleui.fileexplorer.widget.FileExplorerActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
     </application>
 
 </manifest>

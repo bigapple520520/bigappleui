@@ -15,6 +15,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 
+import com.dazzle.bigappleui.utils.ui.DisplayUtils;
+
 /**
  * 给图片加上未读消息处理器
  * 

@@ -33,7 +33,7 @@ public class FooterLoadingLayout extends LoadingLayout {
 
     @Override
     protected View createLoadingView(Context context, AttributeSet attrs) {
-        footerLoadingLayoutView = ViewHelper.getFooterLoadingLayoutView((Activity) context);
+        footerLoadingLayoutView = PullToRefreshUIHelper.getFooterLoadingLayoutView((Activity) context);
         mProgressBar = footerLoadingLayoutView.progressBar;
         mHintView = footerLoadingLayoutView.textView;
         return footerLoadingLayoutView.root;

@@ -23,7 +23,7 @@ import com.dazzle.bigappleui.album.core.ImageLoader;
 import com.dazzle.bigappleui.album.entity.BucketImageActivityView;
 import com.dazzle.bigappleui.album.entity.BucketImageListItemView;
 import com.dazzle.bigappleui.album.entity.ImageItem;
-import com.dazzle.bigappleui.utils.DisplayUtils;
+import com.dazzle.bigappleui.utils.ui.DisplayUtils;
 import com.winupon.andframe.bigapple.utils.ToastUtils;
 
 /**
@@ -48,7 +48,7 @@ public class BucketImageActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bucketImageActivityView = ViewHelper.getBucketImageActivityView(this);
+        bucketImageActivityView = AlbumUIHelper.getBucketImageActivityView(this);
         setContentView(bucketImageActivityView.root);
 
         // 获取参数
@@ -157,7 +157,7 @@ public class BucketImageActivity extends Activity {
         @Override
         public View getView(int position, View view, ViewGroup parent) {
             // 创建View
-            BucketImageListItemView bucketImageListItemView = ViewHelper
+            BucketImageListItemView bucketImageListItemView = AlbumUIHelper
                     .getBucketImageListItemView(BucketImageActivity.this);
             view = bucketImageListItemView.root;
             ImageView imageView = bucketImageListItemView.imageView;

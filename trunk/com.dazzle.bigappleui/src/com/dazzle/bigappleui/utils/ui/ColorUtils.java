@@ -3,7 +3,7 @@
  * Copyright (c) 2014 ZDSoft Networks, Inc. All rights reserved.
  * $Id$
  */
-package com.dazzle.bigappleui.utils;
+package com.dazzle.bigappleui.utils.ui;
 
 import android.graphics.Color;
 
@@ -16,6 +16,11 @@ import android.graphics.Color;
 public abstract class ColorUtils {
     public static final String TOP_BTN_COLOR_NORMAL = "#00000000";// 全透明
     public static final String TOP_BTN_COLOR_PRESSED = "#17000000";// 半透明
+
+    public static final int COLOR_EBEBEB = Color.parseColor("#EBEBEB");
+    public static final int COLOR_D4D4D4 = Color.parseColor("#D4D4D4");
+
+    public static final int COLOR_00000000 = Color.parseColor("#00000000");
 
     /**
      * 根据16进制串获取颜色值

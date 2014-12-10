@@ -25,8 +25,8 @@ import com.dazzle.bigappleui.album.entity.BucketActivityView;
 import com.dazzle.bigappleui.album.entity.BucketImageActivityView;
 import com.dazzle.bigappleui.album.entity.BucketImageListItemView;
 import com.dazzle.bigappleui.album.entity.BucketListItemView;
-import com.dazzle.bigappleui.utils.ColorUtils;
-import com.dazzle.bigappleui.utils.DisplayUtils;
+import com.dazzle.bigappleui.utils.ui.ColorUtils;
+import com.dazzle.bigappleui.utils.ui.DisplayUtils;
 import com.dazzle.bigappleui.view.img.HookImageView;
 
 /**
@@ -35,7 +35,7 @@ import com.dazzle.bigappleui.view.img.HookImageView;
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-10 上午10:04:23 $
  */
-public abstract class ViewHelper {
+public abstract class AlbumUIHelper {
 
     /**
      * 布局选择相册的那个界面

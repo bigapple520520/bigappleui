@@ -99,7 +99,7 @@ public class HeaderLoadingLayout extends LoadingLayout {
 
     @Override
     protected View createLoadingView(Context context, AttributeSet attrs) {
-        headerLoadingLayoutView = ViewHelper.getHeaderLoadingLayoutView((Activity) context);
+        headerLoadingLayoutView = PullToRefreshUIHelper.getHeaderLoadingLayoutView((Activity) context);
         return headerLoadingLayoutView.root;
     }
 

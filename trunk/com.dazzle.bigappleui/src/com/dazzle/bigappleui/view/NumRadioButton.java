@@ -16,7 +16,7 @@ import android.graphics.Paint.Align;
 import android.util.AttributeSet;
 import android.widget.RadioButton;
 
-import com.dazzle.bigappleui.utils.DisplayUtils;
+import com.dazzle.bigappleui.utils.ui.DisplayUtils;
 
 /**
  * 自定义RadioButton做tab按钮，可在上面绘制未读消息数

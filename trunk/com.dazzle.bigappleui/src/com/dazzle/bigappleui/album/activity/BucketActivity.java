@@ -54,7 +54,7 @@ public class BucketActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bucketActivityView = ViewHelper.getBucketActivityView(this);
+        bucketActivityView = AlbumUIHelper.getBucketActivityView(this);
         setContentView(bucketActivityView.root);
         ImageLoader.init(this);
 
@@ -165,7 +165,7 @@ public class BucketActivity extends Activity {
     private class BucketListAdapter extends BaseAdapter {
         @Override
         public View getView(int position, View view, ViewGroup parent) {
-            BucketListItemView bucketListItemView = ViewHelper.getBucketListItemView(BucketActivity.this);
+            BucketListItemView bucketListItemView = AlbumUIHelper.getBucketListItemView(BucketActivity.this);
             view = bucketListItemView.root;
             ImageView imageView = bucketListItemView.imageView;
             TextView nameTextView = bucketListItemView.nameTextView;
