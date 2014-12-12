@@ -33,7 +33,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.dazzle.bigappleui.R;
+import com.dazzle.bigappleui.fileexplorer.core.DrawableHelper;
 import com.dazzle.bigappleui.fileexplorer.core.FileInfoListAdapter;
 import com.dazzle.bigappleui.fileexplorer.core.FileInfoListAdapter.SelectImageViewOnClickListener;
 import com.dazzle.bigappleui.fileexplorer.core.FileSortHelper;
@@ -95,7 +95,7 @@ public class FileExplorerActivity extends Activity {
         root.titleView.leftTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                doBack();
+                finish();
             }
         });
 
@@ -116,17 +116,17 @@ public class FileExplorerActivity extends Activity {
                             // 多选
                             if (selectedFilePathList.contains(fileInfo.filePath)) {
                                 selectedFilePathList.remove(fileInfo.filePath);
-                                imageView.setImageResource(R.drawable.checkbox_normal);
+                                imageView.setImageDrawable(DrawableHelper.getCheckBoxNormalIcon());
                             }
                             else {
-                                if (selectedFilePathList.size() >= limitCount) {
+                                if (-1 != limitCount && selectedFilePathList.size() >= limitCount) {
                                     // 到限制数量了，不让选了
                                     Toast.makeText(FileExplorerActivity.this, "最多只能选择" + limitCount + "个文件",
                                             Toast.LENGTH_LONG).show();
                                 }
                                 else {
                                     selectedFilePathList.add(fileInfo.filePath);
-                                    imageView.setImageResource(R.drawable.checkbox_pressed);
+                                    imageView.setImageDrawable(DrawableHelper.getCheckBoxSelectedIcon());
                                 }
                             }
                             refreshSelectedCount();
@@ -167,8 +167,14 @@ public class FileExplorerActivity extends Activity {
         }
 
         // 加载指定目录下的数据
-        Util.reloadFileList(showPath, fileSortHelper, fileInfoList);
+        Util.reloadFileList(this, showPath, fileSortHelper, fileInfoList);
         fileInfoListAdapter.notifyDataSetChanged();
+        if (fileInfoList.isEmpty()) {
+            root.noDataTextView.setVisibility(View.VISIBLE);
+        }
+        else {
+            root.noDataTextView.setVisibility(View.GONE);
+        }
 
         // 刷新导航
         refreshNavigation(showPath);

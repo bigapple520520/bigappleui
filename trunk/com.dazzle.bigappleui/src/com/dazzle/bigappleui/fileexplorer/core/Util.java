@@ -6,15 +6,9 @@
 package com.dazzle.bigappleui.fileexplorer.core;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import android.content.Context;
@@ -23,9 +17,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.dazzle.bigappleui.fileexplorer.entity.FileInfo;
 
@@ -39,13 +32,34 @@ public class Util {
     private static final String LOG_TAG = "Util";
     private static String ANDROID_SECURE = "/mnt/sdcard/.android_secure";
 
-    public static final String ROOT_DIR = "/";
+    // does not include sd card folder
+    private static String[] SysFileDirs = new String[] { "miren_browser/imagecaches" };
 
+    /**
+     * 判断SD是否准备好
+     * 
+     * @return
+     */
     public static boolean isSDCardReady() {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
-    // if path1 contains path2
+    /**
+     * 获取SD卡路径
+     * 
+     * @return
+     */
+    public static String getSdDirectory() {
+        return Environment.getExternalStorageDirectory().getPath();
+    }
+
+    /**
+     * 判断path1是否包含着path2
+     * 
+     * @param path1
+     * @param path2
+     * @return
+     */
     public static boolean containsPath(String path1, String path2) {
         String path = path2;
         while (path != null) {
@@ -53,7 +67,7 @@ public class Util {
                 return true;
             }
 
-            if (path.equals(GlobalConsts.ROOT_PATH)) {
+            if (path.equals("/")) {
                 break;
             }
             path = new File(path).getParent();
@@ -70,72 +84,13 @@ public class Util {
         return path1 + File.separator + path2;
     }
 
-    public static String getSdDirectory() {
-        return Environment.getExternalStorageDirectory().getPath();
-    }
-
-    public static boolean isNormalFile(String fullName) {
-        return !fullName.equals(ANDROID_SECURE);
-    }
-
-    public static FileInfo GetFileInfo(String filePath) {
-        File lFile = new File(filePath);
-        if (!lFile.exists()) {
-            return null;
-        }
-
-        FileInfo lFileInfo = new FileInfo();
-        lFileInfo.canRead = lFile.canRead();
-        lFileInfo.canWrite = lFile.canWrite();
-        lFileInfo.isHidden = lFile.isHidden();
-        lFileInfo.fileName = Util.getNameFromFilepath(filePath);
-        lFileInfo.modifiedDate = lFile.lastModified();
-        lFileInfo.isDir = lFile.isDirectory();
-        lFileInfo.filePath = filePath;
-        lFileInfo.fileSize = lFile.length();
-        return lFileInfo;
-    }
-
-    public static FileInfo GetFileInfo(File f, boolean showHidden) {
-        FileInfo lFileInfo = new FileInfo();
-        String filePath = f.getPath();
-        File lFile = new File(filePath);
-        lFileInfo.canRead = lFile.canRead();
-        lFileInfo.canWrite = lFile.canWrite();
-        lFileInfo.isHidden = lFile.isHidden();
-        lFileInfo.fileName = f.getName();
-        lFileInfo.modifiedDate = lFile.lastModified();
-        lFileInfo.isDir = lFile.isDirectory();
-        lFileInfo.filePath = filePath;
-        if (lFileInfo.isDir) {
-            int lCount = 0;
-
-            File[] files = lFile.listFiles();
-
-            // null means we cannot access this dir
-            if (files == null) {
-                return null;
-            }
-
-            for (File child : files) {
-                if ((!child.isHidden() || showHidden) && Util.isNormalFile(child.getAbsolutePath())) {
-                    lCount++;
-                }
-            }
-            lFileInfo.count = lCount;
-
-        }
-        else {
-
-            lFileInfo.fileSize = lFile.length();
-
-        }
-        return lFileInfo;
-    }
-
-    /*
+    /**
      * 采用了新的办法获取APK图标，之前的失败是因为android中存在的一个BUG,通过 appInfo.publicSourceDir = apkPath;来修正这个问题，详情参见:
      * http://code.google.com/p/android/issues/detail?id=9151
+     * 
+     * @param context
+     * @param apkPath
+     * @return
      */
     public static Drawable getApkIcon(Context context, String apkPath) {
         PackageManager pm = context.getPackageManager();
@@ -154,14 +109,12 @@ public class Util {
         return null;
     }
 
-    public static String getExtFromFilename(String filename) {
-        int dotPosition = filename.lastIndexOf('.');
-        if (dotPosition != -1) {
-            return filename.substring(dotPosition + 1, filename.length());
-        }
-        return "";
-    }
-
+    /**
+     * 获取文件名称
+     * 
+     * @param filename
+     * @return
+     */
     public static String getNameFromFilename(String filename) {
         int dotPosition = filename.lastIndexOf('.');
         if (dotPosition != -1) {
@@ -170,99 +123,24 @@ public class Util {
         return "";
     }
 
-    public static String getPathFromFilepath(String filepath) {
-        int pos = filepath.lastIndexOf('/');
-        if (pos != -1) {
-            return filepath.substring(0, pos);
-        }
-        return "";
-    }
-
-    public static String getNameFromFilepath(String filepath) {
-        int pos = filepath.lastIndexOf('/');
-        if (pos != -1) {
-            return filepath.substring(pos + 1);
-        }
-        return "";
-    }
-
-    // return new file path if successful, or return null
-    public static String copyFile(String src, String dest) {
-        File file = new File(src);
-        if (!file.exists() || file.isDirectory()) {
-            Log.v(LOG_TAG, "copyFile: file not exist or is directory, " + src);
-            return null;
-        }
-        FileInputStream fi = null;
-        FileOutputStream fo = null;
-        try {
-            fi = new FileInputStream(file);
-            File destPlace = new File(dest);
-            if (!destPlace.exists()) {
-                if (!destPlace.mkdirs()) {
-                    return null;
-                }
-            }
-
-            String destPath = Util.makePath(dest, file.getName());
-            File destFile = new File(destPath);
-            int i = 1;
-            while (destFile.exists()) {
-                String destName = Util.getNameFromFilename(file.getName()) + " " + i++ + "."
-                        + Util.getExtFromFilename(file.getName());
-                destPath = Util.makePath(dest, destName);
-                destFile = new File(destPath);
-            }
-
-            if (!destFile.createNewFile()) {
-                return null;
-            }
-
-            fo = new FileOutputStream(destFile);
-            int count = 102400;
-            byte[] buffer = new byte[count];
-            int read = 0;
-            while ((read = fi.read(buffer, 0, count)) != -1) {
-                fo.write(buffer, 0, read);
-            }
-
-            // TODO: set access privilege
-
-            return destPath;
-        }
-        catch (FileNotFoundException e) {
-            Log.e(LOG_TAG, "copyFile: file not found, " + src);
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            Log.e(LOG_TAG, "copyFile: " + e.toString());
-        }
-        finally {
-            try {
-                if (fi != null) {
-                    fi.close();
-                }
-                if (fo != null) {
-                    fo.close();
-                }
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
-    }
-
-    // does not include sd card folder
-    private static String[] SysFileDirs = new String[] { "miren_browser/imagecaches" };
-
+    /**
+     * 判断文件能否显示
+     * 
+     * @param path
+     * @return
+     */
     public static boolean shouldShowFile(String path) {
         return shouldShowFile(new File(path));
     }
 
+    /**
+     * 判断文件能否显示
+     * 
+     * @param file
+     * @return
+     */
     public static boolean shouldShowFile(File file) {
-        boolean show = Settings.instance().getShowDotAndHiddenFiles();
+        boolean show = FileExplorerSettings.instance().isShowDotAndHiddenFiles();
         if (show) {
             return true;
         }
@@ -282,26 +160,6 @@ public class Util {
             }
         }
 
-        return true;
-    }
-
-    public static boolean setText(View view, int id, String text) {
-        TextView textView = (TextView) view.findViewById(id);
-        if (textView == null) {
-            return false;
-        }
-
-        textView.setText(text);
-        return true;
-    }
-
-    public static boolean setText(View view, int id, int text) {
-        TextView textView = (TextView) view.findViewById(id);
-        if (textView == null) {
-            return false;
-        }
-
-        textView.setText(text);
         return true;
     }
 
@@ -332,12 +190,151 @@ public class Util {
         }
     }
 
+    /**
+     * 判断是否是正常文件
+     * 
+     * @param fullName
+     * @return
+     */
+    public static boolean isNormalFile(String fullName) {
+        return !fullName.equals(ANDROID_SECURE);
+    }
+
+    /**
+     * 获取文件的后缀名
+     * 
+     * @param filename
+     * @return
+     */
+    public static String getExtFromFilename(String filename) {
+        if (TextUtils.isEmpty(filename)) {
+            return "";
+        }
+
+        int dotPosition = filename.lastIndexOf('.');
+        if (dotPosition <= 0) {
+            return "";
+        }
+
+        return filename.substring(dotPosition + 1);
+    }
+
+    /**
+     * 加载指定文件夹下的所有文件
+     * 
+     * @param path
+     * @param fileSortHelper
+     * @param fileInfoList
+     * @return
+     */
+    public static boolean reloadFileList(Context context, String path, FileSortHelper fileSortHelper,
+            List<FileInfo> fileInfoList) {
+        File file = new File(path);
+        if (!file.exists() || !file.isDirectory()) {
+            return false;
+        }
+        fileInfoList.clear();
+
+        File[] listFiles = file.listFiles();
+        if (listFiles == null) {
+            return true;
+        }
+
+        for (File child : listFiles) {
+            String absolutePath = child.getAbsolutePath();
+            if (Util.isNormalFile(absolutePath) && Util.shouldShowFile(absolutePath)) {
+                FileInfo fileInfo = Util.getFileInfo(context, child, FileExplorerSettings.instance()
+                        .isShowDotAndHiddenFiles());
+                if (null != fileInfo) {
+                    fileInfoList.add(fileInfo);
+                }
+            }
+        }
+
+        Collections.sort(fileInfoList, fileSortHelper.getComparator());
+        return true;
+    }
+
+    /**
+     * 获取文件的基本信息
+     * 
+     * @param file
+     * @param showHidden
+     * @return
+     */
+    public static FileInfo getFileInfo(Context context, File file, boolean showHidden) {
+        FileInfo fileInfo = new FileInfo();
+        fileInfo.canRead = file.canRead();
+        fileInfo.canWrite = file.canWrite();
+        fileInfo.isHidden = file.isHidden();
+        fileInfo.fileName = file.getName();
+        fileInfo.fileNameExt = Util.getExtFromFilename(file.getName());
+        fileInfo.modifiedDate = file.lastModified();
+        fileInfo.isDir = file.isDirectory();
+        fileInfo.filePath = file.getPath();
+
+        if (fileInfo.isDir) {
+            fileInfo.icon = DrawableHelper.getDefalutFolderIcon();
+            int count = 0;
+
+            File[] files = file.listFiles();
+
+            // 文件不允许访问
+            if (null == files) {
+                return null;
+            }
+
+            for (File child : files) {
+                if ((!child.isHidden() || showHidden) && Util.isNormalFile(child.getAbsolutePath())) {
+                    count++;
+                }
+            }
+            fileInfo.count = count;
+        }
+        else {
+            fileInfo.icon = DrawableHelper.getIconByExt(fileInfo.fileNameExt);
+            fileInfo.fileSize = file.length();
+        }
+
+        // 如果是APK，尝试获取引用图标
+        if ("apk".equalsIgnoreCase(fileInfo.fileNameExt)) {
+            Drawable apkIcon = getApkIcon(context, fileInfo.filePath);
+            if (null != apkIcon) {
+                fileInfo.icon = apkIcon;
+            }
+        }
+
+        return fileInfo;
+    }
+
+    /**
+     * 根据long值时间转换成有好时间
+     * 
+     * @param timeLong
+     *            距离1970年的毫秒数
+     * @return
+     */
+    public static String getDateByLong(long timeLong) {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(timeLong));
+    }
+
+    // //////////////////////////////////////获取SD卡基本信息//////////////////////////////////////////////////
+    /**
+     * SD基本信息
+     * 
+     * @author xuan
+     * @version $Revision: 1.0 $, $Date: 2014-12-12 下午1:13:14 $
+     */
     public static class SDCardInfo {
         public long total;
-
         public long free;
     }
 
+    /**
+     * 获取SD基本信息
+     * 
+     * @return
+     */
     public static SDCardInfo getSDCardInfo() {
         String sDcString = android.os.Environment.getExternalStorageState();
 
@@ -374,65 +371,6 @@ public class Util {
         }
 
         return null;
-    }
-
-    public static String formatDateString(Context context, long time) {
-        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(context);
-        DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(context);
-        Date date = new Date(time);
-        return dateFormat.format(date) + " " + timeFormat.format(date);
-    }
-
-    public static HashSet<String> sDocMimeTypesSet = new HashSet<String>() {
-        {
-            add("text/plain");
-            add("text/plain");
-            add("application/pdf");
-            add("application/msword");
-            add("application/vnd.ms-excel");
-            add("application/vnd.ms-excel");
-        }
-    };
-
-    public static String sZipFileMimeType = "application/zip";
-
-    public static int CATEGORY_TAB_INDEX = 0;
-    public static int SDCARD_TAB_INDEX = 1;
-
-    public static boolean reloadFileList(String path, FileSortHelper fileSortHelper, List<FileInfo> fileInfoList) {
-        File file = new File(path);
-        if (!file.exists() || !file.isDirectory()) {
-            return false;
-        }
-        fileInfoList.clear();
-
-        File[] listFiles = file.listFiles();
-        if (listFiles == null) {
-            return true;
-        }
-
-        for (File child : listFiles) {
-            String absolutePath = child.getAbsolutePath();
-            if (Util.isNormalFile(absolutePath) && Util.shouldShowFile(absolutePath)) {
-                FileInfo lFileInfo = Util.GetFileInfo(child, Settings.instance().getShowDotAndHiddenFiles());
-                if (lFileInfo != null) {
-                    fileInfoList.add(lFileInfo);
-                }
-            }
-        }
-
-        Collections.sort(fileInfoList, fileSortHelper.getComparator());
-        return true;
-    }
-
-    /**
-     * 根据long值时间转换成有好时间
-     * 
-     * @param timeLong
-     * @return
-     */
-    public static String getDateByLong(long timeLong) {
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(timeLong));
     }
 
 }

@@ -98,6 +98,7 @@ public class BucketImageActivity extends Activity {
                     if (View.VISIBLE == bucketImageListItemView.imageViewSel.getVisibility()) {
                         // 取消选中
                         bucketImageListItemView.imageViewSel.setVisibility(View.GONE);
+                        bucketImageListItemView.hookImageSel.setVisibility(View.GONE);
                         AlbumConfig.tempSelMap.remove(bucketImageListItemView.bucketImage.imageId);
                     }
                     else {
@@ -108,6 +109,7 @@ public class BucketImageActivity extends Activity {
                         }
                         else {
                             bucketImageListItemView.imageViewSel.setVisibility(View.VISIBLE);
+                            bucketImageListItemView.hookImageSel.setVisibility(View.VISIBLE);
                             AlbumConfig.tempSelMap.put(bucketImageListItemView.bucketImage.imageId,
                                     bucketImageListItemView.bucketImage);
                         }
@@ -162,6 +164,7 @@ public class BucketImageActivity extends Activity {
             view = bucketImageListItemView.root;
             ImageView imageView = bucketImageListItemView.imageView;
             ImageView imageViewSel = bucketImageListItemView.imageViewSel;
+            ImageView hookImageSel = bucketImageListItemView.hookImageSel;
             view.setTag(bucketImageListItemView);
 
             // 调整ImageView的大小，padding大小为40dip,计算px值
@@ -183,9 +186,11 @@ public class BucketImageActivity extends Activity {
             // 显示选中状态
             if (AlbumConfig.tempSelMap.containsKey(bucketImage.imageId)) {
                 imageViewSel.setVisibility(View.VISIBLE);
+                hookImageSel.setVisibility(View.VISIBLE);
             }
             else {
                 imageViewSel.setVisibility(View.GONE);
+                hookImageSel.setVisibility(View.GONE);
             }
 
             return view;

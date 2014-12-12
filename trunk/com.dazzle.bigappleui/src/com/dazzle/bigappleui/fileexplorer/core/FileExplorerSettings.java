@@ -19,27 +19,38 @@
 
 package com.dazzle.bigappleui.fileexplorer.core;
 
-public class Settings {
-    // whether show system and cache images, default not
-    private boolean mShowDotAndHiddenFiles;
-    private static Settings mInstance;
+/**
+ * 一些基本设置
+ * 
+ * @author xuan
+ * @version $Revision: 1.0 $, $Date: 2014-12-11 下午4:00:40 $
+ */
+public class FileExplorerSettings {
+    /** 是否显示系统很缓存图片，默认不显示 */
+    private boolean showDotAndHiddenFiles;
+    private static FileExplorerSettings instance;
 
-    private Settings() {
-
+    private FileExplorerSettings() {
     }
 
-    public static Settings instance() {
-        if(mInstance == null) {
-            mInstance = new Settings();
+    /**
+     * 获取单例
+     * 
+     * @return
+     */
+    public static FileExplorerSettings instance() {
+        if (null == instance) {
+            instance = new FileExplorerSettings();
         }
-        return mInstance;
+        return instance;
     }
 
-    public boolean getShowDotAndHiddenFiles() {
-        return mShowDotAndHiddenFiles;
+    public boolean isShowDotAndHiddenFiles() {
+        return showDotAndHiddenFiles;
     }
 
-    public void setShowDotAndHiddenFiles(boolean s) {
-        mShowDotAndHiddenFiles = s;
+    public void setShowDotAndHiddenFiles(boolean showDotAndHiddenFiles) {
+        this.showDotAndHiddenFiles = showDotAndHiddenFiles;
     }
+
 }

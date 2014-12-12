@@ -18,6 +18,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore.Images.Media;
 import android.provider.MediaStore.Images.Thumbnails;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.dazzle.bigappleui.album.entity.ImageBucket;
@@ -187,7 +188,13 @@ public class AlbumHelper {
                     String bucketName = cursor.getString(bucketDisplayNameColumn);
                     String imagePath = cursor.getString(imagePathColumn);
                     String dateAdded = cursor.getString(dateAddedColumn);
+                    if (TextUtils.isEmpty(dateAdded)) {
+                        dateAdded = "0";
+                    }
                     String dateModified = cursor.getString(dateModifiedColumn);
+                    if (TextUtils.isEmpty(dateModified)) {
+                        dateModified = "0";
+                    }
 
                     ImageBucket bucket = bucketMap.get(bucketId);
                     if (null == bucket) {

@@ -16,8 +16,13 @@ import android.widget.RelativeLayout;
  */
 public class BucketImageListItemView {
     public RelativeLayout root;
+    /** 缩略图控件 */
     public ImageView imageView;
+
+    /** 选中半透明层 */
     public ImageView imageViewSel;
+    /** 选中打钩层 */
+    public ImageView hookImageSel;
 
     // dto
     public ImageItem bucketImage;

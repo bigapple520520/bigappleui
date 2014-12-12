@@ -105,11 +105,11 @@ public class BaseUIHelper {
                 // 设置按下变色效果
                 switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    leftTextView.setBackgroundColor(ColorUtils.getColor(ColorUtils.TOP_BTN_COLOR_PRESSED));
+                    leftTextView.setBackgroundColor(ColorUtils.TRANSLUCENT);
                     break;
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
-                    leftTextView.setBackgroundColor(ColorUtils.getColor(ColorUtils.TOP_BTN_COLOR_NORMAL));
+                    leftTextView.setBackgroundColor(ColorUtils.TRANSPARENT);
                     break;
                 }
                 return false;
@@ -121,11 +121,11 @@ public class BaseUIHelper {
                 // 设置按下变色效果
                 switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    rightTextView.setBackgroundColor(ColorUtils.getColor(ColorUtils.TOP_BTN_COLOR_PRESSED));
+                    rightTextView.setBackgroundColor(ColorUtils.TRANSLUCENT);
                     break;
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
-                    rightTextView.setBackgroundColor(ColorUtils.getColor(ColorUtils.TOP_BTN_COLOR_NORMAL));
+                    rightTextView.setBackgroundColor(ColorUtils.TRANSPARENT);
                     break;
                 }
                 return false;

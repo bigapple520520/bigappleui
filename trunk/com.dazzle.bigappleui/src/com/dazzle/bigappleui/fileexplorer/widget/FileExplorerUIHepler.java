@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dazzle.bigappleui.fileexplorer.core.DrawableHelper;
 import com.dazzle.bigappleui.fileexplorer.entity.FileExplorerActivityView;
 import com.dazzle.bigappleui.fileexplorer.entity.FileInfoListItemView;
 import com.dazzle.bigappleui.utils.ui.BaseUIHelper;
@@ -52,6 +53,11 @@ public class FileExplorerUIHepler extends BaseUIHelper {
         titleView.leftTextView.setText("返回");
         titleView.rightTextView.setText("完成");
 
+        titleView.headLayout.setBackgroundColor(DrawableHelper.getTitleBgColor());// 定制颜色
+        titleView.leftTextView.setTextColor(DrawableHelper.getTitleTextColor());
+        titleView.titleTextView.setTextColor(DrawableHelper.getTitleTextColor());
+        titleView.rightTextView.setTextColor(DrawableHelper.getTitleTextColor());
+
         // 导航部分
         HorizontalScrollView navigationScrollView = new HorizontalScrollView(activity);
         LinearLayout.LayoutParams navigationScrollViewLp = new LinearLayout.LayoutParams(
@@ -81,7 +87,7 @@ public class FileExplorerUIHepler extends BaseUIHelper {
                 LinearLayout.LayoutParams.MATCH_PARENT);
         container.setLayoutParams(containerLp);
 
-        ListView fileListView = new ListView(activity);
+        ListView fileListView = new ListView(activity);// 数据列表
         FrameLayout.LayoutParams fileListViewLp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         fileListView.setLayoutParams(fileListViewLp);
@@ -90,6 +96,16 @@ public class FileExplorerUIHepler extends BaseUIHelper {
         fileListView.setVerticalScrollBarEnabled(false);
         fileListView.setCacheColorHint(ColorUtils.COLOR_00000000);
         container.addView(fileListView);
+
+        TextView noDataTextView = new TextView(activity);// 没有文件提示
+        FrameLayout.LayoutParams noDataTextViewLp = new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        noDataTextView.setLayoutParams(noDataTextViewLp);
+        noDataTextView.setVisibility(View.GONE);
+        noDataTextView.setText("没有文件");
+        noDataTextView.setGravity(Gravity.CENTER);
+        noDataTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 30);
+        noDataTextView.setTextColor(Color.GRAY);
+        container.addView(noDataTextView);
 
         root.addView(container);
 
@@ -101,6 +117,7 @@ public class FileExplorerUIHepler extends BaseUIHelper {
         fileExplorerActivityView.navigationLayout = navigationLayout;
         fileExplorerActivityView.container = container;
         fileExplorerActivityView.fileListView = fileListView;
+        fileExplorerActivityView.noDataTextView = noDataTextView;
 
         return fileExplorerActivityView;
     }

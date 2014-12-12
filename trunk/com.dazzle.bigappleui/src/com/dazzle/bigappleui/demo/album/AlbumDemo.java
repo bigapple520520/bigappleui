@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -23,8 +24,14 @@ import com.dazzle.bigappleui.R;
 import com.dazzle.bigappleui.album.AlbumUtils;
 import com.dazzle.bigappleui.album.core.AlbumConfig;
 import com.dazzle.bigappleui.album.entity.ImageItem;
+import com.dazzle.bigappleui.album.theme.AlbumTheme;
+import com.dazzle.bigappleui.album.theme.AlbumThemeUtils;
+import com.dazzle.bigappleui.album.theme.DefaultAlbumTheme;
+import com.dazzle.bigappleui.album.theme.custom.BlueAlbumTheme;
+import com.dazzle.bigappleui.album.theme.custom.GreenAlbumTheme;
 import com.winupon.andframe.bigapple.bitmap.BitmapDisplayConfig;
 import com.winupon.andframe.bigapple.bitmap.local.LocalImageLoaderFace;
+import com.winupon.andframe.bigapple.utils.AlertDialogUtils;
 
 /**
  * 相册选择测试
@@ -40,17 +47,47 @@ public class AlbumDemo extends Activity {
     private List<String> selPathList = new ArrayList<String>();
     private BaseAdapter adapter;
 
+    private AlbumTheme albumTheme;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_album);
         LocalImageLoaderFace.init(this);
+        // 选择主题
+        final Button theme = (Button) findViewById(R.id.theme);
+        theme.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                AlertDialogUtils.displayAlert4SingleChoice2(AlbumDemo.this, "请选择不同主题", true, new String[] { "绿色", "蓝色",
+                        "默认" }, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface arg0, int position) {
+                        switch (position) {
+                        case 0:
+                            albumTheme = new GreenAlbumTheme();
+                            break;
+                        case 1:
+                            albumTheme = new BlueAlbumTheme();
+                            break;
+                        case 2:
+                            albumTheme = new DefaultAlbumTheme();
+                            break;
+                        }
+
+                        theme.setBackgroundColor(albumTheme.titleBgColor());
+                    }
+                });
+            }
+        });
 
         // 单选
         Button danxuan = (Button) findViewById(R.id.danxuan);
         danxuan.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                AlbumThemeUtils.setTheme(albumTheme);
                 AlbumUtils.gotoAlbumForSingle(AlbumDemo.this, ACTIVITY_RESULT_1);
             }
         });
@@ -60,6 +97,7 @@ public class AlbumDemo extends Activity {
         duoxuan.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                AlbumThemeUtils.setTheme(albumTheme);
                 AlbumUtils.gotoAlbumForMulti(AlbumDemo.this, ACTIVITY_RESULT_2);
             }
         });
@@ -69,6 +107,7 @@ public class AlbumDemo extends Activity {
         duoxuan2.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                AlbumThemeUtils.setTheme(albumTheme);
                 // 限制只能选3张
                 AlbumUtils.gotoAlbumForMulti(AlbumDemo.this, 3, ACTIVITY_RESULT_2);
             }

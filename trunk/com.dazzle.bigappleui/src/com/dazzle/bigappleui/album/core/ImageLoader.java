@@ -83,8 +83,8 @@ public abstract class ImageLoader {
     private static BitmapDisplayConfig getConfig(final Context context, final String filePath) {
         BitmapDisplayConfig config = new BitmapDisplayConfig();
         config.setShowOriginal(false);
-        config.setBitmapMaxHeight(200);
-        config.setBitmapMaxWidth(200);
+        config.setBitmapMaxHeight(AlbumSettings.instance().getThumbnailQualityHeight());
+        config.setBitmapMaxWidth(AlbumSettings.instance().getThumbnailQualityWidth());
         config.setImageLoadCallBack(new ImageLoadCallBack() {
             @Override
             public void loadFailed(ImageView imageView, BitmapDisplayConfig config) {

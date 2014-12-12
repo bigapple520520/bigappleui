@@ -8,8 +8,15 @@ package com.dazzle.bigappleui.demo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.dazzle.bigappleui.utils.ui.drawable.ArrowDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.CheckBoxNormalDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.CheckBoxSelectedDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.DefaultFileDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.FolderDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.HookDrawable;
 import com.dazzle.bigappleui.view.img.ArrowImageView;
 import com.dazzle.bigappleui.view.img.HookImageView;
 
@@ -31,10 +38,34 @@ public class DrawImageActivityDemo extends Activity {
 
         addView(new ArrowImageView(this));
         addView(new HookImageView(this));
+
+        ImageView i = new ImageView(this);
+        i.setImageDrawable(new ArrowDrawable());
+        addView(i);
+
+        ImageView i2 = new ImageView(this);
+        i2.setImageDrawable(new HookDrawable());
+        addView(i2);
+
+        ImageView i3 = new ImageView(this);
+        i3.setImageDrawable(new FolderDrawable());
+        addView(i3);
+
+        ImageView i4 = new ImageView(this);
+        i4.setImageDrawable(new DefaultFileDrawable());
+        addView(i4);
+
+        ImageView i5 = new ImageView(this);
+        i5.setImageDrawable(new CheckBoxNormalDrawable());
+        addView(i5);
+
+        ImageView i6 = new ImageView(this);
+        i6.setImageDrawable(new CheckBoxSelectedDrawable());
+        addView(i6);
     }
 
     private void addView(View view) {
-        view.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
+        view.setLayoutParams(new LinearLayout.LayoutParams(80, 80));
         root.addView(view);
     }
 

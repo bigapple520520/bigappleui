@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.dazzle.bigappleui.utils.ui.entity.TitleView;
 
@@ -29,4 +30,5 @@ public class FileExplorerActivityView {
 
     public FrameLayout container;
     public ListView fileListView;
+    public TextView noDataTextView;
 }

@@ -40,10 +40,11 @@ public class BigappleUiMain extends Activity {
         addButton("侧滑模式实现", SlidingMenuDemoActivity.class);
         addButton("上下滑动有惊喜实现", SlidingUpDownDemoActivity.class);
         addButton("下拉刷新控件", Pull2RefreshDemoActivity.class);
-        addButton("查看大图缩放控件demo", ZoomImageViewDemoActivity.class);
         addButton("圆角图片实现", RoundedImageViewDemoActivity.class);
         addButton("SlipButton滑块demo", SlipButtonDemoActivity.class);
         addButton("NumRadioButton测试", NumRadioButtonDemoActivity.class);
+
+        addButton("查看大图", ZoomImageViewDemoActivity.class);
         addButton("album选择相册", AlbumDemo.class);
         addButton("文件选择器", FileExplorerDemo.class);
     }

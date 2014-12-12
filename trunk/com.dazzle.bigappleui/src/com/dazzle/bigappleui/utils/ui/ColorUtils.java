@@ -14,8 +14,8 @@ import android.graphics.Color;
  * @version $Revision: 1.0 $, $Date: 2014-11-12 下午1:10:44 $
  */
 public abstract class ColorUtils {
-    public static final String TOP_BTN_COLOR_NORMAL = "#00000000";// 全透明
-    public static final String TOP_BTN_COLOR_PRESSED = "#17000000";// 半透明
+    public static final int TRANSPARENT = Color.parseColor("#00000000");;// 全透明
+    public static final int TRANSLUCENT = Color.parseColor("#17000000");// 半透明
 
     public static final int COLOR_EBEBEB = Color.parseColor("#EBEBEB");
     public static final int COLOR_D4D4D4 = Color.parseColor("#D4D4D4");

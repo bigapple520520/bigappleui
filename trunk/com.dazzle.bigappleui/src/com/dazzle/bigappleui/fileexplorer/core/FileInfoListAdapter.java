@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.dazzle.bigappleui.R;
 import com.dazzle.bigappleui.fileexplorer.entity.FileInfo;
 import com.dazzle.bigappleui.fileexplorer.entity.FileInfoListItemView;
 import com.dazzle.bigappleui.fileexplorer.widget.FileExplorerUIHepler;
@@ -61,21 +60,20 @@ public class FileInfoListAdapter extends BaseAdapter {
         final FileInfoListItemView fileInfoListItemView = cacheView;
 
         fileInfoListItemView.textView2.setText(Util.getDateByLong(fileInfo.modifiedDate));
+        fileInfoListItemView.fileIcon.setImageDrawable(fileInfo.icon);
         if (fileInfo.isDir) {
-            fileInfoListItemView.fileIcon.setImageResource(R.drawable.folder);
             fileInfoListItemView.textView1.setText(fileInfo.fileName + "(" + fileInfo.count + ")");
             fileInfoListItemView.selectImageView.setVisibility(View.GONE);
         }
         else {
-            fileInfoListItemView.fileIcon.setImageResource(R.drawable.file);
             fileInfoListItemView.textView1.setText(fileInfo.fileName);
 
             fileInfoListItemView.selectImageView.setVisibility(View.VISIBLE);
             if (selectedFilePathList.contains(fileInfo.filePath)) {
-                fileInfoListItemView.selectImageView.setImageResource(R.drawable.checkbox_pressed);
+                fileInfoListItemView.selectImageView.setImageDrawable(DrawableHelper.getCheckBoxSelectedIcon());
             }
             else {
-                fileInfoListItemView.selectImageView.setImageResource(R.drawable.checkbox_normal);
+                fileInfoListItemView.selectImageView.setImageDrawable(DrawableHelper.getCheckBoxNormalIcon());
             }
             fileInfoListItemView.selectImageView.setOnClickListener(new OnClickListener() {
                 @Override

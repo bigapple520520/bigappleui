@@ -19,9 +19,15 @@
 
 package com.dazzle.bigappleui.fileexplorer.entity;
 
+import android.graphics.drawable.Drawable;
+
 public class FileInfo {
 
     public String fileName;
+
+    public String fileNameExt;
+
+    public Drawable icon;
 
     public String filePath;
 

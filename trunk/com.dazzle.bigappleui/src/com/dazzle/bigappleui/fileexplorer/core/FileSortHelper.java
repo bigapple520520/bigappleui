@@ -31,7 +31,6 @@ import com.dazzle.bigappleui.fileexplorer.entity.FileInfo;
  * @version $Revision: 1.0 $, $Date: 2014-12-10 上午11:00:32 $
  */
 public class FileSortHelper {
-
     /**
      * 排列方式枚举
      * 
@@ -44,8 +43,8 @@ public class FileSortHelper {
 
     /** 按某种方式排序，默认按时间 */
     private SortMethod useSortMethod = SortMethod.date;
-    /** 表示文件排前面还是文件夹排前面，true表示文件排前面false表示文件夹排前面 */
-    private boolean isFileFirst;
+    /** 表示文件排前面还是文件夹排前面，true表示文件排前面false表示文件夹排前面，默认false文件夹排在前面 */
+    private boolean isFileFirst = false;
 
     /** 多种排序方式Map */
     private HashMap<SortMethod, Comparator<FileInfo>> sortMethod2ComparatorMap = new HashMap<SortMethod, Comparator<FileInfo>>();
@@ -76,6 +75,11 @@ public class FileSortHelper {
         this.isFileFirst = isFileFirst;
     }
 
+    /**
+     * 获取排序比较器
+     * 
+     * @return
+     */
     public Comparator<FileInfo> getComparator() {
         return sortMethod2ComparatorMap.get(useSortMethod);
     }
@@ -90,6 +94,7 @@ public class FileSortHelper {
         @Override
         public int compare(FileInfo fileInfo1, FileInfo fileInfo2) {
             if (fileInfo1.isDir == fileInfo2.isDir) {
+                // 都是文件或者都是文件夹
                 return doCompare(fileInfo1, fileInfo2);
             }
 
@@ -101,9 +106,19 @@ public class FileSortHelper {
             }
         }
 
+        /**
+         * 不同排序算法实现这个排序
+         * 
+         * @param fileInfo1
+         * @param fileInfo2
+         * @return
+         */
         protected abstract int doCompare(FileInfo fileInfo1, FileInfo fileInfo2);
     }
 
+    /**
+     * 根据名称排序
+     */
     private Comparator<FileInfo> cmpName = new FileComparator() {
         @Override
         public int doCompare(FileInfo object1, FileInfo object2) {
@@ -111,6 +126,9 @@ public class FileSortHelper {
         }
     };
 
+    /**
+     * 根据大小排序
+     */
     private Comparator<FileInfo> cmpSize = new FileComparator() {
         @Override
         public int doCompare(FileInfo object1, FileInfo object2) {
@@ -118,6 +136,9 @@ public class FileSortHelper {
         }
     };
 
+    /**
+     * 根据时间排序
+     */
     private Comparator<FileInfo> cmpDate = new FileComparator() {
         @Override
         public int doCompare(FileInfo object1, FileInfo object2) {
@@ -125,6 +146,9 @@ public class FileSortHelper {
         }
     };
 
+    /**
+     * 根据类型排序
+     */
     private Comparator<FileInfo> cmpType = new FileComparator() {
         @Override
         public int doCompare(FileInfo object1, FileInfo object2) {
@@ -139,6 +163,7 @@ public class FileSortHelper {
         }
     };
 
+    /** long值比较 */
     private int longToCompareInt(long result) {
         return result > 0 ? 1 : (result < 0 ? -1 : 0);
     }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,9 +21,21 @@ import android.widget.TextView;
 
 import com.dazzle.bigappleui.R;
 import com.dazzle.bigappleui.fileexplorer.FileExplorerUtils;
+import com.dazzle.bigappleui.fileexplorer.theme.DefaultFileExplorerTheme;
+import com.dazzle.bigappleui.fileexplorer.theme.FileExplorerTheme;
+import com.dazzle.bigappleui.fileexplorer.theme.FileExplorerThemeUtils;
+import com.dazzle.bigappleui.fileexplorer.theme.custom.BlueFileExplorerTheme;
+import com.dazzle.bigappleui.fileexplorer.theme.custom.GreenFileExplorerTheme;
 import com.dazzle.bigappleui.fileexplorer.widget.FileExplorerActivity;
 import com.winupon.andframe.bigapple.bitmap.local.LocalImageLoaderFace;
+import com.winupon.andframe.bigapple.utils.AlertDialogUtils;
 
+/**
+ * 文件选择器DEMO
+ * 
+ * @author xuan
+ * @version $Revision: 1.0 $, $Date: 2014-12-12 上午11:34:10 $
+ */
 public class FileExplorerDemo extends Activity {
     public static final int ACTIVITY_RESULT_1 = 1;
     public static final int ACTIVITY_RESULT_2 = 2;
@@ -31,17 +44,47 @@ public class FileExplorerDemo extends Activity {
     private List<String> selPathList = new ArrayList<String>();
     private BaseAdapter adapter;
 
+    private FileExplorerTheme fileExplorerTheme;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_fileexplorer);
         LocalImageLoaderFace.init(this);
+        // 选择主题
+        final Button theme = (Button) findViewById(R.id.theme);
+        theme.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                AlertDialogUtils.displayAlert4SingleChoice2(FileExplorerDemo.this, "请选择不同主题", true, new String[] {
+                        "绿色", "蓝色", "默认" }, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface arg0, int position) {
+                        switch (position) {
+                        case 0:
+                            fileExplorerTheme = new GreenFileExplorerTheme();
+                            break;
+                        case 1:
+                            fileExplorerTheme = new BlueFileExplorerTheme();
+                            break;
+                        case 2:
+                            fileExplorerTheme = new DefaultFileExplorerTheme();
+                            break;
+                        }
+
+                        theme.setBackgroundColor(fileExplorerTheme.titleBgColor());
+                    }
+                });
+            }
+        });
 
         // 单选
         Button danxuan = (Button) findViewById(R.id.danxuan);
         danxuan.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                FileExplorerThemeUtils.setTheme(fileExplorerTheme);// 设置主题
                 FileExplorerUtils.gotoFileExplorerForSingle(FileExplorerDemo.this, ACTIVITY_RESULT_1);
             }
         });
@@ -51,6 +94,8 @@ public class FileExplorerDemo extends Activity {
         duoxuan.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                FileExplorerThemeUtils.setTheme(fileExplorerTheme);// 设置主题
+                // FileExplorerSettings.instance().setShowDotAndHiddenFiles(true);// 可显示一些系统文件，一般安全起见就不要开启
                 FileExplorerUtils.gotoFileExplorerForForMulti(FileExplorerDemo.this, ACTIVITY_RESULT_2);
             }
         });
@@ -60,6 +105,7 @@ public class FileExplorerDemo extends Activity {
         duoxuan2.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                FileExplorerThemeUtils.setTheme(fileExplorerTheme);// 设置主题
                 FileExplorerUtils.gotoFileExplorerForForMulti(FileExplorerDemo.this, 3, ACTIVITY_RESULT_3);
             }
         });
