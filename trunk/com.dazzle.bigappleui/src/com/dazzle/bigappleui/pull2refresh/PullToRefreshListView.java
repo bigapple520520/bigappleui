@@ -28,7 +28,6 @@ import com.dazzle.bigappleui.utils.M;
  * 
  * @author xuan
  */
-@Deprecated
 public class PullToRefreshListView extends ListView implements OnScrollListener {
     private static final String TAG = "PullToRefreshListView";
     public static final boolean DEBUG = false;

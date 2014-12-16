@@ -13,7 +13,12 @@
         android:layout_height="wrap_content"/>
     <com.dazzle.bigappleui.view.roundedimageview.RoundedImageView
         android:id="@+id/roundedImageView"
-        android:layout_width="300dp"
-        android:layout_height="300dp" 
-        android:background="@color/tab_btn_text_normal"/>
+        android:layout_width="100dp"
+        android:layout_height="100dp" 
+        android:background="@android:color/white"/>
+    <com.dazzle.bigappleui.view.imageview.RotationImageView 
+        android:id="@+id/rotationImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@android:color/darker_gray"/>
 </LinearLayout>

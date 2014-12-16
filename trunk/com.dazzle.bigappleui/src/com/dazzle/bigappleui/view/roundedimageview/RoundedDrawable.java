@@ -16,41 +16,62 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.util.Log;
 import android.widget.ImageView.ScaleType;
 
+import com.dazzle.bigappleui.utils.LogUtils;
+
 /**
- * 圆角资源类
+ * 这个是基于Drawable的自定义资源来，用来实现圆角图片绘制
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-9-22 下午3:24:47 $
  */
 public class RoundedDrawable extends Drawable {
     public static final String TAG = "RoundedDrawable";
+
     public static final int DEFAULT_BORDER_COLOR = Color.BLACK;
 
+    /** 资源区域 */
     private final RectF mBounds = new RectF();
     private final RectF mDrawableRect = new RectF();
+    /** 图片区域 */
     private final RectF mBitmapRect = new RectF();
+    /** 边框区域 */
+    private final RectF mBorderRect = new RectF();
+
+    /** 图片的渲染器，可以用他来实现画圆角图片 */
     private final BitmapShader mBitmapShader;
+    /** BitmapShader的Matrix */
+    private final Matrix mShaderMatrix = new Matrix();
+    /** 图片画笔 */
     private final Paint mBitmapPaint;
+    /** 边框画笔 */
+    private final Paint mBorderPaint;
+
+    /** 图片的宽和高 */
     private final int mBitmapWidth;
     private final int mBitmapHeight;
-    private final RectF mBorderRect = new RectF();
-    private final Paint mBorderPaint;
-    private final Matrix mShaderMatrix = new Matrix();
 
+    /** 圆角度数，只有mOval为false才生效，当mOval为true时，mCornerRadius无效 */
     private float mCornerRadius = 0;
-    private boolean isCircle = false;
-
+    /** 是否绘制成椭圆还是圆角 */
     private boolean mOval = false;
+
+    /** 边框宽度 */
     private float mBorderWidth = 0;
+    /** 边框的颜色值 */
     private ColorStateList mBorderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
     private ScaleType mScaleType = ScaleType.FIT_CENTER;
 
+    /**
+     * 构造方法
+     * 
+     * @param bitmap
+     */
     public RoundedDrawable(Bitmap bitmap) {
         mBitmapWidth = bitmap.getWidth();
         mBitmapHeight = bitmap.getHeight();
+
         mBitmapRect.set(0, 0, mBitmapWidth, mBitmapHeight);
 
         mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
@@ -85,6 +106,7 @@ public class RoundedDrawable extends Drawable {
         }
     }
 
+    /** 调整绘制图片区域 */
     private void updateShaderMatrix() {
         float scale;
         float dx;
@@ -378,15 +400,6 @@ public class RoundedDrawable extends Drawable {
         return this;
     }
 
-    public boolean isCircle() {
-        return isCircle;
-    }
-
-    public RoundedDrawable setCircle(boolean isCircle) {
-        this.isCircle = isCircle;
-        return this;
-    }
-
     /**
      * 把本资源转换成bitmap对象
      * 
@@ -398,9 +411,10 @@ public class RoundedDrawable extends Drawable {
 
     // ///////////////////////////////////////静态工具类方法//////////////////////////////////////////////////////
     /**
-     * 根据图片获取圆角资源
+     * 将bitmap对象包装成圆角可绘制资源
      * 
      * @param bitmap
+     *            bitmap对象
      * @return
      */
     public static RoundedDrawable fromBitmap(Bitmap bitmap) {
@@ -416,6 +430,7 @@ public class RoundedDrawable extends Drawable {
      * 普通资源装换成圆角资源
      * 
      * @param drawable
+     *            普通的drawable
      * @return
      */
     public static Drawable fromDrawable(Drawable drawable) {
@@ -441,16 +456,17 @@ public class RoundedDrawable extends Drawable {
                 return new RoundedDrawable(bm);
             }
             else {
-                Log.w(TAG, "Failed to create bitmap from drawable!");
+                LogUtils.w(TAG, "Failed to create bitmap from drawable!");
             }
         }
         return drawable;
     }
 
     /**
-     * 资源转换成图片
+     * 把一个可绘制对象转换成一个bitmap对象
      * 
      * @param drawable
+     *            可绘制对象
      * @return
      */
     public static Bitmap drawableToBitmap(Drawable drawable) {
@@ -468,7 +484,7 @@ public class RoundedDrawable extends Drawable {
             drawable.draw(canvas);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.e(TAG, "Exception!!! When you call drawableToBitmap,cause:" + e.getMessage(), e);
             bitmap = null;
         }
 

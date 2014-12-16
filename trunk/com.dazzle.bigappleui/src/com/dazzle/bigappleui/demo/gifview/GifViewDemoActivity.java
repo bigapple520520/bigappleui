@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView.ScaleType;
 
 import com.dazzle.bigappleui.R;
 import com.dazzle.bigappleui.gifview.GifView;
+import com.dazzle.bigappleui.view.imageview.RotationImageView;
 import com.dazzle.bigappleui.view.roundedimageview.RoundedImageView;
 import com.winupon.andframe.bigapple.bitmap.AnBitmapUtilsFace;
 
@@ -47,16 +49,24 @@ public class GifViewDemoActivity extends Activity {
             }
         });
 
+        // 圆角图
         testRoundImageView();
+
+        // 旋转图
+        testRotationImageView();
     }
 
+    /** 圆角图片控件测试 */
     private void testRoundImageView() {
         RoundedImageView roundedImageView = (RoundedImageView) findViewById(R.id.roundedImageView);
         // roundedImageView.setCornerRadius(500f);
         // roundedImageView.setBorderWidth(10f);
         // roundedImageView.setOval(true);
         // roundedImageView.setCornerRadius(R.dimen.dp40);
-        roundedImageView.setCircle(true);
+        roundedImageView.setCornerRadius(getResources().getDimension(R.dimen.dp40));
+        // roundedImageView.setCircle(true);
+        roundedImageView.setScaleType(ScaleType.CENTER_CROP);
+        // roundedImageView.setOval(true);
         // roundedImageView.setMutateBackground(true);
         // Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.demo_viewpage_pic1);
         // roundedImageView.setImageBitmap(bm);
@@ -64,7 +74,23 @@ public class GifViewDemoActivity extends Activity {
         // "http://weikefile.wanpeng.net/upload/photo/20140930/17/FF8080813A3EEE1C013A43152AD009F6/s.jpg?43");
         // roundedImageView.setBackgroundResource(R.drawable.slip_bg_off);
 
-        roundedImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pic1));
+        roundedImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test111));
+        // roundedImageView.setImageBitmap(BitmapFactory.decodeFile(ContextUtils.getSdCardPath() +
+        // "/wpchat/test111.png"));
+    }
+
+    /** 旋转图片控件测试 */
+    private void testRotationImageView() {
+        RotationImageView rotationImageView = (RotationImageView) findViewById(R.id.rotationImageView);
+        rotationImageView.setRotationDegree(90);
+        rotationImageView.setScaleType(ScaleType.CENTER_CROP);
+        // rotationImageView.setScaleType(ScaleType.FIT_CENTER);
+        // rotationImageView.setScaleType(ScaleType.FIT_START);
+        // rotationImageView.setScaleType(ScaleType.FIT_END);
+        // rotationImageView.setScaleType(ScaleType.FIT_XY);
+        // rotationImageView.setScaleType(ScaleType.CENTER);
+        // rotationImageView.setScaleType(ScaleType.CENTER_INSIDE);
+        rotationImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pic1));
     }
 
 }

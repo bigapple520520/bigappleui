@@ -8,11 +8,12 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 
+import com.dazzle.bigappleui.utils.LogUtils;
+
 /**
- * 圆角ImageView
+ * 这个是基于ImageView实现的可设置圆角图片控件
  * 
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-9-22 下午3:25:01 $
@@ -23,51 +24,29 @@ public class RoundedImageView extends ImageView {
     public static final float DEFAULT_RADIUS = 0f;
     public static final float DEFAULT_BORDER_WIDTH = 0f;
 
-    /**
-     * 圆角的幅度，越大圆角就越圆，默认0
-     */
+    /** 圆角的幅度，越大圆角就越圆，默认0 */
     private float cornerRadius = DEFAULT_RADIUS;
 
-    /**
-     * 边宽的宽度，默认0
-     */
+    /** 边宽的宽度，默认0 */
     private float borderWidth = DEFAULT_BORDER_WIDTH;
 
-    /**
-     * 边框颜色，默认黑色
-     */
+    /** 边框颜色，默认黑色 */
     private ColorStateList borderColor = ColorStateList.valueOf(RoundedDrawable.DEFAULT_BORDER_COLOR);
 
-    /**
-     * 是否画椭圆，如果设置了这个true，那么就会忽略cornerRadius这个圆角参数
-     */
+    /** 是否画椭圆，如果设置了这个true，那么就会忽略cornerRadius这个圆角参数 */
     private boolean isOval = false;
 
-    private boolean isCircle = false;
-
-    /**
-     * 背景是否可变，这个参数好像暂时没起作用
-     */
+    /** 背景是否可变，这个参数好像暂时没起作用 */
     private boolean mutateBackground = false;
 
-    /**
-     * ImageView中的src资源resid
-     */
+    /** ImageView中的src资源resid */
     private int mResource;
-
-    /**
-     * ImageView中的src资源对象
-     */
+    /** ImageView中的src资源对象 */
     private Drawable mDrawable;
-
-    /**
-     * ImageView中的背景资源对象
-     */
+    /** ImageView中的背景资源对象 */
     private Drawable mBackgroundDrawable;
 
-    /**
-     * ImageView的图片显示类型，这里都默认会调整成ScaleType.FIT_XY
-     */
+    /** ImageView的图片显示类型，这里都默认会调整成ScaleType.FIT_XY */
     private ScaleType mScaleType;
 
     public RoundedImageView(Context context) {
@@ -302,17 +281,8 @@ public class RoundedImageView extends ImageView {
         invalidate();
     }
 
-    public boolean isCircle() {
-        return isCircle;
-    }
-
-    public void setCircle(boolean isCircle) {
-        this.isCircle = isCircle;
-        updateDrawableAttrs();
-    }
-
     // ////////////////////////////////////////////////////////内部方法///////////////////////////////////////////
-    // 根据资源resid解析出资源对象
+    /** 根据资源resid解析出资源对象 */
     private Drawable resolveResource() {
         Resources res = getResources();
         if (null == res) {
@@ -325,19 +295,19 @@ public class RoundedImageView extends ImageView {
                 drawable = res.getDrawable(mResource);
             }
             catch (Exception e) {
-                Log.w(TAG, "该资源没有找到: " + mResource, e);
+                LogUtils.e(TAG, "Can not find resource:" + mResource, e);
                 mResource = 0;
             }
         }
         return RoundedDrawable.fromDrawable(drawable);
     }
 
-    // 更新src指定的资源属性
+    /** 更新src指定的资源属性，主要把该控件中的一些参数设置到RoundedDrawable中去 */
     private void updateDrawableAttrs() {
         updateAttrs(mDrawable);
     }
 
-    // 更新背景资源属性
+    /** 更新背景资源属性，主要把该控件中的一些参数设置到RoundedDrawable中去 */
     private void updateBackgroundDrawableAttrs(boolean convert) {
         if (mutateBackground) {
             if (convert) {
@@ -347,7 +317,7 @@ public class RoundedImageView extends ImageView {
         }
     }
 
-    // 更新资源的属性
+    /** 更新资源的属性，主要把该控件中的一些参数设置到RoundedDrawable中去 */
     private void updateAttrs(Drawable drawable) {
         if (null == drawable) {
             return;
@@ -355,7 +325,7 @@ public class RoundedImageView extends ImageView {
 
         if (drawable instanceof RoundedDrawable) {
             ((RoundedDrawable) drawable).setScaleType(mScaleType).setCornerRadius(cornerRadius)
-                    .setBorderWidth(borderWidth).setBorderColor(borderColor).setOval(isOval).setCircle(isCircle);
+                    .setBorderWidth(borderWidth).setBorderColor(borderColor).setOval(isOval);
         }
         else if (drawable instanceof LayerDrawable) {
             // 遍历修改所有图层的参数

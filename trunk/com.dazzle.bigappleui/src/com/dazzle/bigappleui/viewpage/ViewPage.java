@@ -24,27 +24,37 @@ public class ViewPage extends ViewGroup {
     private static final int TOUCH_STATE_SCROLLING = 1;// 正在滚动状态
     private int touchState = TOUCH_STATE_REST;
 
-    private final ScrollEventAdapter scrollEventAdapter;
+    private ScrollEventAdapter scrollEventAdapter;
 
-    private final Scroller scroller;
+    private Scroller scroller;
     private VelocityTracker velocityTracker;
 
     private int curScreen;// 当前屏幕的位置
 
     private static final int SNAP_VELOCITY = 600;// 速率，单位是：600px/s
 
-    private final int touchSlop;// 触发后小于该距离的，不移动
+    private int touchSlop;// 触发后小于该距离的，不移动
     private float lastMotionX;// 记录最后一次x坐标值
     private int offset = 0;// 偏移量
 
+    public ViewPage(Context context) {
+        super(context);
+        init();
+    }
+
     public ViewPage(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init();
     }
 
     public ViewPage(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs);
+        init();
+    }
+
+    private void init() {
         scrollEventAdapter = new ScrollEventAdapter();
-        scroller = new Scroller(context);
+        scroller = new Scroller(getContext());
         curScreen = 1;
 
         ViewConfiguration config = ViewConfiguration.get(getContext());

@@ -11,6 +11,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 
+import com.winupon.andframe.bigapple.utils.log.LogUtils;
+
 /**
  * 打钩资源图片
  * 
@@ -40,6 +42,10 @@ public class HookDrawable extends BaseDrawable {
 
     @Override
     public void draw(Canvas canvas) {
+
+        Rect t = getBounds();
+        LogUtils.d(t.toString());
+
         if (null == hookPath) {
             return;
         }
