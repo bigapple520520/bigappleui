@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.dazzle.bigappleui.album.entity.ImageBucket;
 import com.dazzle.bigappleui.album.entity.ImageItem;
+import com.winupon.andframe.bigapple.utils.Validators;
 
 /**
  * 获取相册数据帮助类
@@ -112,6 +113,14 @@ public class AlbumHelper {
                 Collections.sort(imageBucket.imageList, new Comparator<ImageItem>() {
                     @Override
                     public int compare(ImageItem imageItem1, ImageItem imageItem2) {
+                        if (!Validators.isNumber(imageItem1.dateModified)) {
+                            imageItem1.dateModified = "0";
+                        }
+
+                        if (!Validators.isNumber(imageItem2.dateModified)) {
+                            imageItem2.dateModified = "0";
+                        }
+
                         long dateModifyLong1 = Long.valueOf(imageItem1.dateModified);
                         long dateModifyLong2 = Long.valueOf(imageItem2.dateModified);
 

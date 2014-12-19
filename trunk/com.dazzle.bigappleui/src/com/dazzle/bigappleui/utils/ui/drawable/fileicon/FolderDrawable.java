@@ -3,7 +3,7 @@
  * Copyright (c) 2014 ZDSoft Networks, Inc. All rights reserved.
  * $Id$
  */
-package com.dazzle.bigappleui.utils.ui.drawable;
+package com.dazzle.bigappleui.utils.ui.drawable.fileicon;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 
 import com.dazzle.bigappleui.utils.ui.ColorUtils;
+import com.dazzle.bigappleui.utils.ui.drawable.BaseDrawable;
 
 /**
  * 一个文件夹图标

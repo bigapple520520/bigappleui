@@ -10,7 +10,7 @@ import android.graphics.drawable.Drawable;
 
 import com.dazzle.bigappleui.fileexplorer.theme.DefaultFileExplorerTheme;
 import com.dazzle.bigappleui.utils.ui.ColorUtils;
-import com.dazzle.bigappleui.utils.ui.drawable.FolderDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.fileicon.FolderDrawable;
 
 /**
  * 蓝色主题

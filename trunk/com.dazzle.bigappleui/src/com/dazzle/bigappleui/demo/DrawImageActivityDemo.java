@@ -12,11 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dazzle.bigappleui.utils.ui.drawable.ArrowDrawable;
-import com.dazzle.bigappleui.utils.ui.drawable.CheckBoxNormalDrawable;
-import com.dazzle.bigappleui.utils.ui.drawable.CheckBoxSelectedDrawable;
-import com.dazzle.bigappleui.utils.ui.drawable.DefaultFileDrawable;
-import com.dazzle.bigappleui.utils.ui.drawable.FolderDrawable;
 import com.dazzle.bigappleui.utils.ui.drawable.HookDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.checkbox.CheckBoxNormalDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.checkbox.CheckBoxSelectedDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.fileicon.DefaultFileDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.fileicon.FolderDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.fileicon.TxtFileDrawable;
 import com.dazzle.bigappleui.view.img.ArrowImageView;
 import com.dazzle.bigappleui.view.img.HookImageView;
 
@@ -62,6 +63,10 @@ public class DrawImageActivityDemo extends Activity {
         ImageView i6 = new ImageView(this);
         i6.setImageDrawable(new CheckBoxSelectedDrawable());
         addView(i6);
+
+        ImageView i7 = new ImageView(this);
+        i7.setImageDrawable(new TxtFileDrawable());
+        addView(i7);
     }
 
     private void addView(View view) {

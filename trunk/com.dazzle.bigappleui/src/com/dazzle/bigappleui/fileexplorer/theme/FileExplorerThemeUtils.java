@@ -29,42 +29,39 @@ public abstract class FileExplorerThemeUtils {
             return;
         }
 
-        // 文件夹
+        // 文件夹图标
         Drawable folderIcon = theme.defaultFolderIcon();
         if (null != folderIcon) {
             DrawableHelper.setDefalutFolderIcon(theme.defaultFolderIcon());
         }
 
-        // 默认文件
+        // 默认文件图标
         Drawable fileIcon = theme.defaultFileIcon();
         if (null != fileIcon) {
             DrawableHelper.setDefalutFileIcon(theme.defaultFileIcon());
         }
 
-        // 指定文件
+        // 自定义后缀文件图标
         Map<String, Drawable> fileIconMap = theme.fileIconMap();
         if (null != fileIconMap) {
             DrawableHelper.addAllExtIcon(fileIconMap);
         }
 
-        // 未选中复选框
+        // 复选框的图标
         Drawable checkBoxNormal = theme.checkBoxNormalIcon();
         if (null != checkBoxNormal) {
             DrawableHelper.setCheckBoxNormalIcon(checkBoxNormal);
         }
-
-        // 选中复选框
         Drawable checkBoxSelected = theme.checkBoxSelectedIcon();
         if (null != checkBoxSelected) {
             DrawableHelper.setCheckBoxSelectedIcon(checkBoxSelected);
         }
 
-        // 标题栏部分配置
+        // 标题栏部分：背景颜色、文字颜色
         int titleBgColor = theme.titleBgColor();
         if (-1 != titleBgColor) {
             DrawableHelper.setTitleBgColor(titleBgColor);
         }
-
         int titleTextColor = theme.titleTextColor();
         if (-1 != titleTextColor) {
             DrawableHelper.setTitleTextColor(titleTextColor);

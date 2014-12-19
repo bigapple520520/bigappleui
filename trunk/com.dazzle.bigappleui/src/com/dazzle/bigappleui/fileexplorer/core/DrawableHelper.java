@@ -26,10 +26,11 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
-import com.dazzle.bigappleui.utils.ui.drawable.CheckBoxNormalDrawable;
-import com.dazzle.bigappleui.utils.ui.drawable.CheckBoxSelectedDrawable;
-import com.dazzle.bigappleui.utils.ui.drawable.DefaultFileDrawable;
-import com.dazzle.bigappleui.utils.ui.drawable.FolderDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.checkbox.CheckBoxNormalDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.checkbox.CheckBoxSelectedDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.fileicon.DefaultFileDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.fileicon.FolderDrawable;
+import com.dazzle.bigappleui.utils.ui.drawable.fileicon.TxtFileDrawable;
 
 /**
  * 文件对应图标关系帮助类
@@ -45,8 +46,10 @@ public abstract class DrawableHelper {
 
     /** 文件图标对应关系 */
     private static final HashMap<String, Drawable> fileExt2IconMap = new HashMap<String, Drawable>();
+    private static final HashMap<String, Drawable> systemFileExt2IconMap = new HashMap<String, Drawable>();// 系统自带
     static {
-        fileExt2IconMap.put("mp3", new DefaultFileDrawable());
+        systemFileExt2IconMap.put("txt", new TxtFileDrawable());
+        fileExt2IconMap.putAll(systemFileExt2IconMap);
     }
 
     /** 复选框未选中状态 */
@@ -74,6 +77,8 @@ public abstract class DrawableHelper {
      * @param map
      */
     public static void addAllExtIcon(Map<String, Drawable> map) {
+        fileExt2IconMap.clear();
+        fileExt2IconMap.putAll(systemFileExt2IconMap);
         fileExt2IconMap.putAll(map);
     }
 

@@ -3,7 +3,7 @@
  * Copyright (c) 2014 ZDSoft Networks, Inc. All rights reserved.
  * $Id$
  */
-package com.dazzle.bigappleui.utils.ui.drawable;
+package com.dazzle.bigappleui.utils.ui.drawable.checkbox;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,6 +12,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 
 import com.dazzle.bigappleui.utils.ui.ColorUtils;
+import com.dazzle.bigappleui.utils.ui.drawable.BaseDrawable;
 
 /**
  * 多选框选中状态的图片资源
