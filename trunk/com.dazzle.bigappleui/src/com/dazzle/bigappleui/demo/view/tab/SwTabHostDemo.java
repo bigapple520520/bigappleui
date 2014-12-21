@@ -6,12 +6,20 @@
 package com.dazzle.bigappleui.demo.view.tab;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.FrameLayout.LayoutParams;
 
+import com.dazzle.bigappleui.view.tab.sw.DefaultTabHost;
 import com.dazzle.bigappleui.view.tab.sw.SwTabHost;
 
 /**
@@ -69,16 +77,32 @@ public class SwTabHostDemo extends Activity {
         swTabhost.addTabAndContent(t1, f1);
         swTabhost.addTabAndContent(t2, f2);
         swTabhost.addTabAndContent(t3, f3);
-
-        FrameLayout indicateLayout = new FrameLayout(this);
-        indicateLayout.setPadding(20, 0, 20, 0);
-        View v = new View(this);
-        v.setBackgroundColor(Color.BLACK);
-        indicateLayout.addView(v);
-        swTabhost.setIndicate(indicateLayout);
-
+        
+        swTabhost.setTabHost(new DefaultTabHost(){
+        	@Override
+        	public View getIndicator(Context context) {
+        		//设置一个自定义的指示器
+        	    FrameLayout vLayout = new FrameLayout(SwTabHostDemo.this);
+        	    vLayout.setPadding(20, 0, 20, 0);
+                View v = new View(SwTabHostDemo.this);
+                v.setBackgroundColor(Color.BLACK);
+                vLayout.addView(v);
+        		return vLayout;
+        	}
+        	
+        	@Override
+        	public View getDividerFromIndicatorToTabContents(Context context) {
+        		//设置分割线
+        		View v = new View(SwTabHostDemo.this);
+        		LinearLayout.LayoutParams vLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,2);
+        		v.setLayoutParams(vLp);
+        		v.setBackgroundColor(Color.BLUE);
+        		return v;
+        	}
+        });
         swTabhost.setup();
-
+        
+        //初始化到第3个界面
         swTabhost.initPosition(2);
     }
 

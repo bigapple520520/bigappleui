@@ -8,9 +8,7 @@ package com.dazzle.bigappleui.view.tab.sw;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.dazzle.bigappleui.utils.ui.DisplayUtils;
 import com.dazzle.bigappleui.view.photoview.app.core.HackyViewPager;
 
 /**
@@ -31,9 +28,6 @@ import com.dazzle.bigappleui.view.photoview.app.core.HackyViewPager;
  * @version $Revision: 1.0 $, $Date: 2014-12-16 下午3:44:41 $
  */
 public class SwTabHost extends LinearLayout {
-    public static int DEFAULT_TABSLAYOUT_HEIGHT;
-    public static int DEFAULT_INDICATE_HEIGHT;
-
     /** 当前位置 */
     private int currentPosition = -1;
 
@@ -41,29 +35,33 @@ public class SwTabHost extends LinearLayout {
     private List<View> tabList = new ArrayList<View>();
     /** tab内容页View数组 */
     private List<View> tabContentList = new ArrayList<View>();
+    
+    /**tabHost*/
+    private ITabHost tabHost;
 
     /** tab的布局容器 */
     private LinearLayout tabsLayout;
-    private int tabsLayoutHeight;
+    /**tab的布局容器的高度*/
+    private int tabsLayoutHeight = -1;
 
-    /** 下标指示容器 */
-    private FrameLayout indicateLayout;
-    /** 指示器View */
-    private View indicate;
+    /**指示器View*/
+    private View indicator;
+    /**指示器背景布局*/
+    private FrameLayout indicatorLayout;
     /** 指示器View的高度 */
-    private int indicateHeight;
-    /** 指示器View的宽度 */
-    private int indicateWidth;
+    private int indicatorHeight = -1;
+    /** 指示器View的宽度，在onSizeChanged方法里会进行计算 */
+    private int indicatorWidth;
     /** 指示器的颜色 */
-    private int indicateColor = Color.BLACK;
+    private int indicatorColor = -1;
     /** 指示器容器背景颜色 */
-    private int indicateLayoutColor = Color.WHITE;
+    private int indicateLayoutColor = -1;
 
     /** 具体tab页内容容器 */
     private FrameLayout tabContentsLayout;
     /** 内容可以进行滑动切换 */
     private HackyViewPager viewPage;
-
+    
     /** 供外部调用的监听 */
     private OnPageChangeListener onPageChangeListener;
     /** position位置发送变动通知 */
@@ -105,43 +103,19 @@ public class SwTabHost extends LinearLayout {
     /** 初始化参数 */
     private void init(Context context) {
         setOrientation(LinearLayout.VERTICAL);
-        DEFAULT_TABSLAYOUT_HEIGHT = (int) DisplayUtils.getPxByDp((Activity) context, 50);
-        DEFAULT_INDICATE_HEIGHT = (int) DisplayUtils.getPxByDp((Activity) context, 5);
-        tabsLayoutHeight = DEFAULT_TABSLAYOUT_HEIGHT;
-        indicateHeight = DEFAULT_INDICATE_HEIGHT;
-
-        // tebs布局容器
-        tabsLayout = new LinearLayout(getContext());
-        LinearLayout.LayoutParams tabsLayoutLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                tabsLayoutHeight);
-        tabsLayout.setLayoutParams(tabsLayoutLp);
-        tabsLayout.setOrientation(LinearLayout.HORIZONTAL);
-        addView(tabsLayout);
-
-        // 指示器容器
-        indicateLayout = new FrameLayout(getContext());
-        LinearLayout.LayoutParams indicateLayoutLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                indicateHeight);
-        indicateLayout.setLayoutParams(indicateLayoutLp);
-        indicateLayout.setBackgroundColor(indicateLayoutColor);
-        addView(indicateLayout);
-
-        // 内容布局容器
-        tabContentsLayout = new FrameLayout(getContext());
-        LinearLayout.LayoutParams tabContentsLayoutLp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        tabContentsLayout.setLayoutParams(tabContentsLayoutLp);
-        addView(tabContentsLayout);
+        tabHost = new DefaultTabHost();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        // w只能在这里取到，所以要在这里调整indicate的宽度
-        FrameLayout.LayoutParams indicateLp = (FrameLayout.LayoutParams) indicate.getLayoutParams();
-        indicateWidth = w / tabList.size();
-        indicateLp.width = indicateWidth;
-        indicate.setLayoutParams(indicateLp);
+        // w只能在这里取到，所以要在这里调整indicator的宽度
+        if(null != indicator){
+        	FrameLayout.LayoutParams indicatorLp = (FrameLayout.LayoutParams) indicator.getLayoutParams();
+            indicatorWidth = w / tabList.size();
+            indicatorLp.width = indicatorWidth;
+            indicator.setLayoutParams(indicatorLp);
+        }
     }
 
     /**
@@ -149,13 +123,13 @@ public class SwTabHost extends LinearLayout {
      */
     public void setup() {
         checkSizeEquals();
-
         if (tabList.isEmpty()) {
             return;
         }
 
         setupTabs();
         setupIndicate();
+        setupDividerFromIndicatorToTabContents();
         setupContents();
     }
 
@@ -196,7 +170,7 @@ public class SwTabHost extends LinearLayout {
             viewPage.setCurrentItem(position, smoothScroll);
             if (!smoothScroll) {
                 // smoothScroll=true时会触发ViewPager的滚动监听
-                indicateLayout.setPadding(position * indicateWidth, 0, 0, 0);
+            	indicatorLayout.setPadding(position * indicatorWidth, 0, 0, 0);
             }
 
             currentPosition = position;
@@ -290,7 +264,6 @@ public class SwTabHost extends LinearLayout {
         tabContentList.add(content);
     }
 
-    // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * 清理所有View
      */
@@ -298,9 +271,10 @@ public class SwTabHost extends LinearLayout {
         tabList.clear();
         tabContentList.clear();
     }
-
+    
+    // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 设置tab的高度
+     * 设置tab背景的高度
      * 
      * @param tabsLayoutHeight
      *            以px为单位
@@ -315,18 +289,18 @@ public class SwTabHost extends LinearLayout {
      * @param indicateHeight
      *            以px为单位
      */
-    public void setIndicateHeight(int indicateHeight) {
-        this.indicateHeight = indicateHeight;
+    public void setIndicatorHeight(int indicatorHeight) {
+        this.indicatorHeight = indicatorHeight;
     }
 
     /**
      * 设置指示器的颜色
      * 
-     * @param indicateColor
+     * @param indicatorColor
      *            颜色int值
      */
-    public void setIndicateColor(int indicateColor) {
-        this.indicateColor = indicateColor;
+    public void setIndicatorColor(int indicatorColor) {
+        this.indicatorColor = indicatorColor;
     }
 
     /**
@@ -339,37 +313,35 @@ public class SwTabHost extends LinearLayout {
         this.indicateLayoutColor = indicateLayoutColor;
     }
 
-    /**
-     * 可以自己设置指示器的View
-     * 
-     * @param view
-     */
-    public void setIndicate(View view) {
-        this.indicate = view;
-    }
-
-    // ///////////////////////////////////////////高度定制时用到//////////////////////////////////////////////////////
-    /**
-     * 获取指示器的容器对象
-     * 
-     * @return
-     */
-    public FrameLayout getIndicateLayout() {
-        return indicateLayout;
-    }
+    
+	/**
+	 * 设置tabHost，这个tabHost对象自定义了一些布局
+	 * 
+	 * @param tabHost
+	 */
+    public void setTabHost(ITabHost tabHost) {
+		this.tabHost = tabHost;
+	}
 
     // /////////////////////////////////////////////内部辅助方法///////////////////////////////////////////////////////
     /** tabs部分布局 */
     private void setupTabs() {
-        tabsLayout.removeAllViews();
-        if (DEFAULT_TABSLAYOUT_HEIGHT != tabsLayoutHeight) {
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) tabsLayout.getLayoutParams();
-            lp.height = tabsLayoutHeight;
-            tabsLayout.setLayoutParams(lp);
+        tabsLayout = tabHost.getTabsLayout(getContext());
+        if(-1 != tabsLayoutHeight){
+        	//调整高度
+    		ViewGroup.LayoutParams tabsLayoutLp = tabsLayout.getLayoutParams();
+    		if(null == tabsLayoutLp){
+    			tabsLayoutLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, tabsLayoutHeight);
+    		}else{
+    			tabsLayoutLp.height = tabsLayoutHeight;
+    		}
+    		tabsLayout.setLayoutParams(tabsLayoutLp);
         }
-
+        addView(tabsLayout);
+        
+        //循环设置Tab的View
         for (View view : tabList) {
-            LinearLayout.LayoutParams viewLp = new LinearLayout.LayoutParams(0, tabsLayoutHeight);
+            LinearLayout.LayoutParams viewLp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
             viewLp.weight = 1;
             view.setLayoutParams(viewLp);
             tabsLayout.addView(view);
@@ -378,26 +350,46 @@ public class SwTabHost extends LinearLayout {
 
     /** 指示条部分布局 */
     private void setupIndicate() {
-        if (DEFAULT_INDICATE_HEIGHT != indicateHeight) {
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) indicateLayout.getLayoutParams();
-            lp.height = indicateHeight;
-            indicateLayout.setLayoutParams(lp);
-        }
+    	//指示器的背景布局设置
+    	indicatorLayout = tabHost.getIndicatorLayout(getContext());
+    	if(-1 != indicateLayoutColor){
+    		//调整背景颜色
+    		indicatorLayout.setBackgroundColor(indicateLayoutColor);
+    	}
+    	addView(indicatorLayout);
 
-        if (null == indicate) {
-            indicate = new View(getContext());
-            FrameLayout.LayoutParams indicateLp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
-            indicate.setLayoutParams(indicateLp);
-            indicate.setBackgroundColor(indicateColor);
-        }
-        indicateLayout.addView(indicate);
-        indicateLayout.setBackgroundColor(indicateLayoutColor);
+    	//指示器设置
+    	indicator = tabHost.getIndicator(getContext());
+    	if(-1 != indicatorHeight){
+    		//调整高度
+    		ViewGroup.LayoutParams indicatorLp = indicatorLayout.getLayoutParams();
+    		if(null == indicatorLp){
+    			indicatorLp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, indicatorHeight);
+    		}else{
+    			indicatorLp.height = indicatorHeight;
+    		}
+    		indicator.setLayoutParams(indicatorLp);
+    	}
+    	if(-1 != indicatorColor){
+    		//调整背景颜色
+    		indicator.setBackgroundColor(indicatorColor);
+    	}
+    	indicatorLayout.addView(indicator);
+    }
+    
+    /**指示器和内容布局之间的分割线*/
+    private void setupDividerFromIndicatorToTabContents(){
+    	View divider = tabHost.getDividerFromIndicatorToTabContents(getContext());
+    	if(null != divider){
+    		addView(divider);
+    	}
     }
 
     /** 内容部分布局 */
     private void setupContents() {
-        tabContentsLayout.removeAllViews();
+    	tabContentsLayout = tabHost.getTabContentsLayout(getContext());
+    	addView(tabContentsLayout);
+    	
         viewPage = new HackyViewPager(getContext());
         viewPage.setAdapter(new PagerAdapter() {
             @Override
@@ -437,8 +429,8 @@ public class SwTabHost extends LinearLayout {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                int paddingLeft = position * indicateWidth + positionOffsetPixels / tabList.size();
-                indicateLayout.setPadding(paddingLeft, 0, 0, 0);
+                int paddingLeft = position * indicatorWidth + positionOffsetPixels / tabList.size();
+                indicatorLayout.setPadding(paddingLeft, 0, 0, 0);
                 if (null != onPageChangeListener) {
                     onPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 }
@@ -461,6 +453,7 @@ public class SwTabHost extends LinearLayout {
         }
     }
 
+    ////////////////////////////////////内部接口/////////////////////////////////////////////
     /**
      * position位置变动通知监听
      * 
