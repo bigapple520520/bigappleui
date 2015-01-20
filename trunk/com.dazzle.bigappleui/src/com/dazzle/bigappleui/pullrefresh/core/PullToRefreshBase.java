@@ -33,9 +33,9 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
     /** 可刷新View的包装布局 */
     private FrameLayout mRefreshableViewWrapper;
     /** 下拉刷新的布局 */
-    private LoadingLayout mHeaderLayout;
+    private AbstractLoadingLayout mHeaderLayout;
     /** 上拉加载更多的布局 */
-    private LoadingLayout mFooterLayout;
+    private AbstractLoadingLayout mFooterLayout;
 
     /** HeaderView的高度 */
     private int mHeaderHeight;
@@ -304,7 +304,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
      *            属性
      * @return LoadingLayout对象
      */
-    protected LoadingLayout createHeaderLoadingLayout(Context context, AttributeSet attrs) {
+    protected AbstractLoadingLayout createHeaderLoadingLayout(Context context, AttributeSet attrs) {
         return new HeaderLoadingLayout(context);
     }
 
@@ -317,7 +317,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
      *            属性
      * @return LoadingLayout对象
      */
-    protected LoadingLayout createFooterLoadingLayout(Context context, AttributeSet attrs) {
+    protected AbstractLoadingLayout createFooterLoadingLayout(Context context, AttributeSet attrs) {
         return new FooterLoadingLayout(context);
     }
 
@@ -841,12 +841,12 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
     }
 
     @Override
-    public LoadingLayout getHeaderLoadingLayout() {
+    public AbstractLoadingLayout getHeaderLoadingLayout() {
         return mHeaderLayout;
     }
 
     @Override
-    public LoadingLayout getFooterLoadingLayout() {
+    public AbstractLoadingLayout getFooterLoadingLayout() {
         return mFooterLayout;
     }
 

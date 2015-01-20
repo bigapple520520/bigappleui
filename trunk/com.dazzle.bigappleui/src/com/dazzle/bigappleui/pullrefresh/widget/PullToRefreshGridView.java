@@ -9,7 +9,7 @@ import android.widget.Adapter;
 import android.widget.GridView;
 
 import com.dazzle.bigappleui.pullrefresh.core.ILoadingLayout.State;
-import com.dazzle.bigappleui.pullrefresh.core.LoadingLayout;
+import com.dazzle.bigappleui.pullrefresh.core.AbstractLoadingLayout;
 import com.dazzle.bigappleui.pullrefresh.core.PullToRefreshBase;
 
 /**
@@ -24,38 +24,14 @@ public class PullToRefreshGridView extends PullToRefreshBase<GridView> implement
     /** 滚动的监听器 */
     private OnScrollListener mScrollListener;
 
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     */
     public PullToRefreshGridView(Context context) {
         this(context, null);
     }
 
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     * @param attrs
-     *            attrs
-     */
     public PullToRefreshGridView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     * @param attrs
-     *            attrs
-     * @param defStyle
-     *            defStyle
-     */
     public PullToRefreshGridView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
@@ -117,7 +93,7 @@ public class PullToRefreshGridView extends PullToRefreshBase<GridView> implement
      */
     public void setHasMoreData(boolean hasMoreData) {
         if (!hasMoreData) {
-            LoadingLayout footerLoadingLayout = getFooterLoadingLayout();
+            AbstractLoadingLayout footerLoadingLayout = getFooterLoadingLayout();
             if (null != footerLoadingLayout) {
                 footerLoadingLayout.setState(State.NO_MORE_DATA);
             }

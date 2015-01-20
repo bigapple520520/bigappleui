@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import com.dazzle.bigappleui.pullrefresh.core.FooterLoadingLayout;
 import com.dazzle.bigappleui.pullrefresh.core.ILoadingLayout.State;
-import com.dazzle.bigappleui.pullrefresh.core.LoadingLayout;
+import com.dazzle.bigappleui.pullrefresh.core.AbstractLoadingLayout;
 import com.dazzle.bigappleui.pullrefresh.core.PullToRefreshBase;
 
 /**
@@ -24,44 +24,20 @@ public class PullToRefreshListView extends PullToRefreshBase<ListView> implement
     /** ListView控件 */
     private ListView mListView;
     /** 用于滑到底部自动加载的Footer，这个footer会加到ListView的底部，在setScrollLoadEnabled的时候被调用 */
-    private LoadingLayout mLoadMoreFooterLayout;
+    private AbstractLoadingLayout mLoadMoreFooterLayout;
     /** 滚动的监听器 */
     private OnScrollListener mScrollListener;
 
-    private View temp;// 仅仅用来给footer占个位置，不然footer显示不出来，有大神知道跟nb的解决方案请赐教
+    private View temp;// 仅仅用来给footer占个位置，不然footer显示不出来，有大神知道更nb的解决方案请赐教
 
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     */
     public PullToRefreshListView(Context context) {
         this(context, null);
     }
 
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     * @param attrs
-     *            attrs
-     */
     public PullToRefreshListView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     * @param attrs
-     *            attrs
-     * @param defStyle
-     *            defStyle
-     */
     public PullToRefreshListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
@@ -79,7 +55,7 @@ public class PullToRefreshListView extends PullToRefreshBase<ListView> implement
     }
 
     @Override
-    public LoadingLayout getFooterLoadingLayout() {
+    public AbstractLoadingLayout getFooterLoadingLayout() {
         if (isScrollLoadEnabled()) {
             return mLoadMoreFooterLayout;
         }
@@ -96,7 +72,7 @@ public class PullToRefreshListView extends PullToRefreshBase<ListView> implement
      */
     public void setHasMoreData(boolean hasMoreData) {
         if (!hasMoreData) {
-            LoadingLayout footerLoadingLayout = getFooterLoadingLayout();
+            AbstractLoadingLayout footerLoadingLayout = getFooterLoadingLayout();
             if (null != footerLoadingLayout) {
                 footerLoadingLayout.setState(State.NO_MORE_DATA);
             }

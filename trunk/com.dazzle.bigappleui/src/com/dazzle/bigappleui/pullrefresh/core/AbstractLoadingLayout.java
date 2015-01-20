@@ -12,47 +12,24 @@ import android.widget.FrameLayout;
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-17 上午11:32:39 $
  */
-public abstract class LoadingLayout extends FrameLayout implements ILoadingLayout {
+public abstract class AbstractLoadingLayout extends FrameLayout implements ILoadingLayout {
 
     /** 容器布局 */
     private View mContainer;
-    /** 当前的状态 */
+    /** 记录当前的状态 */
     private State mCurState = State.NONE;
+    /** 记录上一次的状态，这样用来比较是否需要调用不同的方法 */
     private State mPreState = State.NONE;
 
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     */
-    public LoadingLayout(Context context) {
+    public AbstractLoadingLayout(Context context) {
         this(context, null);
     }
 
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     * @param attrs
-     *            attrs
-     */
-    public LoadingLayout(Context context, AttributeSet attrs) {
+    public AbstractLoadingLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     * @param attrs
-     *            attrs
-     * @param defStyle
-     *            defStyle
-     */
-    public LoadingLayout(Context context, AttributeSet attrs, int defStyle) {
+    public AbstractLoadingLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }

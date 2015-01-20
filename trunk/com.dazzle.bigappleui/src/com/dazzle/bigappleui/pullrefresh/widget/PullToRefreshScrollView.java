@@ -77,4 +77,5 @@ public class PullToRefreshScrollView extends PullToRefreshBase<ScrollView> {
 
         return false;
     }
+
 }

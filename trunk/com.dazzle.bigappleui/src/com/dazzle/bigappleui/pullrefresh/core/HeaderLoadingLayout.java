@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.dazzle.bigappleui.pullrefresh.entity.HeaderLoadingLayoutView;
 
 /**
  * 这个类封装了下拉刷新的布局
@@ -19,7 +19,7 @@ import com.dazzle.bigappleui.pullrefresh.entity.HeaderLoadingLayoutView;
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2014-11-17 上午11:31:50 $
  */
-public class HeaderLoadingLayout extends LoadingLayout {
+public class HeaderLoadingLayout extends AbstractLoadingLayout {
     /** 旋转动画时间 */
     private static final int ROTATE_ANIM_DURATION = 150;
     /** 箭头图片 */
@@ -38,7 +38,7 @@ public class HeaderLoadingLayout extends LoadingLayout {
     private Animation mRotateDownAnim;
 
     /** header部分的布局 */
-    private HeaderLoadingLayoutView headerLoadingLayoutView;
+    private HeaderViewWraper headerViewWraper;
 
     /**
      * 构造方法
@@ -71,11 +71,11 @@ public class HeaderLoadingLayout extends LoadingLayout {
      *            context
      */
     private void init(Context context) {
-        mArrowImageView = headerLoadingLayoutView.arrow;
-        mHintTextView = headerLoadingLayoutView.headerTextHint;
-        mProgressBar = headerLoadingLayoutView.progressBar;
-        mHeaderTimeView = headerLoadingLayoutView.headerTextTimeText;
-        mHeaderTimeViewTitle = headerLoadingLayoutView.headerTextTimeHint;
+        mArrowImageView = headerViewWraper.arrow;
+        mHintTextView = headerViewWraper.headerTextHint;
+        mProgressBar = headerViewWraper.progressBar;
+        mHeaderTimeView = headerViewWraper.headerTextTimeText;
+        mHeaderTimeViewTitle = headerViewWraper.headerTextTimeHint;
 
         float pivotValue = 0.5f; // SUPPRESS CHECKSTYLE
         float toDegree = -180f; // SUPPRESS CHECKSTYLE
@@ -99,8 +99,8 @@ public class HeaderLoadingLayout extends LoadingLayout {
 
     @Override
     protected View createLoadingView(Context context, AttributeSet attrs) {
-        headerLoadingLayoutView = PullToRefreshUIHelper.getHeaderLoadingLayoutView((Activity) context);
-        return headerLoadingLayoutView.root;
+        headerViewWraper = PullToRefreshUIHelper.getHeaderViewWraper((Activity) context);
+        return headerViewWraper.root;
     }
 
     @Override
@@ -143,6 +143,21 @@ public class HeaderLoadingLayout extends LoadingLayout {
         mArrowImageView.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
         mHintTextView.setText("正在加载...");
+    }
+
+    static class HeaderViewWraper {
+        public LinearLayout root;
+
+        public RelativeLayout headerContentLayout;
+
+        /** 头部提示语部分 */
+        public RelativeLayout headerTextLayout;
+        public TextView headerTextHint;
+        public TextView headerTextTimeHint;
+        public TextView headerTextTimeText;
+
+        public ImageView arrow;
+        public ProgressBar progressBar;
     }
 
 }

@@ -13,8 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.dazzle.bigappleui.utils.LogUtils;
-
 /**
  * 可设置旋转角度图片控件
  * 
@@ -22,7 +20,6 @@ import com.dazzle.bigappleui.utils.LogUtils;
  * @version $Revision: 1.0 $, $Date: 2014-12-15 上午9:12:57 $
  */
 public class RotationImageView extends ImageView {
-    private static final String TAG = "RotationImageView";
 
     /** 旋转角度，顺时针旋转例如90度就设置90 */
     private int rotationDegree;
@@ -31,17 +28,20 @@ public class RotationImageView extends ImageView {
     /** 调整的变化参数 */
     private Matrix matrix;
 
-    /** 控件内部内容的宽和高，会减去padding值 */
-    private float vwidth;
-    private float vheight;
-
     /** 资源图片的宽和高，这里就是图片的宽和高 */
     private float dwidth;
     private float dheight;
 
+    private float originalDwidth;
+    private float originalDheight;
+
+    /** 旋转过后需要调整的XY方向的偏移 */
+    private float offsetXAfterRotate;
+    private float offsetYAfterRotate;
+
     /** 用来设置fitCenter、fitEnd、fitStart、fitXY */
-    private RectF mTempSrc = new RectF();
-    private RectF mTempDst = new RectF();
+    RectF mTempSrc = new RectF();
+    RectF mTempDst = new RectF();
 
     /**
      * 构造方法
@@ -91,9 +91,6 @@ public class RotationImageView extends ImageView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        // 控件实际宽高，需要排除掉padding值
-        vwidth = w - getPaddingLeft() - getPaddingRight();
-        vheight = h - getPaddingTop() - getPaddingBottom();
         refreshMatrix();
     }
 
@@ -102,17 +99,21 @@ public class RotationImageView extends ImageView {
         super.setImageDrawable(d);
         dwidth = d.getIntrinsicWidth();
         dheight = d.getIntrinsicHeight();
-    }
-
-    @Override
-    public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding(left, top, right, bottom);
-        LogUtils.w(TAG, "Mabe you Don not call setPadding. It will do not meet you exoectations!!!");
+        originalDwidth = dwidth;
+        originalDheight = dheight;
+        refreshMatrix();
     }
 
     /** 调整Matrix值 */
     private void refreshMatrix() {
-        // recalculateDrawableWidthHeightIfDegree(rotationDegree);
+        int vwidth = getWidth() - getPaddingLeft() - getPaddingRight();
+        int vheight = getHeight() - getPaddingTop() - getPaddingBottom();
+        if (vwidth <= 0 || vheight <= 0) {
+            return;
+        }
+
+        // 旋转后重新调整图片的资源的宽和高
+        recalculateDrawableWidthHeightIfDegree();
 
         // 判断是否刚刚好
         boolean fits = (dwidth < 0 || vwidth == dwidth) && (dheight < 0 || vheight == dheight);
@@ -166,7 +167,8 @@ public class RotationImageView extends ImageView {
             matrix.setRectToRect(mTempSrc, mTempDst, scaleTypeToScaleToFit(originalScaleType));
         }
 
-        matrix.postRotate(rotationDegree, vwidth * 0.5f, vheight * 0.5f);
+        matrix.preTranslate(offsetXAfterRotate, offsetYAfterRotate);
+        matrix.preRotate(rotationDegree, originalDwidth * 0.5f, originalDheight * 0.5f);
         setImageMatrix(matrix);
     }
 
@@ -189,8 +191,14 @@ public class RotationImageView extends ImageView {
         }
     }
 
-    /** 图片根据角度重新计算他的宽高 */
-    private void recalculateDrawableWidthHeightIfDegree(int degree) {
+    /** 图片根据角度重新计算他的宽高，并计算旋转后需要XY偏移的量 */
+    private void recalculateDrawableWidthHeightIfDegree() {
+        if (0 == rotationDegree) {
+            offsetXAfterRotate = 0;
+            offsetYAfterRotate = 0;
+            return;
+        }
+
         /**
          * 算法如下
          * 
@@ -204,19 +212,19 @@ public class RotationImageView extends ImageView {
          * x2 = (x1 - x0) * cosa + (y1 - y0) * sina + x0 <br>
          * y2 = (y1 - y0) * cosa - (x1 - x0) * sina + y0 <br>
          */
-        // 矩形四个角的点坐标，矩形中心点为原点，顺时针排列变量：old1,old2,old3,old4
-        PointF basePoint = new PointF(0, 0);
-        PointF old1 = new PointF(-dwidth * 0.5f, -dheight * 0.5f);
-        PointF old2 = new PointF(-dwidth * 0.5f, dheight * 0.5f);
-        PointF old3 = new PointF(dwidth * 0.5f, dheight * 0.5f);
-        PointF old4 = new PointF(dwidth * 0.5f, -dheight * 0.5f);
+        // 矩形四个角的点坐标，矩形左上角为原点，向下向右为正，顺时针排列变量：old1,old2,old3,old4
+        PointF basePoint = new PointF(dwidth * 0.5f, dheight * 0.5f);
+        PointF old1 = new PointF(0, 0);
+        PointF old2 = new PointF(dwidth, 0);
+        PointF old3 = new PointF(dwidth, dheight);
+        PointF old4 = new PointF(0, dheight);
 
         // 旋转过后的四个点
         PointF new1 = new PointF();
         PointF new2 = new PointF();
         PointF new3 = new PointF();
         PointF new4 = new PointF();
-        double radians = Math.toRadians(degree);// 角度转换成弧度
+        double radians = Math.toRadians(rotationDegree);// 角度转换成弧度
         new1.x = (float) ((old1.x - basePoint.x) * Math.cos(radians) + (old1.y - basePoint.y) * Math.sin(radians))
                 + basePoint.x;
         new1.y = (float) ((old1.y - basePoint.y) * Math.cos(radians) - (old1.x - basePoint.x) * Math.sin(radians))
@@ -239,6 +247,9 @@ public class RotationImageView extends ImageView {
         float minX = Math.min(Math.min(new1.x, new2.x), Math.min(new3.x, new4.x));
         float maxY = Math.max(Math.max(new1.y, new2.y), Math.max(new3.y, new4.y));
         float minY = Math.min(Math.min(new1.y, new2.y), Math.min(new3.y, new4.y));
+
+        offsetXAfterRotate = -minX;
+        offsetYAfterRotate = -minY;
         dwidth = maxX - minX;
         dheight = maxY - minY;
     }

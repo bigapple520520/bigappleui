@@ -16,8 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dazzle.bigappleui.pullrefresh.entity.FooterLoadingLayoutView;
-import com.dazzle.bigappleui.pullrefresh.entity.HeaderLoadingLayoutView;
+import com.dazzle.bigappleui.pullrefresh.core.FooterLoadingLayout.FooterViewWraper;
+import com.dazzle.bigappleui.pullrefresh.core.HeaderLoadingLayout.HeaderViewWraper;
 import com.dazzle.bigappleui.utils.ui.BaseUIHelper;
 import com.dazzle.bigappleui.view.img.ArrowImageView;
 
@@ -35,7 +35,7 @@ public abstract class PullToRefreshUIHelper extends BaseUIHelper {
      * @param activity
      * @return
      */
-    public static FooterLoadingLayoutView getFooterLoadingLayoutView(Activity activity) {
+    public static FooterViewWraper getFooterViewWraper(Activity activity) {
         LinearLayout root = new LinearLayout(activity);
         root.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -64,12 +64,12 @@ public abstract class PullToRefreshUIHelper extends BaseUIHelper {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         footerContent.addView(textView);
 
-        FooterLoadingLayoutView footerLoadingLayoutView = new FooterLoadingLayoutView();
-        footerLoadingLayoutView.root = root;
-        footerLoadingLayoutView.footerContent = footerContent;
-        footerLoadingLayoutView.progressBar = progressBar;
-        footerLoadingLayoutView.textView = textView;
-        return footerLoadingLayoutView;
+        FooterViewWraper footerViewWraper = new FooterViewWraper();
+        footerViewWraper.root = root;
+        footerViewWraper.footerContent = footerContent;
+        footerViewWraper.progressBar = progressBar;
+        footerViewWraper.textView = textView;
+        return footerViewWraper;
     }
 
     /**
@@ -77,7 +77,7 @@ public abstract class PullToRefreshUIHelper extends BaseUIHelper {
      * 
      * @return
      */
-    public static HeaderLoadingLayoutView getHeaderLoadingLayoutView(Activity activity) {
+    public static HeaderViewWraper getHeaderViewWraper(Activity activity) {
         int headerTextHintId = 1;
         int headerTextTimeHintId = 2;
         int headerTextLayoutId = 3;
@@ -155,16 +155,16 @@ public abstract class PullToRefreshUIHelper extends BaseUIHelper {
         progressBar.setVisibility(View.INVISIBLE);
         headerContentLayout.addView(progressBar);
 
-        HeaderLoadingLayoutView headerLoadingLayoutView = new HeaderLoadingLayoutView();
-        headerLoadingLayoutView.root = root;
-        headerLoadingLayoutView.headerContentLayout = headerContentLayout;
-        headerLoadingLayoutView.headerTextLayout = headerTextLayout;
-        headerLoadingLayoutView.headerTextHint = headerTextHint;
-        headerLoadingLayoutView.headerTextTimeHint = headerTextTimeHint;
-        headerLoadingLayoutView.headerTextTimeText = headerTextTimeText;
-        headerLoadingLayoutView.arrow = arrow;
-        headerLoadingLayoutView.progressBar = progressBar;
-        return headerLoadingLayoutView;
+        HeaderViewWraper headerViewWraper = new HeaderViewWraper();
+        headerViewWraper.root = root;
+        headerViewWraper.headerContentLayout = headerContentLayout;
+        headerViewWraper.headerTextLayout = headerTextLayout;
+        headerViewWraper.headerTextHint = headerTextHint;
+        headerViewWraper.headerTextTimeHint = headerTextTimeHint;
+        headerViewWraper.headerTextTimeText = headerTextTimeText;
+        headerViewWraper.arrow = arrow;
+        headerViewWraper.progressBar = progressBar;
+        return headerViewWraper;
     }
 
 }

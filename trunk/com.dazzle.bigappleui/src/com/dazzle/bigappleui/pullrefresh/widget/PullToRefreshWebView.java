@@ -14,38 +14,15 @@ import com.dazzle.bigappleui.pullrefresh.core.PullToRefreshBase;
  * @version $Revision: 1.0 $, $Date: 2014-11-17 上午11:39:32 $
  */
 public class PullToRefreshWebView extends PullToRefreshBase<WebView> {
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     */
+
     public PullToRefreshWebView(Context context) {
         this(context, null);
     }
 
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     * @param attrs
-     *            attrs
-     */
     public PullToRefreshWebView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    /**
-     * 构造方法
-     * 
-     * @param context
-     *            context
-     * @param attrs
-     *            attrs
-     * @param defStyle
-     *            defStyle
-     */
     public PullToRefreshWebView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }

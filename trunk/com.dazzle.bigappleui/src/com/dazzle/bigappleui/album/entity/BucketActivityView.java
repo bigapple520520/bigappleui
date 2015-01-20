@@ -7,8 +7,8 @@ package com.dazzle.bigappleui.album.entity;
 
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+
+import com.dazzle.bigappleui.utils.ui.entity.TitleView;
 
 /**
  * 相册选择界面的View
@@ -18,11 +18,16 @@ import android.widget.TextView;
  */
 public class BucketActivityView {
     public LinearLayout root;
-
-    public RelativeLayout headLayout;
-    public TextView leftTextView;
-    public TextView titleTextView;
-    public TextView rightTextView;
-
+    public TitleView titleView;
     public GridView gridView;
+
+    public BucketActivityView() {
+    }
+
+    public BucketActivityView(LinearLayout root, TitleView titleView, GridView gridView) {
+        this.root = root;
+        this.titleView = titleView;
+        this.gridView = gridView;
+    }
+
 }

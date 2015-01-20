@@ -3,9 +3,11 @@ package com.dazzle.bigappleui.demo.gifview;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.dazzle.bigappleui.R;
@@ -49,11 +51,21 @@ public class GifViewDemoActivity extends Activity {
             }
         });
 
+        // 正常图
+        testImageView();
+
         // 圆角图
         testRoundImageView();
 
         // 旋转图
         testRotationImageView();
+    }
+
+    private void testImageView() {
+        ImageView imageView = (ImageView) findViewById(R.id.image);
+        imageView.setScaleType(ScaleType.CENTER_CROP);
+        imageView.setPadding(20, 20, 20, 20);
+        imageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pic1));
     }
 
     /** 圆角图片控件测试 */
@@ -63,9 +75,10 @@ public class GifViewDemoActivity extends Activity {
         // roundedImageView.setBorderWidth(10f);
         // roundedImageView.setOval(true);
         // roundedImageView.setCornerRadius(R.dimen.dp40);
-        roundedImageView.setCornerRadius(getResources().getDimension(R.dimen.dp40));
+        // roundedImageView.setCornerRadius(getResources().getDimension(R.dimen.dp40));
         // roundedImageView.setCircle(true);
         roundedImageView.setScaleType(ScaleType.CENTER_CROP);
+        roundedImageView.setPadding(20, 20, 20, 20);
         // roundedImageView.setOval(true);
         // roundedImageView.setMutateBackground(true);
         // Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.demo_viewpage_pic1);
@@ -74,23 +87,48 @@ public class GifViewDemoActivity extends Activity {
         // "http://weikefile.wanpeng.net/upload/photo/20140930/17/FF8080813A3EEE1C013A43152AD009F6/s.jpg?43");
         // roundedImageView.setBackgroundResource(R.drawable.slip_bg_off);
 
-        roundedImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test111));
+        roundedImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pic1_90));
         // roundedImageView.setImageBitmap(BitmapFactory.decodeFile(ContextUtils.getSdCardPath() +
         // "/wpchat/test111.png"));
     }
 
     /** 旋转图片控件测试 */
     private void testRotationImageView() {
-        RotationImageView rotationImageView = (RotationImageView) findViewById(R.id.rotationImageView);
+        final RotationImageView rotationImageView = (RotationImageView) findViewById(R.id.rotationImageView);
         rotationImageView.setRotationDegree(90);
         rotationImageView.setScaleType(ScaleType.CENTER_CROP);
+        rotationImageView.setPadding(20, 20, 20, 20);
         // rotationImageView.setScaleType(ScaleType.FIT_CENTER);
         // rotationImageView.setScaleType(ScaleType.FIT_START);
         // rotationImageView.setScaleType(ScaleType.FIT_END);
         // rotationImageView.setScaleType(ScaleType.FIT_XY);
         // rotationImageView.setScaleType(ScaleType.CENTER);
         // rotationImageView.setScaleType(ScaleType.CENTER_INSIDE);
-        rotationImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pic1));
-    }
+        // rotationImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pic1));
+        // rotationImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pic1));
+        final Handler handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                }
+                catch (Exception e) {
+                }
 
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        rotationImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pic1));
+                    }
+                });
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        rotationImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.pic1));
+                    }
+                }, 1000);
+            }
+        }).start();
+    }
 }

@@ -61,12 +61,12 @@ public class BucketActivity extends Activity {
         // 获取参数
         ifMultiple = getIntent().getBooleanExtra(AlbumConfig.PARAM_IF_MULTIPLE_CHOICE, true);
         if (!ifMultiple) {
-            bucketActivityView.rightTextView.setVisibility(View.GONE);
+            bucketActivityView.titleView.rightTextView.setVisibility(View.GONE);
         }
         limitCount = getIntent().getIntExtra(AlbumConfig.PARAM_LIMIT_COUNT, -1);
 
         // 返回按钮事件
-        bucketActivityView.leftTextView.setOnClickListener(new OnClickListener() {
+        bucketActivityView.titleView.leftTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 BucketActivity.this.finish();
@@ -74,7 +74,7 @@ public class BucketActivity extends Activity {
         });
 
         // 选择后确定按钮事件
-        bucketActivityView.rightTextView.setOnClickListener(new OnClickListener() {
+        bucketActivityView.titleView.rightTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlbumConfig.selList.addAll(AlbumConfig.tempSelMap.values());
@@ -137,22 +137,22 @@ public class BucketActivity extends Activity {
         int currentSelected = AlbumConfig.tempSelMap.size();
         if (currentSelected > 0) {
             if (-1 == limitCount) {
-                bucketActivityView.rightTextView.setText("完成 (" + currentSelected + ")");
+                bucketActivityView.titleView.rightTextView.setText("完成 (" + currentSelected + ")");
             }
             else {
-                bucketActivityView.rightTextView.setText("完成 (" + currentSelected + "/"
+                bucketActivityView.titleView.rightTextView.setText("完成 (" + currentSelected + "/"
                         + (limitCount - currentSelected) + ")");
             }
 
-            bucketActivityView.rightTextView.setTextColor(0xFFFFFFFF);
-            bucketActivityView.rightTextView.setEnabled(true);
-            bucketActivityView.rightTextView.setClickable(true);
+            bucketActivityView.titleView.rightTextView.setTextColor(0xFFFFFFFF);
+            bucketActivityView.titleView.rightTextView.setEnabled(true);
+            bucketActivityView.titleView.rightTextView.setClickable(true);
         }
         else {
-            bucketActivityView.rightTextView.setText("完成");
-            bucketActivityView.rightTextView.setTextColor(0x59ffffff);
-            bucketActivityView.rightTextView.setEnabled(false);
-            bucketActivityView.rightTextView.setClickable(false);
+            bucketActivityView.titleView.rightTextView.setText("完成");
+            bucketActivityView.titleView.rightTextView.setTextColor(0x59ffffff);
+            bucketActivityView.titleView.rightTextView.setEnabled(false);
+            bucketActivityView.titleView.rightTextView.setClickable(false);
         }
     }
 

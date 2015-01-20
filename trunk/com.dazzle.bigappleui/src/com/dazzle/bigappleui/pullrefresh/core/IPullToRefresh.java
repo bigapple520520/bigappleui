@@ -97,13 +97,13 @@ public interface IPullToRefresh<T extends View> {
      * 
      * @return Header布局对象
      */
-    public LoadingLayout getHeaderLoadingLayout();
+    public AbstractLoadingLayout getHeaderLoadingLayout();
 
     /**
      * 得到Footer布局对象
      * 
      * @return Footer布局对象
      */
-    public LoadingLayout getFooterLoadingLayout();
+    public AbstractLoadingLayout getFooterLoadingLayout();
 
 }

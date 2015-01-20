@@ -10,13 +10,16 @@ import java.io.File;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.dazzle.bigappleui.utils.ui.ColorUtils;
+import com.dazzle.bigappleui.view.imageview.RotationImageView;
 import com.winupon.andframe.bigapple.bitmap.BitmapDisplayConfig;
 import com.winupon.andframe.bigapple.bitmap.callback.ImageLoadCallBack;
 import com.winupon.andframe.bigapple.bitmap.local.LocalImageLoader;
-import com.winupon.andframe.bigapple.utils.Validators;
 
 /**
  * 图片加载器
@@ -25,6 +28,8 @@ import com.winupon.andframe.bigapple.utils.Validators;
  * @version $Revision: 1.0 $, $Date: 2014-11-7 上午11:46:00 $
  */
 public abstract class ImageLoader {
+    private static Bitmap defaultBitmap = Bitmap.createBitmap(new int[] { ColorUtils.COLOR_EBEBEB }, 1, 1,
+            Config.ARGB_8888);
     private static LocalImageLoader localImageLoader;
 
     /**
@@ -46,43 +51,42 @@ public abstract class ImageLoader {
     /**
      * 显示图片
      * 
-     * @param imageView
-     * @param url
-     */
-    public static void display(Context context, ImageView imageView, String url) {
-        if (null == imageView || Validators.isEmpty(url) || null == localImageLoader) {
-            return;
-        }
-
-        localImageLoader.display(imageView, url, getConfig(context, url));
-    }
-
-    /**
-     * 显示图片
-     * 
      * @param context
      * @param imageView
      * @param thumbPath
      * @param sourcePath
      */
     public static void display(final Context context, ImageView imageView, String thumbPath, String sourcePath) {
-        if (Validators.isEmpty(thumbPath)) {
-            display(context, imageView, sourcePath);
+        if (null == context || null == imageView || null == localImageLoader) {
+            return;
+        }
+
+        String showUrl = null;
+        if (TextUtils.isEmpty(thumbPath)) {
+            showUrl = sourcePath;
         }
         else {
             File file = new File(thumbPath);
             if (file.exists()) {
-                display(context, imageView, thumbPath);
+                showUrl = thumbPath;
             }
             else {
-                display(context, imageView, sourcePath);
+                showUrl = sourcePath;
             }
         }
+
+        if (TextUtils.isEmpty(showUrl)) {
+            return;
+        }
+
+        localImageLoader.display(imageView, showUrl, getConfig(context, showUrl, sourcePath));
     }
 
-    private static BitmapDisplayConfig getConfig(final Context context, final String filePath) {
+    private static BitmapDisplayConfig getConfig(final Context context, final String filePath, final String sourcePath) {
         BitmapDisplayConfig config = new BitmapDisplayConfig();
         config.setShowOriginal(false);
+        config.setLoadingBitmap(defaultBitmap);
+        config.setLoadFailedBitmap(defaultBitmap);
         config.setBitmapMaxHeight(AlbumSettings.instance().getThumbnailQualityHeight());
         config.setBitmapMaxWidth(AlbumSettings.instance().getThumbnailQualityWidth());
         config.setImageLoadCallBack(new ImageLoadCallBack() {
@@ -93,8 +97,14 @@ public abstract class ImageLoader {
 
             @Override
             public void loadCompleted(ImageView imageView, Bitmap bitmap, BitmapDisplayConfig config) {
-                int degree = ImageUtils.getBitmapDegree(context, Uri.parse(filePath));// 角度调整处理
-                imageView.setImageBitmap(ImageUtils.rotateBitMap(bitmap, degree));
+                if (imageView instanceof RotationImageView) {
+                    RotationImageView rotationImageView = (RotationImageView) imageView;
+                    rotationImageView.setRotationDegree(ImageUtils.getBitmapDegree(context, Uri.parse(sourcePath)));
+                    rotationImageView.setImageBitmap(bitmap);
+                }
+                else {
+                    imageView.setImageBitmap(bitmap);
+                }
             }
         });
         return config;

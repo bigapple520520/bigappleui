@@ -39,6 +39,7 @@
         <activity android:name="com.dazzle.bigappleui.demo.view.roundedimageview.RoundedImageViewDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.SlipButtonDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.tab.SwTabHostDemo" />
+        <activity android:name="com.dazzle.bigappleui.demo.view.gridview.DragGridViewDemo" />
         <activity android:name="com.dazzle.bigappleui.demo.slidingupdown.SlidingUpDownDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.view.NumRadioButtonDemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.album.AlbumDemo" />

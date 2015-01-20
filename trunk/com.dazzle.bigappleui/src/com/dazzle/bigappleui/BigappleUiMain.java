@@ -18,6 +18,7 @@ import com.dazzle.bigappleui.demo.slidingmenu.SlidingMenuDemoActivity;
 import com.dazzle.bigappleui.demo.slidingupdown.SlidingUpDownDemoActivity;
 import com.dazzle.bigappleui.demo.view.NumRadioButtonDemoActivity;
 import com.dazzle.bigappleui.demo.view.SlipButtonDemoActivity;
+import com.dazzle.bigappleui.demo.view.gridview.DragGridViewDemo;
 import com.dazzle.bigappleui.demo.view.roundedimageview.RoundedImageViewDemoActivity;
 import com.dazzle.bigappleui.demo.view.tab.SwTabHostDemo;
 import com.dazzle.bigappleui.demo.view.zoomimageview.ZoomImageViewDemoActivity;
@@ -33,6 +34,7 @@ public class BigappleUiMain extends Activity {
         setContentView(R.layout.main);
         content = (LinearLayout) findViewById(R.id.content);
 
+        addButton("DragGridView", DragGridViewDemo.class);
         addButton("代码画的图片", DrawImageActivityDemo.class);
         addButton("gif图、圆角图、旋转图", GifViewDemoActivity.class);
         addButton("viewpage图片切页实现", ViewPageDemoActivity.class);

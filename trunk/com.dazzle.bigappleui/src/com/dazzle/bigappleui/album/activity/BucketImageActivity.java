@@ -57,11 +57,11 @@ public class BucketImageActivity extends Activity {
         bucketName = getIntent().getStringExtra(AlbumConfig.PARAM_BUCKETNAME);
         ifMultiple = getIntent().getBooleanExtra(AlbumConfig.PARAM_IF_MULTIPLE_CHOICE, true);
         if (!ifMultiple) {
-            bucketImageActivityView.rightTextView.setVisibility(View.GONE);// 表示单选
+            bucketImageActivityView.titleView.rightTextView.setVisibility(View.GONE);// 表示单选
         }
 
         // 返回
-        bucketImageActivityView.leftTextView.setOnClickListener(new OnClickListener() {
+        bucketImageActivityView.titleView.leftTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 BucketImageActivity.this.finish();
@@ -69,7 +69,7 @@ public class BucketImageActivity extends Activity {
         });
 
         // 确定
-        bucketImageActivityView.rightTextView.setOnClickListener(new OnClickListener() {
+        bucketImageActivityView.titleView.rightTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlbumConfig.selList.addAll(AlbumConfig.tempSelMap.values());
@@ -79,7 +79,7 @@ public class BucketImageActivity extends Activity {
         });
 
         // 标题
-        bucketImageActivityView.titleTextView.setText(bucketName);
+        bucketImageActivityView.titleView.titleTextView.setText(bucketName);
 
         // 图片设配器
         bucketImageActivityView.gridView.setAdapter(new ImageAdapter());
@@ -131,21 +131,22 @@ public class BucketImageActivity extends Activity {
         int currentSelected = AlbumConfig.tempSelMap.size();
         if (currentSelected > 0) {
             if (-1 == limitCount) {
-                bucketImageActivityView.rightTextView.setText("完成 (" + currentSelected + ")");
+                bucketImageActivityView.titleView.rightTextView.setText("完成 (" + currentSelected + ")");
             }
             else {
-                bucketImageActivityView.rightTextView.setText("完成 (" + currentSelected + "/" + limitCount + ")");
+                bucketImageActivityView.titleView.rightTextView.setText("完成 (" + currentSelected + "/" + limitCount
+                        + ")");
             }
 
-            bucketImageActivityView.rightTextView.setTextColor(0xFFFFFFFF);
-            bucketImageActivityView.rightTextView.setEnabled(true);
-            bucketImageActivityView.rightTextView.setClickable(true);
+            bucketImageActivityView.titleView.rightTextView.setTextColor(0xFFFFFFFF);
+            bucketImageActivityView.titleView.rightTextView.setEnabled(true);
+            bucketImageActivityView.titleView.rightTextView.setClickable(true);
         }
         else {
-            bucketImageActivityView.rightTextView.setText("完成");
-            bucketImageActivityView.rightTextView.setTextColor(0x59ffffff);
-            bucketImageActivityView.rightTextView.setEnabled(false);
-            bucketImageActivityView.rightTextView.setClickable(false);
+            bucketImageActivityView.titleView.rightTextView.setText("完成");
+            bucketImageActivityView.titleView.rightTextView.setTextColor(0x59ffffff);
+            bucketImageActivityView.titleView.rightTextView.setEnabled(false);
+            bucketImageActivityView.titleView.rightTextView.setClickable(false);
         }
     }
 

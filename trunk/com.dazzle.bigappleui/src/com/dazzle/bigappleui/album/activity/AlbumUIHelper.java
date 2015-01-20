@@ -9,11 +9,8 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils.TruncateAt;
-import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -26,9 +23,11 @@ import com.dazzle.bigappleui.album.entity.BucketActivityView;
 import com.dazzle.bigappleui.album.entity.BucketImageActivityView;
 import com.dazzle.bigappleui.album.entity.BucketImageListItemView;
 import com.dazzle.bigappleui.album.entity.BucketListItemView;
+import com.dazzle.bigappleui.utils.Compat;
 import com.dazzle.bigappleui.utils.ui.BaseUIHelper;
 import com.dazzle.bigappleui.utils.ui.ColorUtils;
-import com.dazzle.bigappleui.utils.ui.DisplayUtils;
+import com.dazzle.bigappleui.utils.ui.entity.TitleView;
+import com.dazzle.bigappleui.view.imageview.RotationImageView;
 
 /**
  * Activity创建帮助类
@@ -39,7 +38,7 @@ import com.dazzle.bigappleui.utils.ui.DisplayUtils;
 public abstract class AlbumUIHelper extends BaseUIHelper {
 
     /**
-     * 布局选择相册的那个界面
+     * 相册列表Activity
      * 
      * @param activity
      * @return
@@ -49,60 +48,14 @@ public abstract class AlbumUIHelper extends BaseUIHelper {
         LinearLayout root = new LinearLayout(activity);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setBackgroundColor(Color.WHITE);
-
-        // 标题
-        RelativeLayout headLayout = new RelativeLayout(activity);
-        LinearLayout.LayoutParams headLayoutLp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                (int) DisplayUtils.getPxByDp(activity, 50));
-        headLayout.setLayoutParams(headLayoutLp);
-        headLayout.setBackgroundColor(AlbumDrawableHelper.getTitleBgColor());
-        root.addView(headLayout);
-
-        // 标题-左边文字
-        final TextView leftTextView = new TextView(activity);
-        RelativeLayout.LayoutParams leftTextViewLp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        leftTextViewLp.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-        leftTextViewLp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-        leftTextView.setLayoutParams(leftTextViewLp);
-        leftTextView.setText("返回");
-        leftTextView.setTextColor(AlbumDrawableHelper.getTitleTextColor());
-        leftTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        leftTextView.setPadding(getPx(activity, 10), leftTextView.getPaddingTop(), getPx(activity, 10),
-                leftTextView.getPaddingBottom());
-        leftTextView.setGravity(Gravity.CENTER);
-        headLayout.addView(leftTextView);
-
-        // 标题-右边文字
-        final TextView rightTextView = new TextView(activity);
-        RelativeLayout.LayoutParams rightTextViewLp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        rightTextViewLp.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-        rightTextViewLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-        rightTextView.setLayoutParams(rightTextViewLp);
-        rightTextView.setText("完成");
-        rightTextView.setTextColor(AlbumDrawableHelper.getTitleTextColor());
-        rightTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        rightTextView.setPadding(getPx(activity, 10), leftTextView.getPaddingTop(), getPx(activity, 10),
-                leftTextView.getPaddingBottom());
-        rightTextView.setGravity(Gravity.CENTER);
-        headLayout.addView(rightTextView);
-
-        // 标题-中间标题
-        TextView titleTextView = new TextView(activity);
-        RelativeLayout.LayoutParams titleTextViewLp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        titleTextViewLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        titleTextView.setLayoutParams(titleTextViewLp);
-        titleTextView.setText("相册选择");
-        titleTextView.setTextColor(AlbumDrawableHelper.getTitleTextColor());
-        titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        headLayout.addView(titleTextView);
-
+        // 获取标题
+        TitleView titleView = getTitleView(activity, root);
+        titleView.titleTextView.setText("相册");
+        titleView.leftTextView.setText("返回");
+        titleView.rightTextView.setText("完成");
         // 内容GridView
         GridView gridView = new GridView(activity);
-        LinearLayout.LayoutParams gridViewLp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams gridViewLp = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         gridViewLp.leftMargin = getPx(activity, 10);
         gridViewLp.rightMargin = getPx(activity, 10);
         gridViewLp.topMargin = getPx(activity, 10);
@@ -113,53 +66,14 @@ public abstract class AlbumUIHelper extends BaseUIHelper {
         gridView.setNumColumns(2);
         gridView.setVerticalScrollBarEnabled(false);
         root.addView(gridView);
-
         // 设置按下效果
-        leftTextView.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent event) {
-                // 设置按下变色效果
-                switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    leftTextView.setBackgroundColor(ColorUtils.TRANSLUCENT);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
-                    leftTextView.setBackgroundColor(ColorUtils.TRANSPARENT);
-                    break;
-                }
-                return false;
-            }
-        });
-        rightTextView.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent event) {
-                // 设置按下变色效果
-                switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    rightTextView.setBackgroundColor(ColorUtils.TRANSLUCENT);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
-                    rightTextView.setBackgroundColor(ColorUtils.TRANSPARENT);
-                    break;
-                }
-                return false;
-            }
-        });
-
-        BucketActivityView bucketActivityView = new BucketActivityView();
-        bucketActivityView.root = root;
-        bucketActivityView.headLayout = headLayout;
-        bucketActivityView.leftTextView = leftTextView;
-        bucketActivityView.titleTextView = titleTextView;
-        bucketActivityView.rightTextView = rightTextView;
-        bucketActivityView.gridView = gridView;
-        return bucketActivityView;
+        Compat.setViewBackgroundDrawable(titleView.leftTextView, getPressedDrawable(ColorUtils.TRANSLUCENT));
+        Compat.setViewBackgroundDrawable(titleView.rightTextView, getPressedDrawable(ColorUtils.TRANSLUCENT));
+        return new BucketActivityView(root, titleView, gridView);
     }
 
     /**
-     * 获取相册列表项目View
+     * 相册Item
      * 
      * @param activity
      * @return
@@ -170,30 +84,25 @@ public abstract class AlbumUIHelper extends BaseUIHelper {
         root.setBackgroundColor(Color.WHITE);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(getPx(activity, 10), getPx(activity, 10), getPx(activity, 10), getPx(activity, 10));
-
         // 图片
-        ImageView imageView = new ImageView(activity);
+        ImageView imageView = new RotationImageView(activity);
         LinearLayout.LayoutParams imageViewLp = new LinearLayout.LayoutParams(getPx(activity, 156),
                 getPx(activity, 128));
         imageView.setLayoutParams(imageViewLp);
         imageView.setScaleType(ScaleType.CENTER_CROP);
         root.addView(imageView);
-
         // 相册名称
         TextView nameTextView = new TextView(activity);
-        LinearLayout.LayoutParams nameTextViewLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams nameTextViewLp = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         nameTextView.setLayoutParams(nameTextViewLp);
         nameTextView.setTextColor(Color.BLACK);
         nameTextView.setEllipsize(TruncateAt.END);
         nameTextView.setGravity(Gravity.LEFT);
         nameTextView.setSingleLine(true);
         root.addView(nameTextView);
-
         // 相册数量
         TextView countTextView = new TextView(activity);
-        LinearLayout.LayoutParams countTextViewLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams countTextViewLp = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         countTextView.setLayoutParams(countTextViewLp);
         countTextView.setTextColor(Color.BLACK);
         countTextView.setGravity(Gravity.LEFT);
@@ -218,60 +127,14 @@ public abstract class AlbumUIHelper extends BaseUIHelper {
         LinearLayout root = new LinearLayout(activity);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setBackgroundColor(Color.WHITE);
-
-        // 标题
-        RelativeLayout headLayout = new RelativeLayout(activity);
-        LinearLayout.LayoutParams headLayoutLp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                (int) DisplayUtils.getPxByDp(activity, 50));
-        headLayout.setLayoutParams(headLayoutLp);
-        headLayout.setBackgroundColor(AlbumDrawableHelper.getTitleBgColor());
-        root.addView(headLayout);
-
-        // 标题-左边文字
-        final TextView leftTextView = new TextView(activity);
-        RelativeLayout.LayoutParams leftTextViewLp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        leftTextViewLp.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-        leftTextViewLp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-        leftTextView.setLayoutParams(leftTextViewLp);
-        leftTextView.setText("返回");
-        leftTextView.setTextColor(AlbumDrawableHelper.getTitleTextColor());
-        leftTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        leftTextView.setPadding(getPx(activity, 10), leftTextView.getPaddingTop(), getPx(activity, 10),
-                leftTextView.getPaddingBottom());
-        leftTextView.setGravity(Gravity.CENTER);
-        headLayout.addView(leftTextView);
-
-        // 标题-右边文字
-        final TextView rightTextView = new TextView(activity);
-        RelativeLayout.LayoutParams rightTextViewLp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        rightTextViewLp.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-        rightTextViewLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-        rightTextView.setLayoutParams(rightTextViewLp);
-        rightTextView.setText("完成");
-        rightTextView.setTextColor(AlbumDrawableHelper.getTitleTextColor());
-        rightTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        rightTextView.setPadding(getPx(activity, 10), leftTextView.getPaddingTop(), getPx(activity, 10),
-                leftTextView.getPaddingBottom());
-        rightTextView.setGravity(Gravity.CENTER);
-        headLayout.addView(rightTextView);
-
-        // 标题-中间标题
-        TextView titleTextView = new TextView(activity);
-        RelativeLayout.LayoutParams titleTextViewLp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        titleTextViewLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        titleTextView.setLayoutParams(titleTextViewLp);
-        titleTextView.setText("相册选择");
-        titleTextView.setTextColor(AlbumDrawableHelper.getTitleTextColor());
-        titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        headLayout.addView(titleTextView);
-
+        // 获取标题
+        TitleView titleView = getTitleView(activity, root);
+        titleView.titleTextView.setText("相册");
+        titleView.leftTextView.setText("返回");
+        titleView.rightTextView.setText("完成");
         // 内容GridView
         GridView gridView = new GridView(activity);
-        LinearLayout.LayoutParams gridViewLp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams gridViewLp = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         gridView.setLayoutParams(gridViewLp);
         gridView.setPadding(getPx(activity, 8), getPx(activity, 8), getPx(activity, 8), getPx(activity, 8));
         gridView.setHorizontalSpacing(getPx(activity, 8));
@@ -280,49 +143,10 @@ public abstract class AlbumUIHelper extends BaseUIHelper {
         gridView.setVerticalScrollBarEnabled(false);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
         root.addView(gridView);
-
         // 设置按下效果
-        leftTextView.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent event) {
-                // 设置按下变色效果
-                switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    leftTextView.setBackgroundColor(ColorUtils.TRANSLUCENT);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
-                    leftTextView.setBackgroundColor(ColorUtils.TRANSPARENT);
-                    break;
-                }
-                return false;
-            }
-        });
-        rightTextView.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent event) {
-                // 设置按下变色效果
-                switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    rightTextView.setBackgroundColor(ColorUtils.TRANSLUCENT);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
-                    rightTextView.setBackgroundColor(ColorUtils.TRANSPARENT);
-                    break;
-                }
-                return false;
-            }
-        });
-
-        BucketImageActivityView bucketImageActivityView = new BucketImageActivityView();
-        bucketImageActivityView.root = root;
-        bucketImageActivityView.headLayout = headLayout;
-        bucketImageActivityView.leftTextView = leftTextView;
-        bucketImageActivityView.titleTextView = titleTextView;
-        bucketImageActivityView.rightTextView = rightTextView;
-        bucketImageActivityView.gridView = gridView;
-        return bucketImageActivityView;
+        Compat.setViewBackgroundDrawable(titleView.leftTextView, getPressedDrawable(ColorUtils.TRANSLUCENT));
+        Compat.setViewBackgroundDrawable(titleView.rightTextView, getPressedDrawable(ColorUtils.TRANSLUCENT));
+        return new BucketImageActivityView(root, titleView, gridView);
     }
 
     /**
@@ -334,15 +158,12 @@ public abstract class AlbumUIHelper extends BaseUIHelper {
     public static BucketImageListItemView getBucketImageListItemView(Activity activity) {
         // 根
         RelativeLayout root = new RelativeLayout(activity);
-
         // 图
-        ImageView imageView = new ImageView(activity);
-        RelativeLayout.LayoutParams imageViewLp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        ImageView imageView = new RotationImageView(activity);
+        RelativeLayout.LayoutParams imageViewLp = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         imageView.setLayoutParams(imageViewLp);
         imageView.setScaleType(ScaleType.CENTER_CROP);
         root.addView(imageView);
-
         // 选中后的图
         ImageView imageViewSel = new ImageView(activity);// 遮盖层
         RelativeLayout.LayoutParams imageViewSelLp = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
@@ -350,7 +171,6 @@ public abstract class AlbumUIHelper extends BaseUIHelper {
         imageViewSel.setBackgroundColor(Color.parseColor("#60000000"));
         imageViewSel.setVisibility(View.GONE);
         root.addView(imageViewSel);
-
         ImageView hookImageSel = new ImageView(activity);// 打钩层
         RelativeLayout.LayoutParams hookImageSelLp = new RelativeLayout.LayoutParams(getPx(activity, 50), getPx(
                 activity, 50));

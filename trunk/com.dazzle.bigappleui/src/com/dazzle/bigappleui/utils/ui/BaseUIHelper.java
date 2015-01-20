@@ -12,14 +12,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dazzle.bigappleui.utils.Compat;
 import com.dazzle.bigappleui.utils.ui.entity.TitleView;
 
 /**
@@ -54,16 +52,15 @@ public class BaseUIHelper {
     protected static TitleView getTitleView(Activity activity, ViewGroup parent) {
         // 标题布局
         RelativeLayout headLayout = new RelativeLayout(activity);
-        RelativeLayout.LayoutParams headLayoutLp = new RelativeLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, (int) DisplayUtils.getPxByDp(activity, 50));
+        LinearLayout.LayoutParams headLayoutLp = new LinearLayout.LayoutParams(MATCH_PARENT,
+                (int) DisplayUtils.getPxByDp(activity, 50));
         headLayout.setLayoutParams(headLayoutLp);
         headLayout.setBackgroundColor(Color.parseColor("#414141"));
         parent.addView(headLayout);
 
         // 标题-左边文字
         final TextView leftTextView = new TextView(activity);
-        RelativeLayout.LayoutParams leftTextViewLp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams leftTextViewLp = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
         leftTextViewLp.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
         leftTextViewLp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
         leftTextView.setLayoutParams(leftTextViewLp);
@@ -76,8 +73,7 @@ public class BaseUIHelper {
 
         // 标题-右边文字
         final TextView rightTextView = new TextView(activity);
-        RelativeLayout.LayoutParams rightTextViewLp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams rightTextViewLp = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
         rightTextViewLp.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
         rightTextViewLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         rightTextView.setLayoutParams(rightTextViewLp);
@@ -90,8 +86,7 @@ public class BaseUIHelper {
 
         // 标题-中间标题
         TextView titleTextView = new TextView(activity);
-        RelativeLayout.LayoutParams titleTextViewLp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams titleTextViewLp = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         titleTextViewLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         titleTextView.setLayoutParams(titleTextViewLp);
         titleTextView.setTextColor(Color.WHITE);
@@ -99,38 +94,8 @@ public class BaseUIHelper {
         headLayout.addView(titleTextView);
 
         // 设置按下效果
-        leftTextView.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent event) {
-                // 设置按下变色效果
-                switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    leftTextView.setBackgroundColor(ColorUtils.TRANSLUCENT);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
-                    leftTextView.setBackgroundColor(ColorUtils.TRANSPARENT);
-                    break;
-                }
-                return false;
-            }
-        });
-        rightTextView.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg0, MotionEvent event) {
-                // 设置按下变色效果
-                switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    rightTextView.setBackgroundColor(ColorUtils.TRANSLUCENT);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
-                    rightTextView.setBackgroundColor(ColorUtils.TRANSPARENT);
-                    break;
-                }
-                return false;
-            }
-        });
+        Compat.setViewBackgroundDrawable(leftTextView, getPressedDrawable(ColorUtils.TRANSLUCENT));
+        Compat.setViewBackgroundDrawable(rightTextView, getPressedDrawable(ColorUtils.TRANSLUCENT));
 
         TitleView titleView = new TitleView();
         titleView.headLayout = headLayout;

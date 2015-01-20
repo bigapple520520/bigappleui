@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.dazzle.bigappleui.fileexplorer.core.DrawableHelper;
 import com.dazzle.bigappleui.fileexplorer.entity.FileExplorerActivityView;
 import com.dazzle.bigappleui.fileexplorer.entity.FileInfoListItemView;
+import com.dazzle.bigappleui.utils.Compat;
 import com.dazzle.bigappleui.utils.ui.BaseUIHelper;
 import com.dazzle.bigappleui.utils.ui.ColorUtils;
 import com.dazzle.bigappleui.utils.ui.entity.TitleView;
@@ -135,7 +136,7 @@ public class FileExplorerUIHepler extends BaseUIHelper {
         // 根
         final RelativeLayout root = new RelativeLayout(activity);
         root.setBackgroundColor(Color.WHITE);
-        root.setBackgroundDrawable(getSelectorDrawable());
+        Compat.setViewBackgroundDrawable(root, getSelectorDrawable());
 
         // 左边文件图标
         ImageView fileIcon = new ImageView(activity);
@@ -219,7 +220,7 @@ public class FileExplorerUIHepler extends BaseUIHelper {
         textView.setText(text);
         textView.setTextColor(Color.GRAY);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        textView.setBackgroundDrawable(getPressedDrawable(ColorUtils.COLOR_D4D4D4));
+        Compat.setViewBackgroundDrawable(textView, getPressedDrawable(ColorUtils.COLOR_D4D4D4));
 
         if (!TextUtils.isEmpty(filePath)) {
             textView.setTag(filePath);
