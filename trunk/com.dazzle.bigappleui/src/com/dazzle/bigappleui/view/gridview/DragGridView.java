@@ -303,10 +303,11 @@ public class DragGridView extends GridView {
      */
     private void onSwapItem(int moveX, int moveY) {
         // 获取我们手指移动到的那个item的position
-        int tempPosition = pointToPosition(moveX, moveY);
+        final int tempPosition = pointToPosition(moveX, moveY);
 
         // 假如tempPosition 改变了并且tempPosition不等于-1,则进行交换
         if (tempPosition != mDragPosition && tempPosition != AdapterView.INVALID_POSITION) {
+
             getChildAt(tempPosition - getFirstVisiblePosition()).setVisibility(View.INVISIBLE);// 拖动到了新的item,新的item隐藏掉
             getChildAt(mDragPosition - getFirstVisiblePosition()).setVisibility(View.VISIBLE);// 之前的item显示出来
 
