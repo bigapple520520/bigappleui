@@ -55,7 +55,7 @@ public class ViewPage extends ViewGroup {
     private void init() {
         scrollEventAdapter = new ScrollEventAdapter();
         scroller = new Scroller(getContext());
-        curScreen = 1;
+        curScreen = 0;
 
         ViewConfiguration config = ViewConfiguration.get(getContext());
         touchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(config);
