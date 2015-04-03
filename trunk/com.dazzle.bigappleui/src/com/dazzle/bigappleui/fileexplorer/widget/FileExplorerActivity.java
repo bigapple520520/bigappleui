@@ -95,7 +95,9 @@ public class FileExplorerActivity extends Activity {
         root.titleView.leftTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                finish();
+                Intent data = getIntent();
+                setResult(RESULT_CANCELED, data);
+                FileExplorerActivity.this.finish();
             }
         });
 
