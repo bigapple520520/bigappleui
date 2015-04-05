@@ -24,6 +24,11 @@
         android:layout_height="wrap_content"
         android:text="基于GridView下拉刷新"/>
     <Button 
+        android:id="@+id/anPullToRefreshListViewBtn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="ANPullToRefreshListView测试"/>
+    <Button 
         android:id="@+id/button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

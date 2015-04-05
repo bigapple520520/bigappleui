@@ -45,13 +45,13 @@
             android:layout_centerInParent="true"
             android:gravity="center_horizontal"  
             android:orientation="vertical">  
-            <TextView  
+            <TextView
                 android:id="@+id/pull2refresh_head_tipstextview"  
                 android:layout_width="wrap_content"  
                 android:layout_height="wrap_content"  
                 android:text="下拉可以刷新"  
                 android:textColor="@android:color/black"/>  
-            <TextView  
+            <TextView
                 android:id="@+id/pull2refresh_head_lastupdatedtextview"  
                 android:layout_width="wrap_content"  
                 android:layout_height="wrap_content" 

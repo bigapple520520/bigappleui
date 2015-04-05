@@ -46,11 +46,12 @@
         <activity android:name="com.dazzle.bigappleui.demo.DrawImageActivityDemo" />
         <activity android:name="com.dazzle.bigappleui.demo.fileexplorer.FileExplorerDemo" />
         
-        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.Pull2RefreshDemoActivity" />
+        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.DemoActivity" />
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.ListViewDemo" />
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.GridViewDemo" />
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.WebViewDemo" />
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.ScrollViewDemo" />
+        <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.ANPullToRefreshViewDemoActivity" />
         
         <activity android:name="com.dazzle.bigappleui.pullrefresh.PullRefreshListViewActivity" />
         <activity android:name="com.dazzle.bigappleui.pullrefresh.PullRefreshScrollViewActivity" />
