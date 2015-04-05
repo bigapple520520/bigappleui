@@ -55,7 +55,7 @@ public class CyclePage extends ViewGroup {
         super(context, attrs);
         scrollEventAdapter = new ScrollEventAdapter();
         scroller = new Scroller(context);
-        curScreen = 1;
+        curScreen = 0;
 
         ViewConfiguration config = ViewConfiguration.get(getContext());
         touchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(config);
