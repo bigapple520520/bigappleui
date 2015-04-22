@@ -68,6 +68,7 @@ public class ANWebView extends RelativeLayout {
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.MATCH_PARENT,
 				RelativeLayout.LayoutParams.MATCH_PARENT);
+		webView.setLayoutParams(lp);
 		addView(webView);
 
 		WebSettings webSettings = webView.getSettings();
