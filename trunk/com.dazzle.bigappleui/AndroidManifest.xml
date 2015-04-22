@@ -53,6 +53,8 @@
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.ScrollViewDemo" />
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.ANPullToRefreshViewDemoActivity" />
         
+        <activity android:name="com.dazzle.bigappleui.demo.view.webview.ANWebViewDemo" />
+        
         <activity android:name="com.dazzle.bigappleui.pullrefresh.PullRefreshListViewActivity" />
         <activity android:name="com.dazzle.bigappleui.pullrefresh.PullRefreshScrollViewActivity" />
         
