@@ -18,8 +18,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.dazzle.bigappleui.R;
-import com.dazzle.bigappleui.view.gridview.DragGridView;
-import com.dazzle.bigappleui.view.gridview.DragGridView.OnChanageListener;
+import com.dazzle.bigappleui.view.gridview.ANDragGridView;
+import com.dazzle.bigappleui.view.gridview.ANDragGridView.OnChanageListener;
 
 /**
  * GragGridView的demo测试
@@ -29,7 +29,7 @@ import com.dazzle.bigappleui.view.gridview.DragGridView.OnChanageListener;
  */
 public class DragGridViewDemo extends Activity {
 
-    private DragGridView dragGridView;
+    private ANDragGridView dragGridView;
     private List<Integer> resids = new ArrayList<Integer>();
     private BaseAdapter adapter;
 
@@ -44,7 +44,7 @@ public class DragGridViewDemo extends Activity {
         resids.add(R.drawable.demo_roundedimageview_pic);
         resids.add(R.drawable.ic_action_search);
 
-        dragGridView = new DragGridView(this);
+        dragGridView = new ANDragGridView(this);
         dragGridView.setNumColumns(3);
         adapter = new BaseAdapter() {
             @Override
