@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.dazzle.bigappleui.demo.DrawImageActivityDemo;
 import com.dazzle.bigappleui.demo.album.AlbumDemo;
+import com.dazzle.bigappleui.demo.camera.CameraDemo;
 import com.dazzle.bigappleui.demo.fileexplorer.FileExplorerDemo;
 import com.dazzle.bigappleui.demo.gifview.GifViewDemoActivity;
 import com.dazzle.bigappleui.demo.lettersort.LetterSortDemoActivity;
@@ -53,6 +54,8 @@ public class BigappleUiMain extends Activity {
 		addButton("文件选择器", FileExplorerDemo.class);
 		addButton("SwTabHost框架", SwTabHostDemo.class);
 		addButton("WebView测试", ANWebViewDemo.class);
+
+		addButton("Camera测试", CameraDemo.class);
 	}
 
 	private void addButton(String text, final Class<?> clazz) {

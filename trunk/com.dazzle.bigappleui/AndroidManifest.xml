@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -54,6 +56,7 @@
         <activity android:name="com.dazzle.bigappleui.demo.pull2refresh.ANPullToRefreshViewDemoActivity" />
         
         <activity android:name="com.dazzle.bigappleui.demo.view.webview.ANWebViewDemo" />
+        <activity android:name="com.dazzle.bigappleui.demo.camera.CameraDemo" />
         
         <activity android:name="com.dazzle.bigappleui.pullrefresh.PullRefreshListViewActivity" />
         <activity android:name="com.dazzle.bigappleui.pullrefresh.PullRefreshScrollViewActivity" />
@@ -69,6 +72,9 @@
     
         <!-- 如果想要使用文件选择器，要配置下面的Activity -->
         <activity android:name="com.dazzle.bigappleui.fileexplorer.widget.FileExplorerActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
+    
+        <!-- 如果要使用拍照界面，就要配置下面的Activity -->
+        <activity android:name="com.dazzle.bigappleui.camera.BPUICameraActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
     </application>
 
 </manifest>

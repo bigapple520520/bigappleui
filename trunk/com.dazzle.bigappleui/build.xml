@@ -33,7 +33,7 @@
         <mkdir dir="${build.classes.dir}"/>
         <javac
             srcdir="${bigappleui.dir}"
-            includes="pullrefresh/**,fileexplorer/**,album/**,gifview/**,lettersort/**,pull2refresh/**,slidingmenu/**,slidingupdown/**,utils/**,view/**,viewpage/**,viewpager/**"
+            includes="camera/**,pullrefresh/**,fileexplorer/**,album/**,gifview/**,lettersort/**,pull2refresh/**,slidingmenu/**,slidingupdown/**,utils/**,view/**,viewpage/**,viewpager/**"
             destdir="${build.classes.dir}"
             includeantruntime="no">
             <classpath refid="depend.jar"/>
