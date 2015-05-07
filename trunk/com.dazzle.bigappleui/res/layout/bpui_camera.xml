@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:id="@+id/contentLayout" 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.dazzle.bigappleui.camera.BPUICameraPreview
+            android:id="@+id/cameraPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/flashBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/bpui_camera_flash_close"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"/>
+        <View 
+            android:id="@+id/clickView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="90dp"/>
+    </RelativeLayout>
+    
+    <!-- 完成图片显示 -->
+    <ImageView 
+        android:id="@+id/finishShowIv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:visibility="gone"/>
+    <!-- 控制条布局 -->
+    <LinearLayout 
+        android:id="@+id/seekBarLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:layout_above="@+id/tabLayout"
+        android:visibility="gone">
+		<!-- 焦距条 -->
+		<LinearLayout 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal">
+		    <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="聚焦"/>
+		    <SeekBar
+		        android:id="@+id/jiaojuSeekBar"
+		        android:layout_width="180dp"
+		        android:layout_height="30dp"
+		        android:progress="10"
+		        android:progressDrawable="@drawable/bpui_camera_progress"
+		        android:thumb="@drawable/bpui_camera_progress_ball"/>
+		</LinearLayout>
+		<!-- 曝光条 -->
+		<LinearLayout 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal">
+		    <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="曝光"/>
+		    <SeekBar
+		        android:id="@+id/baoguangSeekBar"
+		        android:layout_width="180dp"
+		        android:layout_height="30dp"
+		        android:progress="50"
+		        android:progressDrawable="@drawable/bpui_camera_progress"
+		        android:thumb="@drawable/bpui_camera_progress_ball"
+		        android:visibility="visible"/>
+		</LinearLayout>
+    </LinearLayout>
+    
+    <!-- 底部操作栏 -->
+    <RelativeLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="#803a3a3a">
+        <TextView
+            android:id="@+id/cancelTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:textSize="22sp"
+            android:textColor="@android:color/white"
+            android:text="取消"/>
+        <Button
+            android:id="@+id/takePhotoBtn"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bpui_camera_btn_take_picture"
+            android:layout_gravity="center_vertical"/>
+    </RelativeLayout>
+    <!-- 底部操作栏2 -->
+    <RelativeLayout
+        android:id="@+id/tabLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="#803a3a3a"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/resetTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:textSize="22sp"
+            android:textColor="@android:color/white"
+            android:text="重拍"/>
+        <TextView
+            android:id="@+id/okTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:textSize="22sp"
+            android:textColor="@android:color/white"
+            android:text="使用照片" />
+    </RelativeLayout>
+</RelativeLayout>
